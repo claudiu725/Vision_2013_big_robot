@@ -172,6 +172,7 @@ int in4Pin = 9;
 int dir = 5;
 int en = 6;
 int stp = 7;
+unsigned long oldtime, newtime;
 void setup()
 {
 //  StartMotors();
@@ -196,24 +197,37 @@ void setup()
 //  while (!Serial);
 //  Serial.begin(9600);
 //  motor.setSpeed(200);
-Serial.begin(9600);
+//Serial.begin(9600);
+delay(5000);
+oldtime = micros();
+newtime = micros();
 }
 
-int delay2=90;
-int delay2Slow=1000;
-int stepcount=20000;
-int trapezPercent=5;
+StepperDetails {
+  int delay2;
+  int delay2Slow;
+  int stepcount;
+  int trapezPercent;
+};
+StepperDetails m1 = {90, 1000, 20000, 5};
+StepperDetails m2 = {90, 1000, 20000, 5};
 float percent;
+int p = 0;
 
 void loop()
 {
-//  StartMotors();
-//  ArmMoveForward(100);
-//  StopMotors();
-delay(5000);
-  digitalWrite(dir, HIGH);
+  newtime = micros();
+  switch (p)
+  {
+  case 0:
+    digitalWrite(dir, HIGH);
+    p = 1;
+    break;
+  case 1:
+    
+  
   doStuff();
-  myservo.write(150);
+//  myservo.write(150);
   delay(2000);
   digitalWrite(dir, LOW);
   doStuff();
@@ -222,6 +236,7 @@ delay(5000);
 //  ArmMoveBackwards(100);
 //  StopMotors();
   delay(2000);
+  oldtime = newtime;
 }
 
 void doStuff()
