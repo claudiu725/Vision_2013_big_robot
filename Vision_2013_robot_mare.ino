@@ -110,6 +110,8 @@ void BalloonTime();
 void StopMotors();
 void StartMotors();
 void StopEverything();
+struct StepperDetails;
+void doStuff(StepperDetails m);
         /*
 void setup()
 {
@@ -203,7 +205,7 @@ oldtime = micros();
 newtime = micros();
 }
 
-StepperDetails {
+struct StepperDetails {
   int delay2;
   int delay2Slow;
   int stepcount;
@@ -211,7 +213,6 @@ StepperDetails {
 };
 StepperDetails m1 = {90, 1000, 20000, 5};
 StepperDetails m2 = {90, 1000, 20000, 5};
-float percent;
 int p = 0;
 
 void loop()
@@ -224,13 +225,14 @@ void loop()
     p = 1;
     break;
   case 1:
-    
+    break;
+  }
   
-  doStuff();
+  doStuff(m1);
 //  myservo.write(150);
   delay(2000);
   digitalWrite(dir, LOW);
-  doStuff();
+  doStuff(m1);
   myservo.write(10);
 //  StartMotors();
 //  ArmMoveBackwards(100);
@@ -239,28 +241,30 @@ void loop()
   oldtime = newtime;
 }
 
-void doStuff()
+void doStuff(StepperDetails m)
 {
+  float percent;
   digitalWrite(en, HIGH);
-  for (int i=0; i<stepcount;i++)
+  for (int i=0; i<m.stepcount;i++)
   {
-    percent = ((1.0*i)/stepcount) * 100;
+    percent = ((1.0*i)/m.stepcount) * 100;
     if (i%2==0)
     {
       digitalWrite(stp, LOW);
       
-      delayMicroseconds(delay2);
+//      delayMicroseconds(delay2);
     }
     else
     {
       digitalWrite(stp, HIGH);
-      if (percent < trapezPercent)
+      if (percent < m.trapezPercent)
       {
-          delayMicroseconds((delay2 * percent + delay2Slow * (trapezPercent - percent)) / trapezPercent);
+//          delayMicroseconds((m.delay2 * percent + m.delay2Slow * (m.trapezPercent - percent)) / m.trapezPercent);
           //Serial.println((delay2 * percent + delay2Slow * (trapezPercent - percent)) / trapezPercent);
       }
       else
-        delayMicroseconds(delay2);
+//        delayMicroseconds(delay2);
+;
     }
     
   }
