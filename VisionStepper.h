@@ -6,7 +6,7 @@
 
 class VisionStepper {
   public:
-    VisionStepper(int enablePin, int directionPin, int stepPin);
+    void init(int enablePin, int directionPin, int stepPin);
     void doLoop();
     void toggleDirection();
     bool isOff();
@@ -19,8 +19,8 @@ class VisionStepper {
     int globalState;
     unsigned long stepsMadeSoFar, stepsRemaining;
     unsigned long numberOfAccelerationSteps, numberOfDeaccelerationSteps;
-    unsigned long accelerationDelayIncrement, deaccelerationDelayIncrement;
-    unsigned long lowSpeedDelay, highSpeedDelay, currentStepDelay, lowPhaseDelay;
+    float accelerationDelayIncrement, deaccelerationDelayIncrement;
+    float lowSpeedDelay, highSpeedDelay, currentStepDelay, lowPhaseDelay;
     elapsedMicros stepTimer;
 };
 

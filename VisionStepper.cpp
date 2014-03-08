@@ -5,7 +5,7 @@
 #define RUNNING 2
 #define STARTING 3
 
-VisionStepper::VisionStepper(int enablePin, int directionPin, int stepPin)
+void VisionStepper::init(int enablePin, int directionPin, int stepPin)
 {
   this->enablePin = enablePin;
   this->directionPin = directionPin;
@@ -15,14 +15,15 @@ VisionStepper::VisionStepper(int enablePin, int directionPin, int stepPin)
   stepPinState = LOW;
   stepsMadeSoFar = 0;
   stepsRemaining = 0;
-  numberOfAccelerationSteps = 1000;
+  numberOfAccelerationSteps = 5000;
   numberOfDeaccelerationSteps = 1;
-  highSpeedDelay = 90;
-  lowSpeedDelay = 1000;
+  highSpeedDelay = 100;
+  lowSpeedDelay = 500;
   lowPhaseDelay = 90;
   accelerationDelayIncrement = (highSpeedDelay - lowSpeedDelay) / numberOfAccelerationSteps;
   deaccelerationDelayIncrement = (lowSpeedDelay - highSpeedDelay) / numberOfDeaccelerationSteps;
-  
+  //Serial.print("acc delay:");
+  //Serial.println(highSpeedDelay - lowSpeedDelay);
   doSetup();
 }
 
@@ -59,13 +60,15 @@ void VisionStepper::doLoop()
         stepPinState = !stepPinState;
         digitalWrite(stepPin, stepPinState);
         if (stepsRemaining == 0)
+        {
           globalState = STOPPING;
-        break;
-        
+          break;
+        }
         if (stepsMadeSoFar < numberOfAccelerationSteps)
           currentStepDelay += accelerationDelayIncrement;
         if (stepsRemaining < numberOfDeaccelerationSteps)
           currentStepDelay += deaccelerationDelayIncrement;
+        //Serial.println(currentStepDelay);
       }
       break;
     case STARTING:
