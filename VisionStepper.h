@@ -11,6 +11,7 @@ class VisionStepper {
     void toggleDirection();
     bool isOff();
     void doSteps(int stepNumber);
+    void emergencyStop();
   private:
     void doSetup();
   private:

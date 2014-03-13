@@ -18,7 +18,7 @@ void VisionStepper::init(int enablePin, int directionPin, int stepPin)
   numberOfAccelerationSteps = 2000;
   numberOfDeaccelerationSteps = 1000;
   highSpeedDelay = 300;
-  lowSpeedDelay = 3000;
+  lowSpeedDelay = 2000;
   lowHighSpeedDelayDifference = lowSpeedDelay - highSpeedDelay;
   highPhaseDelay = 100;
   //accelerationDelayIncrement = (highSpeedDelay - lowSpeedDelay) / numberOfAccelerationSteps;
@@ -90,6 +90,12 @@ void VisionStepper::doLoop()
       currentStepDelay = lowSpeedDelay;
       break;
   }
+}
+
+void VisionStepper::emergencyStop()
+{
+  if (stepsRemaining > numberOfDeaccelerationSteps)
+    stepsRemaining = numberOfDeaccelerationSteps;
 }
 
 void VisionStepper::toggleDirection()
