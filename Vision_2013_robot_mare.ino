@@ -42,7 +42,10 @@ void setup()
 void loop()
 {
   if (digitalRead(buttonTestPin) == LOW)
+  {
+    motorA.emergencyStop();
     digitalWrite(led, HIGH);
+  }
   else
     digitalWrite(led, LOW);
   //Serial.println(analogRead(buttonTestPin));
@@ -52,7 +55,7 @@ void loop()
     if (time > DELAY_BETWEEN_TOGGLE)
     {
         motorA.toggleDirection();
-        motorA.doSteps(5000);
+        motorA.doSteps(50000);
         
         //motorB.toggleDirection();
         //motorB.doSteps(10000);
