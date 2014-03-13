@@ -12,6 +12,8 @@ int enablePin = 5;
 int directionPin = 6;
 int stepPin = 7;
 
+int buttonTestPin = 40;
+
 int enablePin2 = 9;
 int directionPin2 = 10;
 int stepPin2 = 11;
@@ -30,6 +32,7 @@ void setup()
   motorA.init(enablePin, directionPin, stepPin);
   motorB.init(enablePin2, directionPin2, stepPin2);
   pinMode(led, OUTPUT);
+  pinMode(buttonTestPin, INPUT_PULLUP);
   digitalWrite(led, LOW);
   delay(1000);
   time = 0;
@@ -38,6 +41,11 @@ void setup()
 
 void loop()
 {
+  if (digitalRead(buttonTestPin) == LOW)
+    digitalWrite(led, HIGH);
+  else
+    digitalWrite(led, LOW);
+  
   if (wait)
   {
     if (time > DELAY_BETWEEN_TOGGLE)
@@ -49,7 +57,7 @@ void loop()
         //motorB.doSteps(10000);
         
         wait = false;
-        digitalWrite(led, HIGH);
+        //digitalWrite(led, HIGH);
         //Serial.println("starting");
     }
   }
@@ -59,7 +67,7 @@ void loop()
     {
       time = 0;
       wait = true;
-      digitalWrite(led, LOW);
+      //digitalWrite(led, LOW);
       //Serial.println("stopped");
     }
   }
