@@ -18,7 +18,7 @@ void VisionStepper::init(int enablePin, int directionPin, int stepPin)
   numberOfAccelerationSteps = 2000;
   numberOfDeaccelerationSteps = 500;
   highSpeedDelay = 300;
-  lowSpeedDelay = 2100;
+  lowSpeedDelay = 3000;
   lowHighSpeedDelayDifference = lowSpeedDelay - highSpeedDelay;
   highPhaseDelay = 100;
   accelerationDelayIncrement = (highSpeedDelay - lowSpeedDelay) / numberOfAccelerationSteps;

@@ -45,6 +45,7 @@ void loop()
     digitalWrite(led, HIGH);
   else
     digitalWrite(led, LOW);
+  //Serial.println(analogRead(buttonTestPin));
   
   if (wait)
   {
