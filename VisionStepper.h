@@ -20,7 +20,7 @@ class VisionStepper {
     unsigned long stepsMadeSoFar, stepsRemaining;
     unsigned long numberOfAccelerationSteps, numberOfDeaccelerationSteps;
     float accelerationDelayIncrement, deaccelerationDelayIncrement;
-    float lowSpeedDelay, highSpeedDelay, currentStepDelay, lowPhaseDelay;
+    float lowSpeedDelay, highSpeedDelay, currentStepDelay, highPhaseDelay;
     elapsedMicros stepTimer;
 };
 

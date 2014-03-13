@@ -15,11 +15,11 @@ void VisionStepper::init(int enablePin, int directionPin, int stepPin)
   stepPinState = LOW;
   stepsMadeSoFar = 0;
   stepsRemaining = 0;
-  numberOfAccelerationSteps = 5000;
-  numberOfDeaccelerationSteps = 1;
-  highSpeedDelay = 100;
-  lowSpeedDelay = 500;
-  lowPhaseDelay = 90;
+  numberOfAccelerationSteps = 2000;
+  numberOfDeaccelerationSteps = 500;
+  highSpeedDelay = 300;
+  lowSpeedDelay = 2100;
+  highPhaseDelay = 100;
   accelerationDelayIncrement = (highSpeedDelay - lowSpeedDelay) / numberOfAccelerationSteps;
   deaccelerationDelayIncrement = (lowSpeedDelay - highSpeedDelay) / numberOfDeaccelerationSteps;
   //Serial.print("acc delay:");
@@ -50,11 +50,15 @@ void VisionStepper::doLoop()
       globalState = STOPPED;
       break;
     case RUNNING:
-      if (((stepPinState == HIGH) && (stepTimer > currentStepDelay)) ||
-          ((stepPinState == LOW) && (stepTimer > lowPhaseDelay))
+      if (((stepPinState == LOW) && (stepTimer > currentStepDelay)) ||
+          ((stepPinState == HIGH) && (stepTimer > highPhaseDelay))
           )
       {
         stepTimer = 0;
+        if (stepsMadeSoFar < numberOfAccelerationSteps)
+          currentStepDelay += accelerationDelayIncrement;
+        if (stepsRemaining < numberOfDeaccelerationSteps)
+          currentStepDelay += deaccelerationDelayIncrement;
         stepsMadeSoFar++;
         stepsRemaining--;
         stepPinState = !stepPinState;
@@ -64,10 +68,6 @@ void VisionStepper::doLoop()
           globalState = STOPPING;
           break;
         }
-        if (stepsMadeSoFar < numberOfAccelerationSteps)
-          currentStepDelay += accelerationDelayIncrement;
-        if (stepsRemaining < numberOfDeaccelerationSteps)
-          currentStepDelay += deaccelerationDelayIncrement;
         //Serial.println(currentStepDelay);
       }
       break;

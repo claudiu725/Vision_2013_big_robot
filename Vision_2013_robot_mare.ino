@@ -6,7 +6,7 @@
 #include <elapsedMillis.h>
 #include "VisionStepper.h"
 
-#define DELAY_BETWEEN_TOGGLE 2000
+#define DELAY_BETWEEN_TOGGLE 500
 
 int enablePin = 5;
 int directionPin = 6;
@@ -43,10 +43,10 @@ void loop()
     if (time > DELAY_BETWEEN_TOGGLE)
     {
         motorA.toggleDirection();
-        motorA.doSteps(10000);
+        motorA.doSteps(5000);
         
-        motorB.toggleDirection();
-        motorB.doSteps(10000);
+        //motorB.toggleDirection();
+        //motorB.doSteps(10000);
         
         wait = false;
         digitalWrite(led, HIGH);
