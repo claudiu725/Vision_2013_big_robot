@@ -16,13 +16,13 @@ void VisionStepper::init(int enablePin, int directionPin, int stepPin)
   stepsMadeSoFar = 0;
   stepsRemaining = 0;
   numberOfAccelerationSteps = 2000;
-  numberOfDeaccelerationSteps = 500;
+  numberOfDeaccelerationSteps = 1000;
   highSpeedDelay = 300;
   lowSpeedDelay = 3000;
   lowHighSpeedDelayDifference = lowSpeedDelay - highSpeedDelay;
   highPhaseDelay = 100;
-  accelerationDelayIncrement = (highSpeedDelay - lowSpeedDelay) / numberOfAccelerationSteps;
-  deaccelerationDelayIncrement = (lowSpeedDelay - highSpeedDelay) / numberOfDeaccelerationSteps;
+  //accelerationDelayIncrement = (highSpeedDelay - lowSpeedDelay) / numberOfAccelerationSteps;
+  //deaccelerationDelayIncrement = (lowSpeedDelay - highSpeedDelay) / numberOfDeaccelerationSteps;
   //Serial.print("acc delay:");
   //Serial.println(highSpeedDelay - lowSpeedDelay);
   doSetup();
@@ -60,6 +60,10 @@ void VisionStepper::doLoop()
         accelPercent = constrain(accelPercent, 0, 1);
         //Serial.println(accelPercent);
         currentStepDelay = highSpeedDelay + lowHighSpeedDelayDifference * (1 - accelPercent) * (1 - accelPercent);
+        
+        deaccelPercent = float(stepsRemaining) / numberOfDeaccelerationSteps;
+        deaccelPercent = constrain(deaccelPercent, 0, 1);
+        currentStepDelay += lowHighSpeedDelayDifference * (1 - deaccelPercent) * (1 - deaccelPercent);
         //Serial.println(currentStepDelay);
         
         //if (stepsMadeSoFar < numberOfAccelerationSteps)
