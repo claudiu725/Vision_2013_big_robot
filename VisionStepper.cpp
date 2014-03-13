@@ -19,6 +19,7 @@ void VisionStepper::init(int enablePin, int directionPin, int stepPin)
   numberOfDeaccelerationSteps = 500;
   highSpeedDelay = 300;
   lowSpeedDelay = 2100;
+  lowHighSpeedDelayDifference = lowSpeedDelay - highSpeedDelay;
   highPhaseDelay = 100;
   accelerationDelayIncrement = (highSpeedDelay - lowSpeedDelay) / numberOfAccelerationSteps;
   deaccelerationDelayIncrement = (lowSpeedDelay - highSpeedDelay) / numberOfDeaccelerationSteps;
@@ -55,10 +56,16 @@ void VisionStepper::doLoop()
           )
       {
         stepTimer = 0;
-        if (stepsMadeSoFar < numberOfAccelerationSteps)
-          currentStepDelay += accelerationDelayIncrement;
-        if (stepsRemaining < numberOfDeaccelerationSteps)
-          currentStepDelay += deaccelerationDelayIncrement;
+        accelPercent = float(stepsMadeSoFar) / numberOfAccelerationSteps;
+        accelPercent = constrain(accelPercent, 0, 1);
+        //Serial.println(accelPercent);
+        currentStepDelay = highSpeedDelay + lowHighSpeedDelayDifference * (1 - accelPercent) * (1 - accelPercent);
+        //Serial.println(currentStepDelay);
+        
+        //if (stepsMadeSoFar < numberOfAccelerationSteps)
+        //  currentStepDelay += accelerationDelayIncrement;
+        //if (stepsRemaining < numberOfDeaccelerationSteps)
+        //  currentStepDelay += deaccelerationDelayIncrement;
         stepsMadeSoFar++;
         stepsRemaining--;
         stepPinState = !stepPinState;
