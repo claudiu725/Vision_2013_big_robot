@@ -7,21 +7,29 @@
 #include "VisionStepper.h"
 
 #define DELAY_BETWEEN_TOGGLE 500
+#define STATE_TEST_A 0
+#define STATE_TEST_B 1
+#define STATE_TEST_C 2
+#define STATE_TEST_D 3
+#define STATE_TEST_E 4
+#define STATE_TEST_F 5
+#define STATE_TEST_G 6
 
-int enablePin = 5;
-int directionPin = 6;
-int stepPin = 7;
+int enablePin = 7;
+int stepPin = 6;
+int directionPin = 5;
 
 int buttonTestPin = 40;
 
-int enablePin2 = 9;
-int directionPin2 = 10;
-int stepPin2 = 11;
+int enablePin2 = 4;
+int stepPin2 = 3;
+int directionPin2 = 2;
 
 int led = 13;
 
 elapsedMillis time, test;
-bool wait;
+boolean wait;
+int state;
 VisionStepper motorA;
 VisionStepper motorB;
 
@@ -36,54 +44,64 @@ void setup()
   digitalWrite(led, LOW);
   delay(1000);
   time = 0;
+  state = 0;
   wait = false;
 }
 
 void loop()
-{/*
-  if (digitalRead(buttonTestPin) == LOW)
+{ 
+  switch (state)
   {
-    motorA.emergencyStop();
-    digitalWrite(led, HIGH);
-  }
-  else
-    digitalWrite(led, LOW);*/
-  //Serial.println(analogRead(buttonTestPin));
-  if (test > 4500)
-  {
-    motorA.setTargetDelay(450);
-    test = 0;
-  }
-  if (test > 3500)
-    {
-        motorA.setTargetDelay(600);
-    }
-  if (wait)
-  {
-    if (time > DELAY_BETWEEN_TOGGLE)
-    {
-        motorA.toggleDirection();
-        motorA.setTargetDelay(300);
-        motorA.doSteps(20000);
-        
-        //motorB.toggleDirection();
-        //motorB.doSteps(10000);
-        
-        wait = false;
-        //digitalWrite(led, HIGH);
-        //Serial.println("starting");
-    }
-  }
-  else
-  {
-    if (motorA.isOff() && motorB.isOff())
-    {
-      time = 0;
-      test = 0;
-      wait = true;
-      //digitalWrite(led, LOW);
-      //Serial.println("stopped");
-    }
+    case STATE_TEST_A:
+      //move forward
+      motorA.setMaxSpeed();
+      motorA.setDirectionForward();
+      
+      motorB.setMaxSpeed();
+      motorB.setDirectionForward();
+      motorB.toggleDirection();
+      
+      motorA.doDistanceInCm(100);
+      motorB.doDistanceInCm(100);
+      
+      state = STATE_TEST_B;
+      break;
+    case STATE_TEST_B:
+      //wait to complete
+      if (motorA.isOff() && motorB.isOff())
+        state = STATE_TEST_C;
+      break;
+    case STATE_TEST_C:
+      //move left opposing
+      delay(1000);
+      state = STATE_TEST_D;
+      break;
+    case STATE_TEST_D:
+      //wait to complete
+      motorA.toggleDirection();
+      motorB.toggleDirection();
+      
+      motorA.setMaxSpeed();
+      motorB.setMaxSpeed();
+      
+      motorA.doDistanceInCm(100);
+      motorB.doDistanceInCm(100);
+      
+      state = STATE_TEST_E;
+      break;
+    case STATE_TEST_E:
+      //move left curved
+      if (motorA.isOff() && motorB.isOff())
+        state = STATE_TEST_F;
+      break;
+    case STATE_TEST_F:
+      //wait to complete
+      delay(1000);
+      state = STATE_TEST_A;
+      break;
+    case STATE_TEST_G:
+      //stop
+      break;
   }
   
   motorA.doLoop();
