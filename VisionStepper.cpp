@@ -17,14 +17,9 @@ void VisionStepper::init(int enablePin, int directionPin, int stepPin)
   stepsRemaining = 0;
   numberOfAccelerationSteps = 2000;
   numberOfDeaccelerationSteps = 1000;
-  highSpeedDelay = 300;
-  lowSpeedDelay = 2000;
-  lowHighSpeedDelayDifference = lowSpeedDelay - highSpeedDelay;
+  maxSpeedDelay = 300;
+  startSpeedDelay = 2000;
   highPhaseDelay = 100;
-  //accelerationDelayIncrement = (highSpeedDelay - lowSpeedDelay) / numberOfAccelerationSteps;
-  //deaccelerationDelayIncrement = (lowSpeedDelay - highSpeedDelay) / numberOfDeaccelerationSteps;
-  //Serial.print("acc delay:");
-  //Serial.println(highSpeedDelay - lowSpeedDelay);
   doSetup();
 }
 
@@ -51,27 +46,39 @@ void VisionStepper::doLoop()
       globalState = STOPPED;
       break;
     case RUNNING:
-      if (((stepPinState == LOW) && (stepTimer > currentStepDelay)) ||
+      if (((stepPinState == LOW) && (stepTimer > currentDelay)) ||
           ((stepPinState == HIGH) && (stepTimer > highPhaseDelay))
           )
       {
         stepTimer = 0;
-        accelPercent = float(stepsMadeSoFar) / numberOfAccelerationSteps;
-        accelPercent = constrain(accelPercent, 0, 1);
-        //Serial.println(accelPercent);
-        currentStepDelay = highSpeedDelay + lowHighSpeedDelayDifference * (1 - accelPercent) * (1 - accelPercent);
-        
-        deaccelPercent = float(stepsRemaining) / numberOfDeaccelerationSteps;
-        deaccelPercent = constrain(deaccelPercent, 0, 1);
-        currentStepDelay += lowHighSpeedDelayDifference * (1 - deaccelPercent) * (1 - deaccelPercent);
-        //Serial.println(currentStepDelay);
-        
-        //if (stepsMadeSoFar < numberOfAccelerationSteps)
-        //  currentStepDelay += accelerationDelayIncrement;
-        //if (stepsRemaining < numberOfDeaccelerationSteps)
-        //  currentStepDelay += deaccelerationDelayIncrement;
+        if (!foundTargetSpeed)
+        {
+          if (currentDelay > targetDelay)
+          {
+            stepSpeedCounter++;
+            raiseSpeed = true;
+          }
+          else if (currentDelay < targetDelay)
+          {
+            stepSpeedCounter--;
+            raiseSpeed = false;
+          }
+        }
+        if (stepSpeedCounter < 0)
+        {
+          stepSpeedCounter = 0;
+          digitalWrite(13, HIGH);
+        }
+        currentDelay = startSpeedDelay / sqrt(0.025 * stepSpeedCounter + 1);
+        if (!foundTargetSpeed)
+          if ((!raiseSpeed && currentDelay > targetDelay) ||
+              (raiseSpeed && currentDelay < targetDelay))
+              foundTargetSpeed = true;
+        //Serial.println(currentDelay);
         stepsMadeSoFar++;
         stepsRemaining--;
+        if (stepsRemaining <= stepSpeedCounter)
+          setTargetDelay(startSpeedDelay);
         stepPinState = !stepPinState;
         digitalWrite(stepPin, stepPinState);
         if (stepsRemaining == 0)
@@ -87,7 +94,9 @@ void VisionStepper::doLoop()
       digitalWrite(enablePin, enablePinState);
       globalState = RUNNING;
       stepTimer = 0;
-      currentStepDelay = lowSpeedDelay;
+      stepSpeedCounter = 0;
+      currentDelay = startSpeedDelay;
+      foundTargetSpeed = false;
       break;
   }
 }
@@ -96,6 +105,12 @@ void VisionStepper::emergencyStop()
 {
   if (stepsRemaining > numberOfDeaccelerationSteps)
     stepsRemaining = numberOfDeaccelerationSteps;
+}
+
+void VisionStepper::setTargetDelay(int targetDelay)
+{
+  this->targetDelay = targetDelay;
+  foundTargetSpeed = false;
 }
 
 void VisionStepper::toggleDirection()

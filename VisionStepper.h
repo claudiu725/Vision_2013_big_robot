@@ -9,6 +9,7 @@ class VisionStepper {
     void init(int enablePin, int directionPin, int stepPin);
     void doLoop();
     void toggleDirection();
+    void setTargetDelay(int targetDelay);
     bool isOff();
     void doSteps(int stepNumber);
     void emergencyStop();
@@ -21,7 +22,9 @@ class VisionStepper {
     unsigned long stepsMadeSoFar, stepsRemaining;
     unsigned long numberOfAccelerationSteps, numberOfDeaccelerationSteps;
     float accelerationDelayIncrement, deaccelerationDelayIncrement;
-    float lowSpeedDelay, highSpeedDelay, lowHighSpeedDelayDifference, currentStepDelay, highPhaseDelay, accelPercent, deaccelPercent;
+    float maxSpeedDelay, startSpeedDelay, currentDelay, targetDelay, highPhaseDelay;
+    int stepSpeedCounter;
+    boolean foundTargetSpeed, raiseSpeed;
     elapsedMicros stepTimer;
 };
 

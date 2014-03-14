@@ -20,7 +20,7 @@ int stepPin2 = 11;
 
 int led = 13;
 
-elapsedMillis time;
+elapsedMillis time, test;
 bool wait;
 VisionStepper motorA;
 VisionStepper motorB;
@@ -40,22 +40,31 @@ void setup()
 }
 
 void loop()
-{
+{/*
   if (digitalRead(buttonTestPin) == LOW)
   {
     motorA.emergencyStop();
     digitalWrite(led, HIGH);
   }
   else
-    digitalWrite(led, LOW);
+    digitalWrite(led, LOW);*/
   //Serial.println(analogRead(buttonTestPin));
-  
+  if (test > 4500)
+  {
+    motorA.setTargetDelay(450);
+    test = 0;
+  }
+  if (test > 3500)
+    {
+        motorA.setTargetDelay(600);
+    }
   if (wait)
   {
     if (time > DELAY_BETWEEN_TOGGLE)
     {
         motorA.toggleDirection();
-        motorA.doSteps(50000);
+        motorA.setTargetDelay(300);
+        motorA.doSteps(20000);
         
         //motorB.toggleDirection();
         //motorB.doSteps(10000);
@@ -70,6 +79,7 @@ void loop()
     if (motorA.isOff() && motorB.isOff())
     {
       time = 0;
+      test = 0;
       wait = true;
       //digitalWrite(led, LOW);
       //Serial.println("stopped");
