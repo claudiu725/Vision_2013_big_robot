@@ -7,13 +7,15 @@
 #include "VisionStepper.h"
 
 #define DELAY_BETWEEN_TOGGLE 500
-#define STATE_TEST_A 0
+#define STATE_TEST_A0 -1
+#define STATE_TEST_A1 0
 #define STATE_TEST_B 1
 #define STATE_TEST_C 2
 #define STATE_TEST_D 3
 #define STATE_TEST_E 4
 #define STATE_TEST_F 5
 #define STATE_TEST_G 6
+#define STATE_STOP   7
 
 int enablePin = 7;
 int stepPin = 6;
@@ -44,7 +46,7 @@ void setup()
   digitalWrite(led, LOW);
   delay(1000);
   time = 0;
-  state = 0;
+  state = STATE_TEST_A0;
   wait = false;
 }
 
@@ -52,28 +54,37 @@ void loop()
 { 
   switch (state)
   {
-    case STATE_TEST_A:
+    case STATE_TEST_A0:
       //move forward
-      motorA.setMaxSpeed();
       motorA.setDirectionForward();
-      
-      motorB.setMaxSpeed();
       motorB.setDirectionForward();
       motorB.toggleDirection();
       
-      motorA.doDistanceInCm(100);
-      motorB.doDistanceInCm(100);
-      
-      state = STATE_TEST_B;
+      state = STATE_TEST_A1;
+      time = 0;
+      break;
+   case STATE_TEST_A1:
+      if (time > 500)
+      {
+        motorA.setMaxSpeed();
+        motorB.setMaxSpeed();
+   
+        //motorA.doDistanceInCm(100);
+        //motorB.doDistanceInCm(100);
+        motorA.doSteps(3 * 200);
+        motorB.doSteps(3 * 200);
+        
+        state = STATE_TEST_B;
+      }
       break;
     case STATE_TEST_B:
       //wait to complete
       if (motorA.isOff() && motorB.isOff())
         state = STATE_TEST_C;
+      time = 0;
       break;
     case STATE_TEST_C:
       //move left opposing
-      delay(1000);
       state = STATE_TEST_D;
       break;
     case STATE_TEST_D:
@@ -81,13 +92,8 @@ void loop()
       motorA.toggleDirection();
       motorB.toggleDirection();
       
-      motorA.setMaxSpeed();
-      motorB.setMaxSpeed();
-      
-      motorA.doDistanceInCm(100);
-      motorB.doDistanceInCm(100);
-      
-      state = STATE_TEST_E;
+      time = 0;
+      state = STATE_TEST_A1;
       break;
     case STATE_TEST_E:
       //move left curved
@@ -97,9 +103,12 @@ void loop()
     case STATE_TEST_F:
       //wait to complete
       delay(1000);
-      state = STATE_TEST_A;
+      state = STATE_TEST_A0;
       break;
     case STATE_TEST_G:
+      //stop
+      break;
+    case STATE_STOP:
       //stop
       break;
   }

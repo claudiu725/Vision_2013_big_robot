@@ -23,7 +23,7 @@ void VisionStepper::init(int enablePin, int directionPin, int stepPin)
   stepsMadeSoFar = 0;
   stepsRemaining = 0;
   maxSpeedDelay = 500;
-  startSpeedDelay = 10000;
+  startSpeedDelay = 4000;
   highPhaseDelay = 100;
   doSetup();
 }
@@ -47,11 +47,11 @@ void VisionStepper::doLoop()
       break;
     case STOPPING:
       enablePinState = LOW;
-      //digitalWrite(enablePin, enablePinState);
+      digitalWrite(enablePin, enablePinState);
       globalState = STOPPED;
       break;
     case STOPPING_ENABLE_ON:
-      if (stopTimer > 500)
+      if (stopTimer > 100)
         globalState = STOPPING;
       break;
     case RUNNING:
@@ -73,7 +73,7 @@ void VisionStepper::doLoop()
             raiseSpeed = false;
           }
         }
-        currentDelay = startSpeedDelay * 10 / sqrt(4 * stepSpeedCounter + 100);
+        currentDelay = startSpeedDelay * 10 / sqrt(0.025 * stepSpeedCounter + 100);
         if (!foundTargetSpeed)
           if ((!raiseSpeed && currentDelay > targetDelay) ||
               (raiseSpeed && currentDelay < targetDelay))
@@ -146,7 +146,7 @@ boolean VisionStepper::isOff()
 void VisionStepper::doSteps(int stepNumber)
 {
   stepsMadeSoFar = 0;
-  stepsRemaining = stepNumber;
+  stepsRemaining = stepNumber * 2; //a step is made out of a LOW to HIGH transition
   globalState = STARTING;
 }
 
