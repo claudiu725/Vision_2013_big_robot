@@ -118,11 +118,12 @@ void loop()
   motorB.doLoop();
 }
 
-void wait(int time_in_ms, int state)
+void wait(int time_in_ms, int state_after)
 {
+  state = STATE_WAIT;
   wait_time = 0;
   time_to_wait = time_in_ms;
-  state_to_set_after_wait = state;
+  state_to_set_after_wait = state_after;
 }
 
 
