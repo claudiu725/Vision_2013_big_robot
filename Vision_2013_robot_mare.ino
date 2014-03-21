@@ -16,6 +16,11 @@
 #define STATE_TEST_F 5
 #define STATE_TEST_G 6
 #define STATE_STOP   7
+#define STATE_WAIT   8
+
+void wait(int time_in_ms, int state);
+elapsedMillis wait_time;
+int time_to_wait, state_to_set_after_wait;
 
 int enablePin = 7;
 int stepPin = 6;
@@ -29,8 +34,6 @@ int directionPin2 = 2;
 
 int led = 13;
 
-elapsedMillis time, test;
-boolean wait;
 int state;
 VisionStepper motorA;
 VisionStepper motorB;
@@ -45,9 +48,7 @@ void setup()
   pinMode(buttonTestPin, INPUT_PULLUP);
   digitalWrite(led, LOW);
   delay(1000);
-  time = 0;
   state = STATE_TEST_A0;
-  wait = false;
 }
 
 void loop()
@@ -60,28 +61,23 @@ void loop()
       motorB.setDirectionForward();
       motorB.toggleDirection();
       
-      state = STATE_TEST_A1;
-      time = 0;
+      wait(500, STATE_TEST_A1);
       break;
    case STATE_TEST_A1:
-      if (time > 500)
-      {
-        motorA.setMaxSpeed();
-        motorB.setMaxSpeed();
+      motorA.setMaxSpeed();
+      motorB.setMaxSpeed();
    
-        //motorA.doDistanceInCm(100);
-        //motorB.doDistanceInCm(100);
-        motorA.doSteps(3 * 200);
-        motorB.doSteps(3 * 200);
-        
-        state = STATE_TEST_B;
-      }
+      //motorA.doDistanceInCm(100);
+      //motorB.doDistanceInCm(100);
+      motorA.doSteps(3 * 200);
+      motorB.doSteps(3 * 200);
+
+      state = STATE_TEST_B;
       break;
     case STATE_TEST_B:
       //wait to complete
       if (motorA.isOff() && motorB.isOff())
         state = STATE_TEST_C;
-      time = 0;
       break;
     case STATE_TEST_C:
       //move left opposing
@@ -92,8 +88,7 @@ void loop()
       motorA.toggleDirection();
       motorB.toggleDirection();
       
-      time = 0;
-      state = STATE_TEST_A1;
+      wait(500, STATE_TEST_A1);
       break;
     case STATE_TEST_E:
       //move left curved
@@ -111,10 +106,23 @@ void loop()
     case STATE_STOP:
       //stop
       break;
+    case STATE_WAIT:
+      if (wait_time > time_to_wait)
+      {
+        state = state_to_set_after_wait;
+      }
+      break;
   }
   
   motorA.doLoop();
   motorB.doLoop();
+}
+
+void wait(int time_in_ms, int state)
+{
+  wait_time = 0;
+  time_to_wait = time_in_ms;
+  state_to_set_after_wait = state;
 }
 
 

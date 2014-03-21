@@ -12,6 +12,7 @@ class VisionStepper {
     void setDirectionForward();
     void setTargetDelay(int targetDelay);
     boolean isOff();
+    boolean isAtTargetSpeed();
     void doSteps(int stepNumber);
     void doDistanceInCm(float distance);
     void emergencyStop();

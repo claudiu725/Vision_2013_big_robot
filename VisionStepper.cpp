@@ -117,6 +117,8 @@ void VisionStepper::emergencyStop()
 
 void VisionStepper::setTargetDelay(int targetDelay)
 {
+  if (this->targetDelay == targetDelay)
+    return;
   this->targetDelay = targetDelay;
   foundTargetSpeed = false;
 }
@@ -141,6 +143,11 @@ void VisionStepper::toggleDirection()
 boolean VisionStepper::isOff()
 {
   return globalState == STOPPED;
+}
+
+boolean VisionStepper::isAtTargetSpeed()
+{
+  return foundTargetSpeed;
 }
 
 void VisionStepper::doSteps(int stepNumber)
