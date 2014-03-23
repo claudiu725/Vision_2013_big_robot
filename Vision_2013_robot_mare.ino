@@ -69,7 +69,8 @@ void loop()
    
       //motorA.doDistanceInCm(100);
       //motorB.doDistanceInCm(100);
-      motorA.doSteps(3 * 200);
+      //motorA.doSteps(3 * 200);
+      motorA.doSteps(400);
       motorB.doSteps(3 * 200);
 
       state = STATE_TEST_B;

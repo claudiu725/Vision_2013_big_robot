@@ -22,8 +22,8 @@ void VisionStepper::init(int enablePin, int directionPin, int stepPin)
   stepPinState = LOW;
   stepsMadeSoFar = 0;
   stepsRemaining = 0;
-  maxSpeedDelay = 500;
-  startSpeedDelay = 4000;
+  maxSpeedDelay = 200;
+  startSpeedDelay = 1200;
   highPhaseDelay = 100;
   doSetup();
 }
@@ -73,7 +73,7 @@ void VisionStepper::doLoop()
             raiseSpeed = false;
           }
         }
-        currentDelay = startSpeedDelay * 10 / sqrt(0.025 * stepSpeedCounter + 100);
+        currentDelay = startSpeedDelay * 10 / sqrt(0.010 * stepSpeedCounter + 100);
         if (!foundTargetSpeed)
           if ((!raiseSpeed && currentDelay > targetDelay) ||
               (raiseSpeed && currentDelay < targetDelay))
