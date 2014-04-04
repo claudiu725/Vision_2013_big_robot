@@ -11,14 +11,7 @@ void VisionStepper::init()
 {
   stepsMadeSoFar = 0;
   stepsRemaining = 0;
-<<<<<<< HEAD
   globalState = STOPPED;
-=======
-  maxSpeedDelay = 200;
-  startSpeedDelay = 1200;
-  highPhaseDelay = 100;
-  doSetup();
->>>>>>> 37ba417fa166afce10023284a95669a9c2752f54
 }
 
 void VisionStepper::initPins(int enablePin, int directionPin, int stepPin)

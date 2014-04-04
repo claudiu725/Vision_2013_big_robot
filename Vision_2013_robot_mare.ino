@@ -51,29 +51,9 @@ void loop()
       MoveForward(50.0,4000);
       waitForMotorsStop(state + 1);
       break;
-<<<<<<< HEAD
     case 1:
       TurnRight(180);
-      waitForMotorsStop(state + 1);      
-=======
-   case STATE_TEST_A1:
-      motorA.setMaxSpeed();
-      motorB.setMaxSpeed();
-   
-      //motorA.doDistanceInCm(100);
-      //motorB.doDistanceInCm(100);
-      //motorA.doSteps(3 * 200);
-      motorA.doSteps(400);
-      motorB.doSteps(3 * 200);
-
-      state = STATE_TEST_B;
-      break;
-    case STATE_TEST_B:
-      //wait to complete
-      if (motorA.isOff() && motorB.isOff())
-        state = STATE_TEST_C;
->>>>>>> 37ba417fa166afce10023284a95669a9c2752f54
-      break;
+      waitForMotorsStop(state + 1);  
     case 2:
       
       break;
@@ -158,6 +138,10 @@ void TurnLeft(int angle)
   motorLeft.toggleDirection();        
   motorLeft.doSteps(123.0 / 90 *angle);
   motorRight.doSteps(123.0 / 90 *angle);
+  /*
+  motorLeft.doDistanceInCm(2 * PI * distanceBetweenWheels / 360 * angle);
+  motorRight.doDistanceInCm(2 * PI * distanceBetweenWheels / 360 * angle);
+  */  
 }
 
 void TurnRight(int angle)
@@ -166,4 +150,8 @@ void TurnRight(int angle)
   motorRight.setDirectionForward();
   motorLeft.doSteps(123.0 / 90 *angle);
   motorRight.doSteps(123.0 / 90 *angle);
+  /*
+  motorLeft.doDistanceInCm(2 * PI * distanceBetweenWheels / 360 * angle);
+  motorRight.doDistanceInCm(2 * PI * distanceBetweenWheels / 360 * angle);
+  */  
 }
