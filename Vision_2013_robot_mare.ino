@@ -136,8 +136,8 @@ void TurnLeft(int angle)
   motorRight.setDirectionForward();
   motorRight.toggleDirection();
   motorLeft.toggleDirection();        
-  motorLeft.doSteps(123.0 / 90 *angle);
-  motorRight.doSteps(123.0 / 90 *angle);
+  motorLeft.doSteps(wheelDiameter * 10 / 90 *angle);
+  motorRight.doSteps(wheelDiameter * 10 / 90 *angle);
   /*
   motorLeft.doDistanceInCm(2 * PI * distanceBetweenWheels / 360 * angle);
   motorRight.doDistanceInCm(2 * PI * distanceBetweenWheels / 360 * angle);
@@ -148,8 +148,8 @@ void TurnRight(int angle)
 {  
   motorLeft.setDirectionForward();
   motorRight.setDirectionForward();
-  motorLeft.doSteps(123.0 / 90 *angle);
-  motorRight.doSteps(123.0 / 90 *angle);
+  motorLeft.doSteps(wheelDiameter * 10 / 90 *angle);
+  motorRight.doSteps(wheelDiameter * 10 / 90 *angle);
   /*
   motorLeft.doDistanceInCm(2 * PI * distanceBetweenWheels / 360 * angle);
   motorRight.doDistanceInCm(2 * PI * distanceBetweenWheels / 360 * angle);

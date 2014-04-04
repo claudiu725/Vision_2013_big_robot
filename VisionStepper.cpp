@@ -40,9 +40,9 @@ void VisionStepper::initDelays(int startSpeedDelay, int highPhaseDelay, int maxS
   this->highPhaseDelay = highPhaseDelay;
 }
 
-void VisionStepper::initSizes(int wheelDiameter, int wheelRevolutionSteps)
+void VisionStepper::initSizes(float wheelDiameter, int wheelRevolutionSteps)
 {
-  int wheelCircumference = wheelDiameter * PI;
+  float wheelCircumference = wheelDiameter * PI;
   stepCmRatio = wheelRevolutionSteps / wheelCircumference;
 }
 
