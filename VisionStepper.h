@@ -6,7 +6,10 @@
 
 class VisionStepper {
   public:
-    void init(int enablePin, int directionPin, int stepPin);
+    void init();
+    void initPins(int enablePin, int directionPin, int stepPin);
+    void initDelays(int startSpeedDelay, int highPhaseDelay, int maxSpeedDelay);
+    void initSizes(int wheelDiameter, int wheelRevolutionSteps);
     void doLoop();
     void toggleDirection();
     void setDirectionForward();
@@ -17,6 +20,8 @@ class VisionStepper {
     void doDistanceInCm(float distance);
     void emergencyStop();
     void setMaxSpeed();
+    void pause();
+    void unpause();
   private:
     void doSetup();
   private:
@@ -26,14 +31,12 @@ class VisionStepper {
     unsigned long stepsMadeSoFar, stepsRemaining;
     float maxSpeedDelay, startSpeedDelay, currentDelay, targetDelay, highPhaseDelay;
     int stepSpeedCounter;
+    int old_state;
     boolean foundTargetSpeed, raiseSpeed;
     elapsedMicros stepTimer;
     elapsedMillis stopTimer;
     
-    float wheelDiameter;
-    float wheelRevolutionSteps;
     float stepCmRatio; // steps for a cm
-    float degreeStepRatio;
 };
 
 #endif

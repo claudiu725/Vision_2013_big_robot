@@ -4,40 +4,46 @@
 #define STOPPING 1
 #define STOPPING_ENABLE_ON 2
 #define RUNNING 3
-#define STARTING 4
+#define PAUSE 4
+#define STARTING 5
 
-void VisionStepper::init(int enablePin, int directionPin, int stepPin)
+void VisionStepper::init()
+{
+  stepsMadeSoFar = 0;
+  stepsRemaining = 0;
+  globalState = STOPPED;
+}
+
+void VisionStepper::initPins(int enablePin, int directionPin, int stepPin)
 {
   this->enablePin = enablePin;
   this->directionPin = directionPin;
   this->stepPin = stepPin;
   
-  wheelDiameter = 12.3; //cm
-  wheelRevolutionSteps = 200;
-  stepCmRatio = wheelRevolutionSteps/wheelDiameter;
-  degreeStepRatio = 5.8;
-  
-  directionPinState = HIGH;
-  enablePinState = LOW;
-  stepPinState = LOW;
-  stepsMadeSoFar = 0;
-  stepsRemaining = 0;
-  maxSpeedDelay = 500;
-  startSpeedDelay = 4000;
-  highPhaseDelay = 100;
-  doSetup();
-}
-
-void VisionStepper::doSetup()
-{
   pinMode(directionPin, OUTPUT);
-  digitalWrite(directionPin, directionPinState);
+  directionPinState = HIGH;
+  digitalWrite(directionPin, HIGH);
   
   pinMode(enablePin, OUTPUT);
+  enablePinState = LOW;
   digitalWrite(enablePin, enablePinState);
   
   pinMode(stepPin, OUTPUT);
+  stepPinState = LOW;
   digitalWrite(stepPin, stepPinState);
+}
+
+void VisionStepper::initDelays(int startSpeedDelay, int highPhaseDelay, int maxSpeedDelay)
+{
+  this->maxSpeedDelay = maxSpeedDelay;
+  this->startSpeedDelay = startSpeedDelay;
+  this->highPhaseDelay = highPhaseDelay;
+}
+
+void VisionStepper::initSizes(int wheelDiameter, int wheelRevolutionSteps)
+{
+  int wheelCircumference = wheelDiameter * PI;
+  stepCmRatio = wheelRevolutionSteps / wheelCircumference;
 }
 
 void VisionStepper::doLoop()
@@ -78,11 +84,6 @@ void VisionStepper::doLoop()
           if ((!raiseSpeed && currentDelay > targetDelay) ||
               (raiseSpeed && currentDelay < targetDelay))
               foundTargetSpeed = true;
-        if (foundTargetSpeed)
-          digitalWrite(13, HIGH);
-        else
-          digitalWrite(13, LOW);
-        //Serial.println(currentDelay);
         stepsMadeSoFar++;
         stepsRemaining--;
         if (stepsRemaining <= stepSpeedCounter)
@@ -98,6 +99,8 @@ void VisionStepper::doLoop()
         //Serial.println(currentStepDelay);
       }
       break;
+    case PAUSE:
+      break;
     case STARTING:
       enablePinState = HIGH;
       digitalWrite(enablePin, enablePinState);
@@ -110,9 +113,30 @@ void VisionStepper::doLoop()
   }
 }
 
+void VisionStepper::pause()
+{
+  if (globalState == PAUSE)
+    return;
+  old_state = globalState;
+  globalState = PAUSE;
+}
+
+void VisionStepper::unpause()
+{
+  globalState = old_state;
+}
+
 void VisionStepper::emergencyStop()
 {
-  //nothing
+  /*
+  if (stepsRemaining > numberOfDeaccelerationSteps)
+    stepsRemaining = numberOfDeaccelerationSteps;
+    */
+}
+
+void VisionStepper::setMaxSpeed()
+{
+  setTargetDelay(maxSpeedDelay);
 }
 
 void VisionStepper::setTargetDelay(int targetDelay)
@@ -123,9 +147,9 @@ void VisionStepper::setTargetDelay(int targetDelay)
   foundTargetSpeed = false;
 }
 
-void VisionStepper::setMaxSpeed()
+boolean VisionStepper::isOff()
 {
-  setTargetDelay(maxSpeedDelay);
+  return globalState == STOPPED;
 }
 
 void VisionStepper::setDirectionForward()
@@ -140,10 +164,6 @@ void VisionStepper::toggleDirection()
   digitalWrite(directionPin, directionPinState);
 }
 
-boolean VisionStepper::isOff()
-{
-  return globalState == STOPPED;
-}
 
 boolean VisionStepper::isAtTargetSpeed()
 {
@@ -156,6 +176,7 @@ void VisionStepper::doSteps(int stepNumber)
   stepsRemaining = stepNumber * 2; //a step is made out of a LOW to HIGH transition
   globalState = STARTING;
 }
+
 
 void VisionStepper::doDistanceInCm(float distance)
 {

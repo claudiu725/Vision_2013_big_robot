@@ -5,106 +5,66 @@
 
 #include <elapsedMillis.h>
 #include "VisionStepper.h"
+#include "VisionSensorsArm.h"
+#include "pins_big_robot.h"
+#include "big_robot_constants.h"
 
-#define DELAY_BETWEEN_TOGGLE 500
-#define STATE_TEST_A0 -1
-#define STATE_TEST_A1 0
-#define STATE_TEST_B 1
-#define STATE_TEST_C 2
-#define STATE_TEST_D 3
-#define STATE_TEST_E 4
-#define STATE_TEST_F 5
-#define STATE_TEST_G 6
-#define STATE_STOP   7
-#define STATE_WAIT   8
+#define STATE_STOP -1
+#define STATE_WAIT -2
+#define STATE_WAIT_MOTORS_STOP -3
 
-void wait(int time_in_ms, int state);
 elapsedMillis wait_time;
 int time_to_wait, state_to_set_after_wait;
-
-int enablePin = 7;
-int stepPin = 6;
-int directionPin = 5;
-
-int buttonTestPin = 40;
-
-int enablePin2 = 4;
-int stepPin2 = 3;
-int directionPin2 = 2;
-
-int led = 13;
+VisionStepper motorLeft;
+VisionStepper motorRight;
+sensors_and_arm SnA;
 
 int state;
-VisionStepper motorA;
-VisionStepper motorB;
 
 void setup()
 {
   //Serial.begin(9600);
-  //Serial.println("setup");
-  motorA.init(enablePin, directionPin, stepPin);
-  motorB.init(enablePin2, directionPin2, stepPin2);
-  pinMode(led, OUTPUT);
+  //Serial.println("setup
+  SnA.init();
+  
+  motorLeft.init();
+  motorLeft.initPins(enablePinLeft, directionPinLeft, stepPinLeft);
+  motorLeft.initDelays(startSpeedDelay, highPhaseDelay, maxSpeedDelay); 
+  motorLeft.initSizes(wheelDiameter, wheelRevolutionSteps);
+  
+  motorRight.init();
+  motorRight.initPins(enablePinRight, directionPinRight, stepPinRight);
+  motorRight.initDelays(startSpeedDelay, highPhaseDelay, maxSpeedDelay); 
+  motorRight.initSizes(wheelDiameter, wheelRevolutionSteps);
+  
   pinMode(buttonTestPin, INPUT_PULLUP);
-  digitalWrite(led, LOW);
   delay(1000);
-  state = STATE_TEST_A0;
+  state = 0;
 }
 
 void loop()
 { 
   switch (state)
   {
-    case STATE_TEST_A0:
+    case 0:
       //move forward
-      motorA.setDirectionForward();
-      motorB.setDirectionForward();
-      motorB.toggleDirection();
+      MoveForward(50.0,4000);
+      waitForMotorsStop(state + 1);
+      break;
+    case 1:
+      TurnRight(180);
+      waitForMotorsStop(state + 1);      
+      break;
+    case 2:
       
-      wait(500, STATE_TEST_A1);
       break;
-   case STATE_TEST_A1:
-      motorA.setMaxSpeed();
-      motorB.setMaxSpeed();
-   
-      //motorA.doDistanceInCm(100);
-      //motorB.doDistanceInCm(100);
-      motorA.doSteps(3 * 200);
-      motorB.doSteps(3 * 200);
-
-      state = STATE_TEST_B;
+    case 3:
+    
       break;
-    case STATE_TEST_B:
-      //wait to complete
-      if (motorA.isOff() && motorB.isOff())
-        state = STATE_TEST_C;
+    case 4:
+    
       break;
-    case STATE_TEST_C:
-      //move left opposing
-      state = STATE_TEST_D;
-      break;
-    case STATE_TEST_D:
-      //wait to complete
-      motorA.toggleDirection();
-      motorB.toggleDirection();
-      
-      wait(500, STATE_TEST_A1);
-      break;
-    case STATE_TEST_E:
-      //move left curved
-      if (motorA.isOff() && motorB.isOff())
-        state = STATE_TEST_F;
-      break;
-    case STATE_TEST_F:
-      //wait to complete
-      delay(1000);
-      state = STATE_TEST_A0;
-      break;
-    case STATE_TEST_G:
-      //stop
-      break;
-    case STATE_STOP:
-      //stop
+    case STATE_STOP:   //stop
       break;
     case STATE_WAIT:
       if (wait_time > time_to_wait)
@@ -112,10 +72,25 @@ void loop()
         state = state_to_set_after_wait;
       }
       break;
+    case STATE_WAIT_MOTORS_STOP:
+      if (motorLeft.isOff() && motorRight.isOff())
+      {
+        state = state_to_set_after_wait;
+      }
+      break;
   }
-  
-  motorA.doLoop();
-  motorB.doLoop();
+  if (SnA.detectFront() || SnA.detectBack() || SnA.detectLeft() || SnA.detectRight())
+  {
+    motorLeft.pause();
+    motorRight.pause();
+  }
+  else
+  {
+    motorLeft.unpause();
+    motorRight.unpause();
+  }
+  motorLeft.doLoop();
+  motorRight.doLoop();
 }
 
 void wait(int time_in_ms, int state_after)
@@ -126,4 +101,50 @@ void wait(int time_in_ms, int state_after)
   state_to_set_after_wait = state_after;
 }
 
+void waitForMotorsStop(int state_after)
+{
+  state = STATE_WAIT_MOTORS_STOP;
+  state_to_set_after_wait = state_after;
+}
 
+void MoveForward(float distance, int step_delay)
+{       
+  float counter = 0;
+  motorLeft.setTargetDelay(step_delay);         
+  motorRight.setTargetDelay(step_delay);
+  motorLeft.setDirectionForward();
+  motorRight.setDirectionForward();
+  motorRight.toggleDirection();  
+  motorLeft.doDistanceInCm(distance);
+  motorRight.doDistanceInCm(distance);
+}
+
+void MoveBackward(float distance, int step_delay)
+{       
+  float counter = 0;
+  motorLeft.setTargetDelay(step_delay);         
+  motorRight.setTargetDelay(step_delay);
+  motorLeft.setDirectionForward();
+  motorRight.setDirectionForward();
+  motorLeft.toggleDirection();    
+  motorLeft.doDistanceInCm(distance);
+  motorRight.doDistanceInCm(distance);
+}
+
+void TurnLeft(int angle)
+{      
+  motorLeft.setDirectionForward();
+  motorRight.setDirectionForward();
+  motorRight.toggleDirection();
+  motorLeft.toggleDirection();        
+  motorLeft.doSteps(123.0 / 90 *angle);
+  motorRight.doSteps(123.0 / 90 *angle);
+}
+
+void TurnRight(int angle)
+{  
+  motorLeft.setDirectionForward();
+  motorRight.setDirectionForward();
+  motorLeft.doSteps(123.0 / 90 *angle);
+  motorRight.doSteps(123.0 / 90 *angle);
+}
