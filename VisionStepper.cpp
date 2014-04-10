@@ -49,6 +49,11 @@ void VisionStepper::initSizes(float wheelDiameter, int wheelRevolutionSteps, flo
   degreeStepRatio = degreeCmRatio * stepCmRatio; //1.82;  degreeCmRatio * stepCmRatio
 }
 
+void VisionStepper::initStepCmRatio(float stepCmRatio)
+{
+  this->stepCmRatio = stepCmRatio;
+}
+
 void VisionStepper::doLoop()
 {
   switch (globalState) {

@@ -14,5 +14,5 @@ const float wheelDiameter = 12.3;
 const float distanceBetweenWheels = 24.1; //valoare interioara
 const int wheelRevolutionSteps = 200;
 
-const float horizontalArmWheelDiameter = 4.5;
-const float verticalArmWheelDiameter = 0.5;
+const float horizontalArmCmStepRatio = 30.86; // 16.2cm per 500 steps
+const float verticalArmCmStepRatio = 4000.0; //2.5cm per 10000 steps

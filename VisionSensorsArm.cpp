@@ -11,50 +11,35 @@
 #define DOWN 11
 #define FORWARD 12
 #define BACKWARD 13
-
-boolean frontDetected = false;
-boolean leftDetected = false;
-boolean rightDetected = false;
-boolean backDetected = false;
-boolean blackLineDetected = false;
     
 const int delayActions = 4000;
 int clawPos = 20;
     
 void sensors_and_arm::init()
 {
-  attachInterrupt(BackSenzorPin, SenzorBack, CHANGE);
-  attachInterrupt(FrontSenzorPin, SenzorFront, CHANGE);
-  attachInterrupt(LeftSenzorPin, SenzorLeft, CHANGE);
-  attachInterrupt(RightSenzorPin, SenzorRight, CHANGE);    
+  pinMode(BackSenzorPin, INPUT);
+  pinMode(FrontSenzorPin, INPUT);
+  pinMode(LeftSenzorPin, INPUT);
+  pinMode(RightSenzorPin, INPUT);
+  pinMode(FruitSenzorPin, INPUT);
   
   horizontalArmMotor.init();
   horizontalArmMotor.initPins(horizontalArmEnablePin, horizontalArmDirectionPin, horizontalArmStepPin);
   horizontalArmMotor.initDelays(horizontalArmSpeedDelay, highPhaseDelay, maxSpeedDelay); 
-  horizontalArmMotor.initSizes(horizontalArmWheelDiameter, wheelRevolutionSteps,0);
+  horizontalArmMotor.initStepCmRatio(horizontalArmCmStepRatio);
   
   verticalArmMotor.init();
   verticalArmMotor.initPins(verticalArmEnablePin, verticalArmDirectionPin, verticalArmStepPin);
   verticalArmMotor.initDelays(verticalArmSpeedDelay, highPhaseDelay, maxSpeedDelay); 
-  verticalArmMotor.initSizes(verticalArmWheelDiameter, wheelRevolutionSteps,0);
+  verticalArmMotor.initStepCmRatio(verticalArmCmStepRatio);
   
   claw.attach(clawPin);
   
 }
 
-void sensors_and_arm::SenzorFront()
-{
-  frontDetected = !frontDetected;
-}
-
 boolean sensors_and_arm::detectFront()
 {
   return digitalRead(FrontSenzorPin);
-}
-
-void sensors_and_arm::SenzorBack()
-{
-  backDetected = !backDetected;
 }
 
 boolean sensors_and_arm::detectBack()
@@ -75,16 +60,6 @@ boolean sensors_and_arm::detectRight()
 boolean sensors_and_arm::detectFruit()
 {
   return digitalRead(FruitSenzorPin);
-}
-
-void sensors_and_arm::SenzorLeft()
-{
-  leftDetected = !leftDetected;
-}
-
-void sensors_and_arm::sensors_and_arm::SenzorRight()
-{
-  rightDetected = !rightDetected;
 }
 
 void sensors_and_arm::moveArmHorizontal(float distance, int side)

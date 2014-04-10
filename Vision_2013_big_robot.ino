@@ -59,7 +59,7 @@ void setup()
   ignoreSensors = false;
   delay(1000);
   state = 1;
-  armState = 1;
+  armState = 2;
 }
 
 void loop()
@@ -96,12 +96,13 @@ void loop()
     case 0:    
       break;
     case 1:
-      SnA.moveArmHorizontal(20, FORWARD);
+      SnA.moveArmHorizontal(5, FORWARD);
       waitForArmMotorsStop(armState + 1);
       break;
     case 2:   
-      SnA.moveArmVertical(200, UP);
-      armState++;
+      SnA.moveArmVertical(3, DOWN);
+      //armState++;
+      armState=0;
       break;      
     case 3:
       if(SnA.detectFruit())

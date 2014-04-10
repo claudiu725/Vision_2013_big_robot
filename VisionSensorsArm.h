@@ -12,11 +12,7 @@ class sensors_and_arm {
     Servo claw;  
     VisionStepper horizontalArmMotor;
     VisionStepper verticalArmMotor;
-    void init();
-    static void SenzorFront();
-    static void SenzorLeft();
-    static void SenzorRight();
-    static void SenzorBack();    
+    void init();  
     void clawGrab();
     void clawRelease();
     void moveArmHorizontal(float, int);
