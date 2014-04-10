@@ -42,8 +42,13 @@ void VisionStepper::initDelays(int startSpeedDelay, int highPhaseDelay, int maxS
 
 void VisionStepper::initSizes(float wheelDiameter, int wheelRevolutionSteps)
 {
+  
   float wheelCircumference = wheelDiameter * PI;
-  stepCmRatio = wheelRevolutionSteps / wheelCircumference;
+  stepCmRatio = (wheelRevolutionSteps / wheelCircumference) * 2;
+  float distanceBetweenWheels = 17;
+  float bigCircumference = PI * distanceBetweenWheels * 2; //106.76 ;  3.14 * distanceBetweenWheels * 2
+  float degreeCmRatio = bigCircumference/360; // 0.2965;  bigCircumference/360
+  degreeStepRatio = degreeCmRatio * stepCmRatio; //1.82;  degreeCmRatio * stepCmRatio
 }
 
 void VisionStepper::doLoop()
@@ -79,7 +84,7 @@ void VisionStepper::doLoop()
             raiseSpeed = false;
           }
         }
-        currentDelay = startSpeedDelay * 10 / sqrt(0.010 * stepSpeedCounter + 100);
+        currentDelay = startSpeedDelay * 10 / sqrt(0.1 * stepSpeedCounter + 100);
         if (!foundTargetSpeed)
           if ((!raiseSpeed && currentDelay > targetDelay) ||
               (raiseSpeed && currentDelay < targetDelay))
@@ -173,12 +178,17 @@ boolean VisionStepper::isAtTargetSpeed()
 void VisionStepper::doSteps(int stepNumber)
 {
   stepsMadeSoFar = 0;
-  stepsRemaining = stepNumber * 2; //a step is made out of a LOW to HIGH transition
+  stepsRemaining = stepNumber;
   globalState = STARTING;
 }
 
 
 void VisionStepper::doDistanceInCm(float distance)
 {
-  doSteps(distance * stepCmRatio);
+  doSteps(distance * stepCmRatio * 2);
+}
+
+void VisionStepper::doRotationInAngle(float angle)
+{
+  doSteps(angle * degreeStepRatio);
 }

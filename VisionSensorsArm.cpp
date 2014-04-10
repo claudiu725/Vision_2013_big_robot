@@ -19,6 +19,7 @@ boolean backDetected = false;
 boolean blackLineDetected = false;
     
 const int delayActions = 4000;
+int clawPos = 20;
     
 void sensors_and_arm::init()
 {
@@ -29,12 +30,12 @@ void sensors_and_arm::init()
   
   horizontalArmMotor.init();
   horizontalArmMotor.initPins(horizontalArmEnablePin, horizontalArmDirectionPin, horizontalArmStepPin);
-  horizontalArmMotor.initDelays(startSpeedDelay, highPhaseDelay, maxSpeedDelay); 
+  horizontalArmMotor.initDelays(armSpeedDelay, highPhaseDelay, maxSpeedDelay); 
   horizontalArmMotor.initSizes(horizontalArmWheelDiameter, wheelRevolutionSteps);
   
   verticalArmMotor.init();
   verticalArmMotor.initPins(verticalArmEnablePin, verticalArmDirectionPin, verticalArmStepPin);
-  verticalArmMotor.initDelays(startSpeedDelay, highPhaseDelay, maxSpeedDelay); 
+  verticalArmMotor.initDelays(armSpeedDelay-4700, highPhaseDelay, maxSpeedDelay); 
   verticalArmMotor.initSizes(verticalArmWheelDiameter, wheelRevolutionSteps);
   
   claw.attach(clawPin);
@@ -85,32 +86,36 @@ void sensors_and_arm::moveArmHorizontal(float distance, int side)
 {     
   horizontalArmMotor.setDirectionForward();
   if(side == BACKWARD)
-    horizontalArmMotor.toggleDirection();
+    horizontalArmMotor.toggleDirection();      
+  horizontalArmMotor.setTargetDelay(5000);
   horizontalArmMotor.doDistanceInCm(distance);
 }
 
 void sensors_and_arm::moveArmVertical(float distance, int side)
 {      
-  horizontalArmMotor.setDirectionForward();
-  if(side == UP)
-    horizontalArmMotor.toggleDirection();
-  horizontalArmMotor.doDistanceInCm(distance);
-}
-
-void sensors_and_arm::clawGrab()
-{
-  for(int pos = 0; pos < 180; pos ++) 
-  {                                  
-    claw.write(pos);             
-    delay(15);                
-  } 
+  verticalArmMotor.setDirectionForward();
+  if(side == DOWN)
+    verticalArmMotor.toggleDirection();      
+  verticalArmMotor.setTargetDelay(200);
+  verticalArmMotor.doDistanceInCm(distance);
 }
 
 void sensors_and_arm::clawRelease()
 {
-  for(int pos = 0; pos < 180; pos ++) 
-  {                                  
-    claw.write(pos);             
-    delay(15);                
+  while( clawPos <= 173) 
+  {                     
+    claw.write(clawPos);
+    clawPos += 5;    
+    delay(20);                
+  } 
+}
+
+void sensors_and_arm::clawGrab()
+{
+  while( clawPos >= 10) 
+  {                     
+    claw.write(clawPos);
+    clawPos -= 5;    
+    delay(20);                
   } 
 }

@@ -18,6 +18,7 @@ class VisionStepper {
     boolean isAtTargetSpeed();
     void doSteps(int stepNumber);
     void doDistanceInCm(float distance);
+    void doRotationInAngle(float angle);
     void emergencyStop();
     void setMaxSpeed();
     void pause();
@@ -37,6 +38,7 @@ class VisionStepper {
     elapsedMillis stopTimer;
     
     float stepCmRatio; // steps for a cm
+    float degreeStepRatio; //steps for a degree turn;
 };
 
 #endif

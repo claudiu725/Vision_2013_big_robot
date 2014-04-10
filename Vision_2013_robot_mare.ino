@@ -13,13 +13,29 @@
 #define STATE_WAIT -2
 #define STATE_WAIT_MOTORS_STOP -3
 
+#define UP 10
+#define DOWN 11
+#define FORWARD 12
+#define BACKWARD 13
+
+#define FRONT 1
+#define BACK 2
+#define LEFT 3
+#define RIGHT 4
+
 elapsedMillis wait_time;
-int time_to_wait, state_to_set_after_wait;
+int time_to_wait, state_to_set_after_wait, armState_to_set_after_wait;
 VisionStepper motorLeft;
 VisionStepper motorRight;
 sensors_and_arm SnA;
+boolean obstructionDetected = false;
+boolean motorsPaused = false;
+boolean ignoreSensors = false;
 
-int state;
+int armState = 0;
+int state = 0;
+int shotBalls = 0;
+int directionMovement = 0;
 
 void setup()
 {
@@ -37,33 +53,28 @@ void setup()
   motorRight.initDelays(startSpeedDelay, highPhaseDelay, maxSpeedDelay); 
   motorRight.initSizes(wheelDiameter, wheelRevolutionSteps);
   
-  pinMode(buttonTestPin, INPUT_PULLUP);
+  //pinMode(buttonTestPin, INPUT_PULLUP);
+  obstructionDetected = false;
+  motorsPaused = false;
+  ignoreSensors = false;
   delay(1000);
   state = 0;
+  armState = 0;
 }
 
 void loop()
 { 
-  switch (state)
+  switch (state)            // movement switch
   {
     case 0:
-      //move forward
-      MoveForward(50.0,4000);
-      waitForMotorsStop(state + 1);
+      MoveForward(45,mediumSpeedDelay);
+      waitForMotorsStop(state + 2);
       break;
-    case 1:
-      TurnRight(180);
-      waitForMotorsStop(state + 1);  
+    case 1:     
+      break;      
     case 2:
-      
-      break;
-    case 3:
-    
-      break;
-    case 4:
-    
-      break;
-    case STATE_STOP:   //stop
+      break;      
+    case 3:    
       break;
     case STATE_WAIT:
       if (wait_time > time_to_wait)
@@ -76,20 +87,91 @@ void loop()
       {
         state = state_to_set_after_wait;
       }
+  }
+  
+  //*************************************************************************//
+  
+  switch (armState)            // arm switch
+  {    
+    case 0:    
+      break;
+    case 1:
+      SnA.moveArmHorizontal(20, FORWARD);
+      SnA.moveArmVertical(50, UP);
+      waitForArmMotorsStop(armState + 1);
+      break;
+    case 2:   
+      SnA.moveArmHorizontal(20, BACKWARD);
+      SnA.moveArmVertical(50, DOWN);
+      waitForArmMotorsStop(armState + 1);
+      break;      
+    case 3:
+      SnA.clawGrab();
+      waitForArmMotorsStop(armState + 1);
+      break;      
+    case 4:    
+      SnA.clawRelease();
+      waitForArmMotorsStop(armState + 1);
+      break;
+    case STATE_STOP:   //stop
+      break;
+    case STATE_WAIT:
+      if (wait_time > time_to_wait)
+      {
+        armState = armState_to_set_after_wait;
+      }
+      break;
+    case STATE_WAIT_MOTORS_STOP:
+      if (SnA.horizontalArmMotor.isOff() && SnA.verticalArmMotor.isOff())
+      {
+        armState = armState_to_set_after_wait;
+      }
       break;
   }
-  if (SnA.detectFront() || SnA.detectBack() || SnA.detectLeft() || SnA.detectRight())
+  
+  //*************************************************************************//
+  
+  obstructionDetected = false;
+  if (SnA.detectFront() && directionMovement == FRONT)
+  {
+    Serial.println("Front detected!");
+    obstructionDetected = true;
+  }
+  if (SnA.detectBack() && directionMovement == BACK)
+  {
+    Serial.println("Back detected!");
+    obstructionDetected = true;
+  }
+  if (SnA.detectLeft() && directionMovement == LEFT)
+  {
+    Serial.println("Left detected!");
+    obstructionDetected = true;
+  }
+  if (SnA.detectRight() && directionMovement == RIGHT)
+  {
+    Serial.println("Right detected!");
+    obstructionDetected = true;
+  }
+  
+  if(obstructionDetected == true && ignoreSensors == false)
   {
     motorLeft.pause();
     motorRight.pause();
+    motorsPaused = true;
   }
   else
   {
-    motorLeft.unpause();
-    motorRight.unpause();
+    if(motorsPaused == true){
+      motorLeft.unpause();
+      motorRight.unpause();
+      motorsPaused = false;
+    }
   }
+
   motorLeft.doLoop();
   motorRight.doLoop();
+  SnA.horizontalArmMotor.doLoop();
+  SnA.verticalArmMotor.doLoop();
 }
 
 void wait(int time_in_ms, int state_after)
@@ -106,21 +188,27 @@ void waitForMotorsStop(int state_after)
   state_to_set_after_wait = state_after;
 }
 
+void waitForArmMotorsStop(int state_after)
+{
+  armState = STATE_WAIT_MOTORS_STOP;
+  armState_to_set_after_wait = state_after;
+}
+
 void MoveForward(float distance, int step_delay)
 {       
-  float counter = 0;
+  directionMovement = FRONT;
   motorLeft.setTargetDelay(step_delay);         
   motorRight.setTargetDelay(step_delay);
   motorLeft.setDirectionForward();
   motorRight.setDirectionForward();
-  motorRight.toggleDirection();  
+  motorRight.toggleDirection(); 
   motorLeft.doDistanceInCm(distance);
   motorRight.doDistanceInCm(distance);
 }
 
 void MoveBackward(float distance, int step_delay)
 {       
-  float counter = 0;
+  directionMovement = BACK;
   motorLeft.setTargetDelay(step_delay);         
   motorRight.setTargetDelay(step_delay);
   motorLeft.setDirectionForward();
@@ -132,26 +220,20 @@ void MoveBackward(float distance, int step_delay)
 
 void TurnLeft(int angle)
 {      
+  directionMovement = LEFT; 
   motorLeft.setDirectionForward();
   motorRight.setDirectionForward();
   motorRight.toggleDirection();
-  motorLeft.toggleDirection();        
-  motorLeft.doSteps(wheelDiameter * 10 / 90 *angle);
-  motorRight.doSteps(wheelDiameter * 10 / 90 *angle);
-  /*
-  motorLeft.doDistanceInCm(2 * PI * distanceBetweenWheels / 360 * angle);
-  motorRight.doDistanceInCm(2 * PI * distanceBetweenWheels / 360 * angle);
-  */  
+  motorLeft.toggleDirection();  
+  motorLeft.doRotationInAngle(angle);
+  motorRight.doRotationInAngle(angle); 
 }
 
 void TurnRight(int angle)
 {  
+  directionMovement = RIGHT;
   motorLeft.setDirectionForward();
   motorRight.setDirectionForward();
-  motorLeft.doSteps(wheelDiameter * 10 / 90 *angle);
-  motorRight.doSteps(wheelDiameter * 10 / 90 *angle);
-  /*
-  motorLeft.doDistanceInCm(2 * PI * distanceBetweenWheels / 360 * angle);
-  motorRight.doDistanceInCm(2 * PI * distanceBetweenWheels / 360 * angle);
-  */  
+  motorLeft.doRotationInAngle(angle);
+  motorRight.doRotationInAngle(angle);
 }
