@@ -44,7 +44,7 @@ void VisionStepper::initSizes(float wheelDiameter, int wheelRevolutionSteps, flo
 { 
   float wheelCircumference = wheelDiameter * PI;
   stepCmRatio = (wheelRevolutionSteps / wheelCircumference) * 2;
-  float bigCircumference = PI * distanceBetweenWheels * 2; //106.76 ;  3.14 * distanceBetweenWheels * 2
+  float bigCircumference = PI * distanceBetweenWheels; //106.76 ;  3.14 * distanceBetweenWheels
   float degreeCmRatio = bigCircumference/360; // 0.2965;  bigCircumference/360
   degreeStepRatio = degreeCmRatio * stepCmRatio; //1.82;  degreeCmRatio * stepCmRatio
 }
@@ -182,14 +182,14 @@ boolean VisionStepper::isAtTargetSpeed()
 void VisionStepper::doSteps(int stepNumber)
 {
   stepsMadeSoFar = 0;
-  stepsRemaining = stepNumber;
+  stepsRemaining = stepNumber * 2; //leave as-is!
   globalState = STARTING;
 }
 
 
 void VisionStepper::doDistanceInCm(float distance)
 {
-  doSteps(distance * stepCmRatio * 2);
+  doSteps(distance * stepCmRatio);
 }
 
 void VisionStepper::doRotationInAngle(float angle)
