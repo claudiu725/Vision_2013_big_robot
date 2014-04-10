@@ -108,7 +108,7 @@ void loop()
       {
         SnA.verticalArmMotor.pause();
         SnA.clawGrab();
-        waitForArmMotorsStop(armState + 1);
+        armState++;
       }
       break;      
     case 4:    
@@ -141,22 +141,22 @@ void loop()
   obstructionDetected = false;
   if (SnA.detectFront() && directionMovement == FRONT)
   {
-    Serial.println("Front detected!");
+    //Serial.println("Front detected!");
     obstructionDetected = true;
   }
   if (SnA.detectBack() && directionMovement == BACK)
   {
-    Serial.println("Back detected!");
+    //Serial.println("Back detected!");
     obstructionDetected = true;
   }
   if (SnA.detectLeft() && directionMovement == LEFT)
   {
-    Serial.println("Left detected!");
+    //Serial.println("Left detected!");
     obstructionDetected = true;
   }
   if (SnA.detectRight() && directionMovement == RIGHT)
   {
-    Serial.println("Right detected!");
+    //Serial.println("Right detected!");
     obstructionDetected = true;
   }
   

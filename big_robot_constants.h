@@ -2,7 +2,7 @@ const int startSpeedDelay = 22000; // default 8000;
 const int highPhaseDelay = 100;
 const int maxSpeedDelay = 400;
 
-const int verticalArmSpeedDelay = 300;
+const int verticalArmSpeedDelay = 800;
 const int horizontalArmSpeedDelay = 5000;
 
 const int slowSpeedDelay = 7000;
