@@ -46,20 +46,20 @@ void setup()
   motorLeft.init();
   motorLeft.initPins(enablePinLeft, directionPinLeft, stepPinLeft);
   motorLeft.initDelays(startSpeedDelay, highPhaseDelay, maxSpeedDelay); 
-  motorLeft.initSizes(wheelDiameter, wheelRevolutionSteps);
+  motorLeft.initSizes(wheelDiameter, wheelRevolutionSteps,distanceBetweenWheels);
   
   motorRight.init();
   motorRight.initPins(enablePinRight, directionPinRight, stepPinRight);
   motorRight.initDelays(startSpeedDelay, highPhaseDelay, maxSpeedDelay); 
-  motorRight.initSizes(wheelDiameter, wheelRevolutionSteps);
+  motorRight.initSizes(wheelDiameter, wheelRevolutionSteps,distanceBetweenWheels);
   
   //pinMode(buttonTestPin, INPUT_PULLUP);
   obstructionDetected = false;
   motorsPaused = false;
   ignoreSensors = false;
   delay(1000);
-  state = 0;
-  armState = 0;
+  state = 1;
+  armState = 1;
 }
 
 void loop()
@@ -97,21 +97,28 @@ void loop()
       break;
     case 1:
       SnA.moveArmHorizontal(20, FORWARD);
-      SnA.moveArmVertical(50, UP);
       waitForArmMotorsStop(armState + 1);
       break;
     case 2:   
+      SnA.moveArmVertical(200, UP);
+      armState++;
+      break;      
+    case 3:
+      if(SnA.detectFruit())
+      {
+        SnA.verticalArmMotor.pause();
+        SnA.clawGrab();
+        waitForArmMotorsStop(armState + 1);
+      }
+      break;      
+    case 4:    
       SnA.moveArmHorizontal(20, BACKWARD);
       SnA.moveArmVertical(50, DOWN);
       waitForArmMotorsStop(armState + 1);
-      break;      
-    case 3:
-      SnA.clawGrab();
-      waitForArmMotorsStop(armState + 1);
-      break;      
-    case 4:    
+      break;
+    case 5:
       SnA.clawRelease();
-      waitForArmMotorsStop(armState + 1);
+      waitForArmMotorsStop(STATE_STOP);
       break;
     case STATE_STOP:   //stop
       break;

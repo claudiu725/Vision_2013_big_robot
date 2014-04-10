@@ -30,13 +30,13 @@ void sensors_and_arm::init()
   
   horizontalArmMotor.init();
   horizontalArmMotor.initPins(horizontalArmEnablePin, horizontalArmDirectionPin, horizontalArmStepPin);
-  horizontalArmMotor.initDelays(armSpeedDelay, highPhaseDelay, maxSpeedDelay); 
-  horizontalArmMotor.initSizes(horizontalArmWheelDiameter, wheelRevolutionSteps);
+  horizontalArmMotor.initDelays(horizontalArmSpeedDelay, highPhaseDelay, maxSpeedDelay); 
+  horizontalArmMotor.initSizes(horizontalArmWheelDiameter, wheelRevolutionSteps,0);
   
   verticalArmMotor.init();
   verticalArmMotor.initPins(verticalArmEnablePin, verticalArmDirectionPin, verticalArmStepPin);
-  verticalArmMotor.initDelays(armSpeedDelay-4700, highPhaseDelay, maxSpeedDelay); 
-  verticalArmMotor.initSizes(verticalArmWheelDiameter, wheelRevolutionSteps);
+  verticalArmMotor.initDelays(verticalArmSpeedDelay, highPhaseDelay, maxSpeedDelay); 
+  verticalArmMotor.initSizes(verticalArmWheelDiameter, wheelRevolutionSteps,0);
   
   claw.attach(clawPin);
   
@@ -70,6 +70,11 @@ boolean sensors_and_arm::detectLeft()
 boolean sensors_and_arm::detectRight()
 {
   return digitalRead(RightSenzorPin);
+}
+
+boolean sensors_and_arm::detectFruit()
+{
+  return digitalRead(FruitSenzorPin);
 }
 
 void sensors_and_arm::SenzorLeft()

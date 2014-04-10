@@ -16,7 +16,7 @@ class sensors_and_arm {
     static void SenzorFront();
     static void SenzorLeft();
     static void SenzorRight();
-    static void SenzorBack();
+    static void SenzorBack();    
     void clawGrab();
     void clawRelease();
     void moveArmHorizontal(float, int);
@@ -25,6 +25,7 @@ class sensors_and_arm {
     boolean detectBack();
     boolean detectLeft();
     boolean detectRight();
+    boolean detectFruit();
 };
 
 #endif

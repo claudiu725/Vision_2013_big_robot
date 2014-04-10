@@ -189,6 +189,6 @@ void VisionStepper::doDistanceInCm(float distance)
 
 void VisionStepper::doRotationInAngle(float angle)
 {
-  doSteps(angle * degreeStepRatio);
+  doSteps(angle * degreeStepRatio);    // useless for arm motors
 }
 
