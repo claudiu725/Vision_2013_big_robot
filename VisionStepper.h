@@ -9,7 +9,7 @@ class VisionStepper {
     void init();
     void initPins(int enablePin, int directionPin, int stepPin);
     void initDelays(int startSpeedDelay, int highPhaseDelay, int maxSpeedDelay);
-    void initSizes(float wheelDiameter, int wheelRevolutionSteps);
+    void initSizes(float wheelDiameter, int wheelRevolutionSteps, float distanceBetweenWheels);
     void doLoop();
     void toggleDirection();
     void setDirectionForward();
@@ -42,3 +42,4 @@ class VisionStepper {
 };
 
 #endif
+

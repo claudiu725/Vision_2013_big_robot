@@ -40,12 +40,10 @@ void VisionStepper::initDelays(int startSpeedDelay, int highPhaseDelay, int maxS
   this->highPhaseDelay = highPhaseDelay;
 }
 
-void VisionStepper::initSizes(float wheelDiameter, int wheelRevolutionSteps)
-{
-  
+void VisionStepper::initSizes(float wheelDiameter, int wheelRevolutionSteps, float distanceBetweenWheels)
+{ 
   float wheelCircumference = wheelDiameter * PI;
   stepCmRatio = (wheelRevolutionSteps / wheelCircumference) * 2;
-  float distanceBetweenWheels = 17;
   float bigCircumference = PI * distanceBetweenWheels * 2; //106.76 ;  3.14 * distanceBetweenWheels * 2
   float degreeCmRatio = bigCircumference/360; // 0.2965;  bigCircumference/360
   degreeStepRatio = degreeCmRatio * stepCmRatio; //1.82;  degreeCmRatio * stepCmRatio
@@ -58,6 +56,7 @@ void VisionStepper::doLoop()
       break;
     case STOPPING:
       enablePinState = LOW;
+      delay(250);
       digitalWrite(enablePin, enablePinState);
       globalState = STOPPED;
       break;
@@ -192,3 +191,4 @@ void VisionStepper::doRotationInAngle(float angle)
 {
   doSteps(angle * degreeStepRatio);
 }
+
