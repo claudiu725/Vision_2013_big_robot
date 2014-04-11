@@ -1,4 +1,5 @@
 #include "VisionSensorsArm.h"
+#include "VisionSensor.h"
 #include "pins_big_robot.h"
 #include "big_robot_constants.h"
 
@@ -17,11 +18,11 @@ int clawPos = 20;
     
 void sensors_and_arm::init()
 {
-  pinMode(BackSenzorPin, INPUT);
-  pinMode(FrontSenzorPin, INPUT);
-  pinMode(LeftSenzorPin, INPUT);
-  pinMode(RightSenzorPin, INPUT);
-  pinMode(FruitSenzorPin, INPUT);
+  back.initPin(BackSenzorPin);
+  front.initPin(FrontSenzorPin);
+  left.initPin(LeftSenzorPin);
+  right.initPin(RightSenzorPin);
+  fruit.initPin(FruitSenzorPin);
   
   horizontalArmMotor.init();
   horizontalArmMotor.initPins(horizontalArmEnablePin, horizontalArmDirectionPin, horizontalArmStepPin);
@@ -35,31 +36,6 @@ void sensors_and_arm::init()
   
   claw.attach(clawPin);
   
-}
-
-boolean sensors_and_arm::detectFront()
-{
-  return digitalRead(FrontSenzorPin);
-}
-
-boolean sensors_and_arm::detectBack()
-{
-  return digitalRead(BackSenzorPin);
-}
-
-boolean sensors_and_arm::detectLeft()
-{
-  return digitalRead(LeftSenzorPin);
-}
-
-boolean sensors_and_arm::detectRight()
-{
-  return digitalRead(RightSenzorPin);
-}
-
-boolean sensors_and_arm::detectFruit()
-{
-  return digitalRead(FruitSenzorPin);
 }
 
 void sensors_and_arm::moveArmHorizontal(float distance, int side)
@@ -82,20 +58,10 @@ void sensors_and_arm::moveArmVertical(float distance, int side)
 
 void sensors_and_arm::clawRelease()
 {
-  while( clawPos <= 173) 
-  {                     
-    claw.write(clawPos);
-    clawPos += 5;    
-    delay(20);                
-  } 
+  claw.write(140);
 }
 
 void sensors_and_arm::clawGrab()
 {
-  while( clawPos >= 10) 
-  {                     
-    claw.write(clawPos);
-    clawPos -= 5;    
-    delay(20);                
-  } 
+  claw.write(35);
 }
