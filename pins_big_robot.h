@@ -1,3 +1,7 @@
+const int ColorSensorSCL = 8;        //analog
+const int ColorSensorSDA = 9;        //analog
+const int ColorSensorLED = 16;        //digital
+
 const int FrontSenzorPin = 18;
 const int BackSenzorPin = 19;
 const int LeftSenzorPin = 20;
@@ -15,7 +19,7 @@ const int enablePinRight = 11;
 const int stepPinRight = 12;
 const int directionPinRight = 13;
 
-const int clawPin = 8;
+const int clawPin = 15;
 
 const int horizontalArmEnablePin = 7;
 const int horizontalArmDirectionPin = 6;

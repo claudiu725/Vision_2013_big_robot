@@ -4,6 +4,8 @@
 #include <TimerThree.h>
 
 #include <elapsedMillis.h>
+#include <Wire.h>
+#include <ADJDS311.h>
 #include "VisionStepper.h"
 #include "VisionSensorsArm.h"
 #include "pins_big_robot.h"
@@ -23,6 +25,8 @@
 #define LEFT 3
 #define RIGHT 4
 
+ADJDS311 colorSensor(ColorSensorLED);
+
 elapsedMillis wait_time, arm_wait_time;
 int time_to_wait, arm_time_to_wait, state_to_set_after_wait, arm_state_to_set_after_wait;
 VisionStepper motorLeft;
@@ -39,8 +43,12 @@ int directionMovement = 0;
 
 void setup()
 {
-  //Serial.begin(9600);
-  //Serial.println("setup
+  Serial.begin(9600);
+  Serial.println("setup");
+  colorSensor.init();
+  colorSensor.ledOn();
+  colorSensor.calibrate(); 
+  
   SnA.init();
   
   motorLeft.init();
@@ -65,6 +73,17 @@ void setup()
 
 void loop()
 { 
+  RGBC color = colorSensor.read();
+  
+  Serial.print("red:"); 
+  Serial.print(color.red);
+  Serial.print(" green:");
+  Serial.print(color.green);
+  Serial.print(" blue:");
+  Serial.print(color.blue);
+  Serial.print(" clear:");
+  Serial.println(color.clear);
+  
   switch (state)            // movement switch
   {
     case 0:
