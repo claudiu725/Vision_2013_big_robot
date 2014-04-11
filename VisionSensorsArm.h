@@ -17,6 +17,8 @@ class sensors_and_arm {
     void clawRelease();
     void moveArmHorizontal(float, int);
     void moveArmVertical(float, int);
+    int leftStepCounter();
+    int rightStepCounter();
     boolean detectFront();
     boolean detectBack();
     boolean detectLeft();

@@ -14,7 +14,11 @@
     
 const int delayActions = 4000;
 int clawPos = 20;
-    
+int leftEncoderState;
+int rightEncoderState;
+int leftStepCount = 0;
+int rightStepCount = 0;
+
 void sensors_and_arm::init()
 {
   pinMode(BackSenzorPin, INPUT);
@@ -22,6 +26,11 @@ void sensors_and_arm::init()
   pinMode(LeftSenzorPin, INPUT);
   pinMode(RightSenzorPin, INPUT);
   pinMode(FruitSenzorPin, INPUT);
+  
+  pinMode(LeftEncoderPin, INPUT_PULLUP);
+  pinMode(RightEncoderPin, INPUT_PULLUP);
+  leftEncoderState = digitalRead(LeftEncoderPin);
+  rightEncoderState = digitalRead(RightEncoderPin);
   
   horizontalArmMotor.init();
   horizontalArmMotor.initPins(horizontalArmEnablePin, horizontalArmDirectionPin, horizontalArmStepPin);
@@ -34,7 +43,6 @@ void sensors_and_arm::init()
   verticalArmMotor.initStepCmRatio(verticalArmCmStepRatio);
   
   claw.attach(clawPin);
-  
 }
 
 boolean sensors_and_arm::detectFront()
@@ -60,6 +68,24 @@ boolean sensors_and_arm::detectRight()
 boolean sensors_and_arm::detectFruit()
 {
   return digitalRead(FruitSenzorPin);
+}
+
+int sensors_and_arm::leftStepCounter()
+{
+  int currentEncoderState = digitalRead(LeftEncoderPin);
+  if (leftEncoderState != currentEncoderState)
+    leftStepCount++;
+  leftEncoderState = currentEncoderState;
+  return leftStepCount;
+}
+
+int sensors_and_arm::rightStepCounter()
+{
+  int currentEncoderState = digitalRead(RightEncoderPin);
+  if (rightEncoderState != currentEncoderState)
+    rightStepCount++;
+  rightEncoderState = currentEncoderState;
+  return rightStepCount;
 }
 
 void sensors_and_arm::moveArmHorizontal(float distance, int side)
