@@ -23,8 +23,8 @@
 #define LEFT 3
 #define RIGHT 4
 
-elapsedMillis wait_time;
-int time_to_wait, state_to_set_after_wait, armState_to_set_after_wait;
+elapsedMillis wait_time, arm_wait_time;
+int time_to_wait, arm_time_to_wait, state_to_set_after_wait, arm_state_to_set_after_wait;
 VisionStepper motorLeft;
 VisionStepper motorRight;
 sensors_and_arm SnA;
@@ -57,9 +57,11 @@ void setup()
   obstructionDetected = false;
   motorsPaused = false;
   ignoreSensors = false;
+  SnA.clawRelease();
   delay(1000);
   state = 1;
   armState = 0;
+  armState = 6;
 }
 
 void loop()
@@ -101,11 +103,10 @@ void loop()
       break;
     case 2:   
       SnA.moveArmVertical(3, DOWN);
-      //armState++;
-      armState=0;
+      armState++;
       break;      
     case 3:
-      if(SnA.detectFruit())
+      if(SnA.fruit.detect())
       {
         SnA.verticalArmMotor.pause();
         SnA.clawGrab();
@@ -121,18 +122,31 @@ void loop()
       SnA.clawRelease();
       waitForArmMotorsStop(STATE_STOP);
       break;
+    case 6:
+      if (SnA.fruit.detect())
+      {
+        SnA.clawGrab();
+        waitArm(1000, 7);
+      }
+      digitalWrite(13, HIGH);
+      break;
+    case 7:
+      digitalWrite(13, LOW);
+      SnA.clawRelease();
+      waitArm(250, 6);
+      break;
     case STATE_STOP:   //stop
       break;
     case STATE_WAIT:
-      if (wait_time > time_to_wait)
+      if (arm_wait_time > arm_time_to_wait)
       {
-        armState = armState_to_set_after_wait;
+        armState = arm_state_to_set_after_wait;
       }
       break;
     case STATE_WAIT_MOTORS_STOP:
       if (SnA.horizontalArmMotor.isOff() && SnA.verticalArmMotor.isOff())
       {
-        armState = armState_to_set_after_wait;
+        armState = arm_state_to_set_after_wait;
       }
       break;
   }
@@ -140,22 +154,22 @@ void loop()
   //*************************************************************************//
   
   obstructionDetected = false;
-  if (SnA.detectFront() && directionMovement == FRONT)
+  if (SnA.front.detect() && directionMovement == FRONT)
   {
     //Serial.println("Front detected!");
     obstructionDetected = true;
   }
-  if (SnA.detectBack() && directionMovement == BACK)
+  if (SnA.back.detect() && directionMovement == BACK)
   {
     //Serial.println("Back detected!");
     obstructionDetected = true;
   }
-  if (SnA.detectLeft() && directionMovement == LEFT)
+  if (SnA.left.detect() && directionMovement == LEFT)
   {
     //Serial.println("Left detected!");
     obstructionDetected = true;
   }
-  if (SnA.detectRight() && directionMovement == RIGHT)
+  if (SnA.right.detect() && directionMovement == RIGHT)
   {
     //Serial.println("Right detected!");
     obstructionDetected = true;
@@ -196,10 +210,18 @@ void waitForMotorsStop(int state_after)
   state_to_set_after_wait = state_after;
 }
 
+void waitArm(int time_in_ms, int state_after)
+{
+  armState = STATE_WAIT;
+  arm_wait_time = 0;
+  arm_time_to_wait = time_in_ms;
+  arm_state_to_set_after_wait = state_after;
+}
+
 void waitForArmMotorsStop(int state_after)
 {
   armState = STATE_WAIT_MOTORS_STOP;
-  armState_to_set_after_wait = state_after;
+  arm_state_to_set_after_wait = state_after;
 }
 
 void MoveForward(float distance, int step_delay)

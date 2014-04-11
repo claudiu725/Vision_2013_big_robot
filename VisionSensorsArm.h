@@ -3,13 +3,15 @@
 
 #include "Arduino.h"
 #include "VisionStepper.h"
+#include "VisionSensor.h"
 #include <elapsedMillis.h>
 #include <Servo.h>
  
 
 class sensors_and_arm {
   public:    
-    Servo claw;  
+    Servo claw;
+    VisionSensor back, left, right, front, fruit;
     VisionStepper horizontalArmMotor;
     VisionStepper verticalArmMotor;
     void init();  
@@ -17,13 +19,6 @@ class sensors_and_arm {
     void clawRelease();
     void moveArmHorizontal(float, int);
     void moveArmVertical(float, int);
-    int leftStepCounter();
-    int rightStepCounter();
-    boolean detectFront();
-    boolean detectBack();
-    boolean detectLeft();
-    boolean detectRight();
-    boolean detectFruit();
 };
 
 #endif
