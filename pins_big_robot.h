@@ -28,5 +28,7 @@ const int verticalArmEnablePin = 2;
 const int verticalArmDirectionPin = 3;
 const int verticalArmStepPin = 4;
 
+const int verticalArmLimiterPin = 41;
+
 const int colorRedPin = 31;
 const int colorYellowPin = 33;

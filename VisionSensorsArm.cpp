@@ -27,6 +27,8 @@ void sensors_and_arm::init()
   left.initPin(LeftSenzorPin);
   right.initPin(RightSenzorPin);
   fruit.initPin(FruitSenzorPin);
+  verticalArmLimiter.initPin(verticalArmLimiterPin);
+  verticalArmLimiter.setAsPullup();
   
   pinMode(LeftEncoderPin, INPUT_PULLUP);
   pinMode(RightEncoderPin, INPUT_PULLUP);

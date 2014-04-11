@@ -39,8 +39,8 @@ int directionMovement = 0;
 
 void setup()
 {
-  //Serial.begin(9600);
-  //Serial.println("setup");
+  Serial.begin(9600);
+  Serial.println("setup");
   SnA.init();
   
   motorLeft.init();
@@ -60,12 +60,11 @@ void setup()
   SnA.clawRelease();
   delay(1000);
   state = 1;
-  armState = 0;
-  armState = 6;
+  armState = 8;
 }
 
 void loop()
-{
+{ 
   switch (state)            // movement switch
   {
     case 0:
@@ -128,12 +127,25 @@ void loop()
         SnA.clawGrab();
         waitArm(1000, 7);
       }
-      digitalWrite(13, HIGH);
       break;
     case 7:
-      digitalWrite(13, LOW);
       SnA.clawRelease();
       waitArm(250, 6);
+      break;
+    case 8:
+      SnA.moveArmVertical(3, DOWN);
+      armState = 9;
+      break;
+    case 9:
+      if (SnA.verticalArmLimiter.detect())
+      {
+        SnA.verticalArmMotor.stopNow();
+        waitArm(100, 10);
+      }
+      break;
+    case 10:
+      SnA.moveArmVertical(9.5, UP);
+      armState = STATE_STOP;
       break;
     case STATE_STOP:   //stop
       break;

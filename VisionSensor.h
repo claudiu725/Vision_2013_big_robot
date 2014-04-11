@@ -6,12 +6,14 @@
 class VisionSensor {
   public:
     void initPin(int sensorPin);
+    void setAsPullup();
     boolean detect();
     void enable();
     void disable();
     boolean isEnabled();
   private:
     int sensorPin;
+    int pullup;
     boolean enabled;
 };
 

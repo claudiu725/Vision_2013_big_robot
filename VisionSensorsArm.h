@@ -12,6 +12,7 @@ class sensors_and_arm {
   public:    
     Servo claw;
     VisionSensor back, left, right, front, fruit;
+    VisionSensor verticalArmLimiter;
     VisionStepper horizontalArmMotor;
     VisionStepper verticalArmMotor;
     void init();  
