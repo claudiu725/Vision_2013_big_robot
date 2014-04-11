@@ -39,8 +39,8 @@ int directionMovement = 0;
 
 void setup()
 {
-  Serial.begin(9600);
-  Serial.println("setup");
+  //Serial.begin(9600);
+  //Serial.println("setup");
   SnA.init();
   
   motorLeft.init();
@@ -63,11 +63,7 @@ void setup()
 }
 
 void loop()
-{ 
-  Serial.print("L:");
-  Serial.print(SnA.leftStepCounter());
-  Serial.print(" R:");
-  Serial.println(SnA.rightStepCounter());
+{
   switch (state)            // movement switch
   {
     case 0:
