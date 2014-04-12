@@ -11,7 +11,7 @@ const int mediumSpeedDelay = 3000;
 const int ultraSlowSpeedDelay = 24000;
 
 const float wheelDiameter = 12.3;
-const float distanceBetweenWheels = 24.1; //valoare interioara
+const float distanceBetweenWheels = 23.7; //valoare interioara
 const int wheelRevolutionSteps = 200;
 
 const float horizontalArmCmStepRatio = 30.86; // 16.2cm per 500 steps
