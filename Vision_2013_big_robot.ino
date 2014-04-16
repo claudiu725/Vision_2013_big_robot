@@ -67,8 +67,8 @@ void setup()
   ignoreSensors = false;
   SnA.clawRelease();
   delay(1000);
-  state = 1;
-  armState = 6;
+  state = STATE_STOP;
+  armState = STATE_STOP;
 }
 
 void loop()
@@ -83,6 +83,7 @@ void loop()
   Serial.print(color.blue);
   Serial.print(" clear:");
   Serial.println(color.clear);
+  delay(500);
   
   switch (state)            // movement switch
   {
