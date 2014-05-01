@@ -22,7 +22,7 @@ class VisionStepper {
     void doSteps(int stepNumber);
     void doDistanceInCm(float distance);
     void doRotationInAngle(float angle);
-    void emergencyStop();
+    void stopNow();
     void setMaxSpeed();
     void pause();
     void unpause();

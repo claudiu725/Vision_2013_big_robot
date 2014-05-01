@@ -154,12 +154,9 @@ void VisionStepper::unpause()
   globalState = old_state;
 }
 
-void VisionStepper::emergencyStop()
+void VisionStepper::stopNow()
 {
-  /*
-  if (stepsRemaining > numberOfDeaccelerationSteps)
-    stepsRemaining = numberOfDeaccelerationSteps;
-    */
+  globalState = STOPPING;
 }
 
 void VisionStepper::setMaxSpeed()
