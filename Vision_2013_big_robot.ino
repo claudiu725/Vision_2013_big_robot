@@ -39,28 +39,29 @@ int directionMovement = 0;
 
 void setup()
 {
-  Serial.begin(9600);
-  Serial.println("setup");
-  SnA.init();
+  //Serial.begin(9600);
+  //Serial.println("setup");
+  //SnA.init();
   
   motorLeft.init();
+  motorLeft.initDirectionForward(HIGH);
   motorLeft.initPins(enablePinLeft, directionPinLeft, stepPinLeft);
-  motorLeft.initDelays(startSpeedDelay, highPhaseDelay, maxSpeedDelay); 
+  motorLeft.initDelays(defaultStartSpeedDelay, highPhaseDelay, maxSpeedDelay); 
   motorLeft.initSizes(wheelDiameter, wheelRevolutionSteps,distanceBetweenWheels);
   
   motorRight.init();
+  motorRight.initDirectionForward(LOW);
   motorRight.initPins(enablePinRight, directionPinRight, stepPinRight);
-  motorRight.initDelays(startSpeedDelay, highPhaseDelay, maxSpeedDelay); 
+  motorRight.initDelays(defaultStartSpeedDelay, highPhaseDelay, maxSpeedDelay); 
   motorRight.initSizes(wheelDiameter, wheelRevolutionSteps,distanceBetweenWheels);
   
-  //pinMode(buttonTestPin, INPUT_PULLUP);
   obstructionDetected = false;
   motorsPaused = false;
   ignoreSensors = false;
   SnA.clawRelease();
   delay(1000);
-  state = 1;
-  armState = 8;
+  state = 0;
+  armState = 0;
 }
 
 void loop()
@@ -69,9 +70,11 @@ void loop()
   {
     case 0:
       MoveForward(45,mediumSpeedDelay);
-      waitForMotorsStop(state + 2);
+      waitForMotorsStop(state + 1);
       break;
-    case 1:     
+    case 1:
+      MoveBackward(45,mediumSpeedDelay);
+      waitForMotorsStop(state + 1);
       break;      
     case 2:
       break;      
@@ -208,6 +211,12 @@ void loop()
   SnA.verticalArmMotor.doLoop();
 }
 
+void setStartDelays(int startDelay)
+{
+  motorLeft.initDelays(startDelay, highPhaseDelay, maxSpeedDelay);
+  motorRight.initDelays(startDelay, highPhaseDelay, maxSpeedDelay); 
+}
+
 void wait(int time_in_ms, int state_after)
 {
   state = STATE_WAIT;
@@ -243,30 +252,26 @@ void MoveForward(float distance, int step_delay)
   motorRight.setTargetDelay(step_delay);
   motorLeft.setDirectionForward();
   motorRight.setDirectionForward();
-  motorRight.toggleDirection(); 
   motorLeft.doDistanceInCm(distance);
   motorRight.doDistanceInCm(distance);
 }
 
 void MoveBackward(float distance, int step_delay)
-{       
+{    
   directionMovement = BACK;
   motorLeft.setTargetDelay(step_delay);         
   motorRight.setTargetDelay(step_delay);
-  motorLeft.setDirectionForward();
-  motorRight.setDirectionForward();
-  motorLeft.toggleDirection();    
+  motorLeft.setDirectionBackward();
+  motorRight.setDirectionBackward();
   motorLeft.doDistanceInCm(distance);
   motorRight.doDistanceInCm(distance);
 }
 
 void TurnLeft(int angle)
-{      
-  directionMovement = LEFT; 
-  motorLeft.setDirectionForward();
+{       
+  directionMovement = LEFT;
+  motorLeft.setDirectionBackward();
   motorRight.setDirectionForward();
-  motorRight.toggleDirection();
-  motorLeft.toggleDirection();  
   motorLeft.doRotationInAngle(angle);
   motorRight.doRotationInAngle(angle); 
 }
@@ -275,7 +280,8 @@ void TurnRight(int angle)
 {  
   directionMovement = RIGHT;
   motorLeft.setDirectionForward();
-  motorRight.setDirectionForward();
+  motorRight.setDirectionBackward();
   motorLeft.doRotationInAngle(angle);
   motorRight.doRotationInAngle(angle);
 }
+

@@ -9,8 +9,6 @@ const int enablePinLeft = 8;
 const int stepPinLeft = 9;
 const int directionPinLeft = 10;
 
-const int buttonTestPin = 40;
-
 const int LeftEncoderPin = 30;
 const int RightEncoderPin = 31;
 
@@ -18,7 +16,7 @@ const int enablePinRight = 11;
 const int stepPinRight = 12;
 const int directionPinRight = 13;
 
-const int clawPin = 8;
+const int clawPin = 45;
 
 const int horizontalArmEnablePin = 7;
 const int horizontalArmDirectionPin = 6;
