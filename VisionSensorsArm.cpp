@@ -1,5 +1,4 @@
 #include "VisionSensorsArm.h"
-#include "VisionSensor.h"
 #include "pins_big_robot.h"
 #include "big_robot_constants.h"
 
@@ -27,6 +26,7 @@ void sensors_and_arm::init()
   left.initPin(LeftSenzorPin);
   right.initPin(RightSenzorPin);
   fruit.initPin(FruitSenzorPin);
+  fruitColor.initPin(FruitColorSenzorPin);
   verticalArmLimiter.initPin(verticalArmLimiterPin);
   verticalArmLimiter.setAsPullup();
   

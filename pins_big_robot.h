@@ -4,6 +4,7 @@ const int LeftSenzorPin = 20;
 const int RightSenzorPin = 21;
 
 const int FruitSenzorPin = 14;
+const int FruitColorSenzorPin = 15;
 
 const int enablePinLeft = 8;
 const int stepPinLeft = 9;

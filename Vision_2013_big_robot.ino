@@ -2,6 +2,8 @@
 #include <Stepper.h>
 #include <LiquidCrystal.h>
 #include <TimerThree.h>
+#include <Wire.h>
+#include <ADJDS311.h>
 
 #include <elapsedMillis.h>
 #include "VisionStepper.h"
