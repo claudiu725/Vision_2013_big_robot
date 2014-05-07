@@ -12,7 +12,7 @@
 class sensors_and_arm {
   public:    
     Servo claw;
-    VisionSensor back, left, right, front, fruit;
+    VisionSensor backLeft, backBack, backRight, left, right, frontLeft, frontFront, frontRight, fruit;
     VisionColorSensor fruitColor;
     VisionSensor verticalArmLimiter;
     VisionStepper horizontalArmMotor;
@@ -22,6 +22,10 @@ class sensors_and_arm {
     void clawRelease();
     void moveArmHorizontal(float, int);
     void moveArmVertical(float, int);
+    boolean frontDetected();
+    boolean leftDetected();
+    boolean rightDetected();
+    boolean backDetected();
 };
 
 #endif

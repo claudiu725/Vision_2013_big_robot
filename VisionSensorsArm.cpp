@@ -21,19 +21,23 @@ int rightStepCount = 0;
 
 void sensors_and_arm::init()
 {
-  back.initPin(BackSenzorPin);
-  front.initPin(FrontSenzorPin);
-  left.initPin(LeftSenzorPin);
-  right.initPin(RightSenzorPin);
-  fruit.initPin(FruitSenzorPin);
-  fruitColor.initPin(FruitColorSenzorPin);
+  frontLeft.initPin(frontLeftSenzorPin);
+  frontFront.initPin(frontFrontSenzorPin);
+  frontRight.initPin(frontRightSenzorPin);
+  left.initPin(leftSenzorPin);
+  right.initPin(rightSenzorPin);
+  backLeft.initPin(backLeftSenzorPin);
+  backBack.initPin(backBackSenzorPin);
+  backRight.initPin(backRightSenzorPin);
+  fruit.initPin(fruitSenzorPin);
+  fruitColor.initPin(fruitColorSenzorPin);
   verticalArmLimiter.initPin(verticalArmLimiterPin);
   verticalArmLimiter.setAsPullup();
   
-  pinMode(LeftEncoderPin, INPUT_PULLUP);
-  pinMode(RightEncoderPin, INPUT_PULLUP);
-  leftEncoderState = digitalRead(LeftEncoderPin);
-  rightEncoderState = digitalRead(RightEncoderPin);
+  pinMode(leftMotorEncoderPin, INPUT_PULLUP);
+  pinMode(rightMotorEncoderPin, INPUT_PULLUP);
+  leftEncoderState = digitalRead(leftMotorEncoderPin);
+  rightEncoderState = digitalRead(rightMotorEncoderPin);
   
   horizontalArmMotor.init();
   horizontalArmMotor.initPins(horizontalArmEnablePin, horizontalArmDirectionPin, horizontalArmStepPin);
@@ -74,4 +78,24 @@ void sensors_and_arm::clawRelease()
 void sensors_and_arm::clawGrab()
 {
   claw.write(35);
+}
+
+boolean sensors_and_arm::frontDetected()
+{
+  return frontLeft.detect() && frontFront.detect() && frontRight.detect();
+}
+
+boolean sensors_and_arm::leftDetected()
+{
+  return left.detect();
+}
+
+boolean sensors_and_arm::rightDetected()
+{
+  return right.detect();
+}
+
+boolean sensors_and_arm::backDetected()
+{
+  return backLeft.detect() && backBack.detect() && backRight.detect();
 }

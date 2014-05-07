@@ -47,13 +47,13 @@ void setup()
   
   motorLeft.init();
   motorLeft.initDirectionForward(HIGH);
-  motorLeft.initPins(enablePinLeft, directionPinLeft, stepPinLeft);
+  motorLeft.initPins(leftMotorEnablePinLeft, leftMotorDirectionPinLeft, leftMotorStepPinLeft);
   motorLeft.initDelays(defaultStartSpeedDelay, highPhaseDelay, maxSpeedDelay); 
   motorLeft.initSizes(wheelDiameter, wheelRevolutionSteps,distanceBetweenWheels);
   
   motorRight.init();
   motorRight.initDirectionForward(LOW);
-  motorRight.initPins(enablePinRight, directionPinRight, stepPinRight);
+  motorRight.initPins(rightMotorEnablePin, rightMotorDirectionPin, rightMotorStepPin);
   motorRight.initDelays(defaultStartSpeedDelay, highPhaseDelay, maxSpeedDelay); 
   motorRight.initSizes(wheelDiameter, wheelRevolutionSteps,distanceBetweenWheels);
   
@@ -171,27 +171,27 @@ void loop()
   //*************************************************************************//
   
   obstructionDetected = false;
-  if (SnA.front.detect() && directionMovement == FRONT)
+  if (SnA.frontDetected() && directionMovement == FRONT)
   {
     //Serial.println("Front detected!");
     obstructionDetected = true;
   }
-  if (SnA.back.detect() && directionMovement == BACK)
-  {
-    //Serial.println("Back detected!");
-    obstructionDetected = true;
-  }
-  if (SnA.left.detect() && directionMovement == LEFT)
+  if (SnA.leftDetected() && directionMovement == LEFT)
   {
     //Serial.println("Left detected!");
     obstructionDetected = true;
   }
-  if (SnA.right.detect() && directionMovement == RIGHT)
+  if (SnA.rightDetected() && directionMovement == RIGHT)
   {
     //Serial.println("Right detected!");
     obstructionDetected = true;
   }
-  
+  if (SnA.backDetected() && directionMovement == BACK)
+  {
+    //Serial.println("Back detected!");
+    obstructionDetected = true;
+  }
+
   if(obstructionDetected == true && ignoreSensors == false)
   {
     motorLeft.pause();
