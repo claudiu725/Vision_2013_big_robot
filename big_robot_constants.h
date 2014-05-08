@@ -23,4 +23,6 @@ const float verticalArmCmStepRatio = 4000.0; //2.5cm per 10000 steps
 
 const float encoderRevolutionSteps = 24;
 
+const int acuatorWaitTime = 1000;
+
 #endif

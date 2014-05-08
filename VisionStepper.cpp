@@ -151,7 +151,8 @@ void VisionStepper::pause()
 
 void VisionStepper::unpause()
 {
-  globalState = old_state;
+  if (globalState == PAUSE)
+    globalState = old_state;
 }
 
 void VisionStepper::stopNow()

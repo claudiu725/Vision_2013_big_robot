@@ -7,283 +7,139 @@
 
 #include <elapsedMillis.h>
 #include "VisionStepper.h"
-#include "VisionSensorsArm.h"
+#include "VisionBase.h"
+#include "VisionArm.h"
+#include "VisionLance.h"
+#include "VisionState.h"
 #include "pins_big_robot.h"
 #include "big_robot_constants.h"
 
-#define STATE_STOP -1
-#define STATE_WAIT -2
-#define STATE_WAIT_MOTORS_STOP -3
-
-#define UP 10
-#define DOWN 11
-#define FORWARD 12
-#define BACKWARD 13
-
-#define FRONT 1
-#define BACK 2
-#define LEFT 3
-#define RIGHT 4
-
-elapsedMillis wait_time, arm_wait_time;
-int time_to_wait, arm_time_to_wait, state_to_set_after_wait, arm_state_to_set_after_wait;
-VisionStepper motorLeft;
-VisionStepper motorRight;
-sensors_and_arm SnA;
-boolean obstructionDetected = false;
-boolean motorsPaused = false;
+VisionBase base;
+VisionArm arm;
+VisionLance lance;
 boolean ignoreSensors = false;
 
-int armState = 0;
-int state = 0;
-int shotBalls = 0;
-int directionMovement = 0;
+VisionState baseState, armState;
 
 void setup()
 {
   //Serial.begin(9600);
   //Serial.println("setup");
-  //SnA.init();
-  
-  motorLeft.init();
-  motorLeft.initDirectionForward(HIGH);
-  motorLeft.initPins(leftMotorEnablePinLeft, leftMotorDirectionPinLeft, leftMotorStepPinLeft);
-  motorLeft.initDelays(defaultStartSpeedDelay, highPhaseDelay, maxSpeedDelay); 
-  motorLeft.initSizes(wheelDiameter, wheelRevolutionSteps,distanceBetweenWheels);
-  
-  motorRight.init();
-  motorRight.initDirectionForward(LOW);
-  motorRight.initPins(rightMotorEnablePin, rightMotorDirectionPin, rightMotorStepPin);
-  motorRight.initDelays(defaultStartSpeedDelay, highPhaseDelay, maxSpeedDelay); 
-  motorRight.initSizes(wheelDiameter, wheelRevolutionSteps,distanceBetweenWheels);
-  
-  obstructionDetected = false;
-  motorsPaused = false;
+
+  base.init();
+  arm.init();
+  lance.init();
   ignoreSensors = false;
-  SnA.clawRelease();
-  delay(1000);
-  state = 0;
-  armState = 0;
+  
+  baseState.wait(1000, 0);
+  armState.wait(1000, 0);
 }
 
 void loop()
 { 
-  switch (state)            // movement switch
+  switch (baseState)
   {
     case 0:
-      MoveForward(45,mediumSpeedDelay);
-      waitForMotorsStop(state + 1);
+      base.moveForward(45,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 1:
-      MoveBackward(45,mediumSpeedDelay);
-      waitForMotorsStop(state + 1);
-      break;      
+      base.moveBackward(45,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
     case 2:
-      break;      
-    case 3:    
       break;
-    case STATE_WAIT:
-      if (wait_time > time_to_wait)
-      {
-        state = state_to_set_after_wait;
-      }
+    case 3:
       break;
-    case STATE_WAIT_MOTORS_STOP:
-      if (motorLeft.isOff() && motorRight.isOff())
-      {
-        state = state_to_set_after_wait;
-      }
+    default:
+      baseState.doLoop();
   }
   
   //*************************************************************************//
   
   switch (armState)            // arm switch
-  {    
-    case 0:    
+  {
+    case 0:
+      arm.clawRelease();
       break;
     case 1:
-      SnA.moveArmHorizontal(5, FORWARD);
-      waitForArmMotorsStop(armState + 1);
+      arm.moveHorizontal(5, FORWARD);
+      armState.waitFor(armStop, STATE_NEXT);
       break;
     case 2:   
-      SnA.moveArmVertical(3, DOWN);
-      armState++;
+      arm.moveVertical(3, DOWN);
+      armState.waitFor(fruitDetect, STATE_NEXT);
       break;      
     case 3:
-      if(SnA.fruit.detect())
-      {
-        SnA.verticalArmMotor.pause();
-        SnA.clawGrab();
-        armState++;
-      }
-      break;      
-    case 4:    
-      SnA.moveArmHorizontal(20, BACKWARD);
-      SnA.moveArmVertical(50, DOWN);
-      waitForArmMotorsStop(armState + 1);
+      arm.verticalMotor.stopNow();
+      arm.clawGrab();
+      armState++;
+      break;
+    case 4:
+      arm.moveHorizontal(20, BACKWARD);
+      arm.moveVertical(50, DOWN);
+      armState.waitFor(armStop, STATE_NEXT);
       break;
     case 5:
-      SnA.clawRelease();
-      waitForArmMotorsStop(STATE_STOP);
+      arm.clawRelease();
+      armState.waitFor(armStop, STATE_STOP);
       break;
     case 6:
-      if (SnA.fruit.detect())
+      if (arm.fruit.detect())
       {
-        SnA.clawGrab();
-        waitArm(1000, 7);
+        arm.clawGrab();
+        armState.wait(1000, 7);
       }
       break;
     case 7:
-      SnA.clawRelease();
-      waitArm(250, 6);
+      arm.clawRelease();
+      armState.wait(250, 6);
       break;
     case 8:
-      SnA.moveArmVertical(3, DOWN);
-      armState = 9;
+      arm.moveVertical(3, DOWN);
+      armState.waitFor(verticalLimiterTrigger, STATE_NEXT);
       break;
     case 9:
-      if (SnA.verticalArmLimiter.detect())
-      {
-        SnA.verticalArmMotor.stopNow();
-        waitArm(100, 10);
-      }
+      arm.verticalMotor.stopNow();
+      armState.wait(100, 10);
       break;
     case 10:
-      SnA.moveArmVertical(9.5, UP);
+      arm.moveVertical(9.5, UP);
       armState = STATE_STOP;
       break;
-    case STATE_STOP:   //stop
-      break;
-    case STATE_WAIT:
-      if (arm_wait_time > arm_time_to_wait)
-      {
-        armState = arm_state_to_set_after_wait;
-      }
-      break;
-    case STATE_WAIT_MOTORS_STOP:
-      if (SnA.horizontalArmMotor.isOff() && SnA.verticalArmMotor.isOff())
-      {
-        armState = arm_state_to_set_after_wait;
-      }
-      break;
+    default:
+      armState.doLoop();
   }
-  
+
   //*************************************************************************//
-  
-  obstructionDetected = false;
-  if (SnA.frontDetected() && directionMovement == FRONT)
-  {
-    //Serial.println("Front detected!");
-    obstructionDetected = true;
-  }
-  if (SnA.leftDetected() && directionMovement == LEFT)
-  {
-    //Serial.println("Left detected!");
-    obstructionDetected = true;
-  }
-  if (SnA.rightDetected() && directionMovement == RIGHT)
-  {
-    //Serial.println("Right detected!");
-    obstructionDetected = true;
-  }
-  if (SnA.backDetected() && directionMovement == BACK)
-  {
-    //Serial.println("Back detected!");
-    obstructionDetected = true;
-  }
 
-  if(obstructionDetected == true && ignoreSensors == false)
-  {
-    motorLeft.pause();
-    motorRight.pause();
-    motorsPaused = true;
-  }
+  base.checkObstructions();
+  if(base.obstructionDetected == true && ignoreSensors == false)
+    base.pause();
   else
-  {
-    if(motorsPaused == true){
-      motorLeft.unpause();
-      motorRight.unpause();
-      motorsPaused = false;
-    }
-  }
+    base.unpause();
 
-  motorLeft.doLoop();
-  motorRight.doLoop();
-  SnA.horizontalArmMotor.doLoop();
-  SnA.verticalArmMotor.doLoop();
+  base.doLoop();
+  arm.doLoop();
+  lance.doLoop();
 }
 
-void setStartDelays(int startDelay)
+boolean baseStop()
 {
-  motorLeft.initDelays(startDelay, highPhaseDelay, maxSpeedDelay);
-  motorRight.initDelays(startDelay, highPhaseDelay, maxSpeedDelay); 
+  return base.isStopped();
 }
 
-void wait(int time_in_ms, int state_after)
+boolean armStop()
 {
-  state = STATE_WAIT;
-  wait_time = 0;
-  time_to_wait = time_in_ms;
-  state_to_set_after_wait = state_after;
+  return arm.isStopped();
 }
 
-void waitForMotorsStop(int state_after)
+boolean fruitDetect()
 {
-  state = STATE_WAIT_MOTORS_STOP;
-  state_to_set_after_wait = state_after;
+  return arm.fruit.detect();
 }
 
-void waitArm(int time_in_ms, int state_after)
+boolean verticalLimiterTrigger()
 {
-  armState = STATE_WAIT;
-  arm_wait_time = 0;
-  arm_time_to_wait = time_in_ms;
-  arm_state_to_set_after_wait = state_after;
+  return arm.verticalLimiter.detect();
 }
-
-void waitForArmMotorsStop(int state_after)
-{
-  armState = STATE_WAIT_MOTORS_STOP;
-  arm_state_to_set_after_wait = state_after;
-}
-
-void MoveForward(float distance, int step_delay)
-{       
-  directionMovement = FRONT;
-  motorLeft.setTargetDelay(step_delay);         
-  motorRight.setTargetDelay(step_delay);
-  motorLeft.setDirectionForward();
-  motorRight.setDirectionForward();
-  motorLeft.doDistanceInCm(distance);
-  motorRight.doDistanceInCm(distance);
-}
-
-void MoveBackward(float distance, int step_delay)
-{    
-  directionMovement = BACK;
-  motorLeft.setTargetDelay(step_delay);         
-  motorRight.setTargetDelay(step_delay);
-  motorLeft.setDirectionBackward();
-  motorRight.setDirectionBackward();
-  motorLeft.doDistanceInCm(distance);
-  motorRight.doDistanceInCm(distance);
-}
-
-void TurnLeft(int angle)
-{       
-  directionMovement = LEFT;
-  motorLeft.setDirectionBackward();
-  motorRight.setDirectionForward();
-  motorLeft.doRotationInAngle(angle);
-  motorRight.doRotationInAngle(angle); 
-}
-
-void TurnRight(int angle)
-{  
-  directionMovement = RIGHT;
-  motorLeft.setDirectionForward();
-  motorRight.setDirectionBackward();
-  motorLeft.doRotationInAngle(angle);
-  motorRight.doRotationInAngle(angle);
-}
-

@@ -30,9 +30,10 @@ const int rightMotorEnablePin = 28;
 //UPPER LEVEL
 
 //Lance
-//const int lanceEnablePin = A0;
-//const int lanceDirectionPinA = A1;
-//const int lanceDirectionPinB = A2;
+const int lanceActatorPin = 19;
+const int lanceEnablePin = A0;
+const int lanceDirectionAPin = A1;
+const int lanceDirectionBPin = A2;
 
 //Horizontal arm
 //const int horizontalArmLimiterPin = 999;

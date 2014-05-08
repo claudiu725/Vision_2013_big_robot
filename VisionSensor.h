@@ -13,7 +13,7 @@ class VisionSensor {
     boolean isEnabled();
   private:
     int sensorPin;
-    int pullup;
+    boolean pullup;
     boolean enabled;
 };
 

@@ -4,13 +4,13 @@ void VisionSensor::initPin(int sensorPin)
 {
   this->sensorPin = sensorPin;
   enabled = true;
-  pullup = 0;
+  pullup = false;
   pinMode(sensorPin, INPUT);
 }
 
 void VisionSensor::setAsPullup()
 {
-  pullup = 1;
+  pullup = true;
   pinMode(sensorPin, INPUT_PULLUP);
 }
 
