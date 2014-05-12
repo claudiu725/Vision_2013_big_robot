@@ -225,7 +225,8 @@ unsigned long VisionStepper::computeSpeed()
 
 void VisionStepper::pause()
 {
-  motorState = PAUSING_SLOWING;
+  if (!(motorState == PAUSING_SLOWING || motorState == PAUSING || motorState == PAUSED))
+    motorState = PAUSING_SLOWING;
 }
 
 void VisionStepper::unpause()
