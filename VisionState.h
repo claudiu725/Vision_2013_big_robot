@@ -12,7 +12,7 @@
 
 class VisionState {
   public:
-    void wait(int time_in_ms, int state_after);
+    void wait(unsigned long time_in_ms, int state_after);
     void waitFor(boolean (*functionToTestFor)(), int nextState);
     void doLoop();
     operator int();
@@ -22,7 +22,7 @@ class VisionState {
     VisionState operator++(int);
   public:
     int state, stateToSetAfterWait;
-    long timeToWait;
+    unsigned long timeToWait;
     elapsedMillis time;
     boolean (*testFunction)();
 };

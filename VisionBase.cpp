@@ -89,6 +89,12 @@ void VisionBase::unpause()
   rightMotor.unpause();
 }
 
+void VisionBase::stopNow()
+{
+  leftMotor.stopNow();
+  rightMotor.stopNow();
+}
+
 boolean VisionBase::frontDetected()
 {
   return frontLeft.detect() && frontFront.detect() && frontRight.detect();

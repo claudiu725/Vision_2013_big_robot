@@ -2,10 +2,14 @@
 
 #define STOPPED 0
 #define STOPPING 1
-#define STOPPING_ENABLE_ON 2
-#define RUNNING 3
-#define PAUSE 4
-#define STARTING 5
+#define WAIT_FOR_STOPPING 2
+#define STOPPING_ENABLE_ON 3
+#define RUNNING 4
+#define PAUSE 5
+#define PAUSE_OFF 6
+#define STARTING 7
+
+const unsigned long waitBeforeTurningOff = 500;
 
 void VisionStepper::init()
 {
@@ -77,16 +81,21 @@ void VisionStepper::doLoop()
       break;
     case STOPPING:
       enablePinState = LOW;
-      delay(250);
       digitalWrite(enablePin, enablePinState);
       globalState = STOPPED;
       break;
+    case WAIT_FOR_STOPPING:
+      if (stopTimer > 200)
+        globalState = STOPPING_ENABLE_ON;
+      break;
     case STOPPING_ENABLE_ON:
-      if (stopTimer > 100)
-        if (special)
-          globalState = STOPPED;
-        else
-          globalState = STOPPING;
+      if (special)
+      {
+        globalState = STOPPED;
+        resetSpecial();
+      }
+      else
+        globalState = STOPPING;
       break;
     case RUNNING:
       if (((stepPinState == LOW) && (stepTimer > currentDelay)) ||
@@ -107,7 +116,7 @@ void VisionStepper::doLoop()
             raiseSpeed = false;
           }
         }
-        currentDelay = startSpeedDelay * 10 / sqrt(0.1 * stepSpeedCounter + 100);
+        currentDelay = startSpeedDelay * 10 / sqrt(2000 * stepSpeedCounter + 100);
         if (!foundTargetSpeed)
           if ((!raiseSpeed && currentDelay > targetDelay) ||
               (raiseSpeed && currentDelay < targetDelay))
@@ -124,10 +133,24 @@ void VisionStepper::doLoop()
           stopTimer = 0;
           break;
         }
+        if (pauseWhenFound && foundTargetSpeed)
+        {
+          globalState = PAUSE;
+          pauseTurnOff = 0;
+          break;
+        }
         //Serial.println(currentStepDelay);
       }
       break;
     case PAUSE:
+      if (pauseTurnOff > waitBeforeTurningOff)
+      {
+        enablePinState = LOW;
+        digitalWrite(enablePin, enablePinState);
+        globalState = PAUSE_OFF;
+      }
+      break;
+    case PAUSE_OFF:
       break;
     case STARTING:
       enablePinState = HIGH;
@@ -143,16 +166,29 @@ void VisionStepper::doLoop()
 
 void VisionStepper::pause()
 {
-  if (globalState == PAUSE)
-    return;
-  old_state = globalState;
-  globalState = PAUSE;
+  if (pauseDelay > 10000)
+    targetDelay = 40000;
+  else
+    targetDelay = 10000;
+  foundTargetSpeed = false;
+  pauseWhenFound = true;
 }
 
 void VisionStepper::unpause()
 {
-  if (globalState == PAUSE)
-    globalState = old_state;
+  targetDelay = pauseDelay;
+  foundTargetSpeed = false;
+  pauseWhenFound = false;
+  if (globalState == PAUSE_OFF)
+  {
+    enablePinState = HIGH;
+    digitalWrite(enablePin, enablePinState);
+  }
+  if (globalState == PAUSE || globalState == PAUSE_OFF)
+  {
+    stepSpeedCounter = 0;
+    globalState = RUNNING;
+  }
 }
 
 void VisionStepper::stopNow()

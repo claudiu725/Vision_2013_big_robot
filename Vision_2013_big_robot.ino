@@ -14,17 +14,19 @@
 #include "pins_big_robot.h"
 #include "big_robot_constants.h"
 
+#define NINETYSECONDS 88000L
+
 VisionBase base;
 VisionArm arm;
 VisionLance lance;
 boolean ignoreSensors = false;
+elapsedMillis timeUpTimer;
 
-VisionState baseState, armState;
+VisionState baseState, armState, robotState;
 
 void setup()
 {
-  //Serial.begin(9600);
-  //Serial.println("setup");
+  timeUpTimer = 0;
 
   base.init();
   arm.init();
@@ -33,6 +35,7 @@ void setup()
   
   baseState.wait(1000, 0);
   armState.wait(1000, 0);
+  robotState.wait(NINETYSECONDS, 0);
 }
 
 void loop()
@@ -61,6 +64,7 @@ void loop()
   {
     case 0:
       arm.clawRelease();
+      armState = STATE_STOP;
       break;
     case 1:
       arm.moveHorizontal(5, FORWARD);
@@ -82,18 +86,15 @@ void loop()
       break;
     case 5:
       arm.clawRelease();
-      armState.waitFor(armStop, STATE_STOP);
+      armState.waitFor(fruitDetect, STATE_NEXT);
       break;
     case 6:
-      if (arm.fruit.detect())
-      {
-        arm.clawGrab();
-        armState.wait(1000, 7);
-      }
+      arm.clawGrab();
+      armState.wait(1000, STATE_NEXT);
       break;
     case 7:
       arm.clawRelease();
-      armState.wait(250, 6);
+      armState.wait(250, STATE_NEXT);
       break;
     case 8:
       arm.moveVertical(3, DOWN);
@@ -101,7 +102,7 @@ void loop()
       break;
     case 9:
       arm.verticalMotor.stopNow();
-      armState.wait(100, 10);
+      armState.wait(100, STATE_NEXT);
       break;
     case 10:
       arm.moveVertical(9.5, UP);
@@ -110,11 +111,22 @@ void loop()
     default:
       armState.doLoop();
   }
+  
+  switch (robotState)
+  {
+    case 0:
+      timeIsUpStopEverything();
+      robotState = STATE_STOP;
+      break;
+    default:
+      robotState.doLoop();
+      break;
+  }
 
   //*************************************************************************//
 
   base.checkObstructions();
-  if(base.obstructionDetected == true && ignoreSensors == false)
+  if (base.obstructionDetected == true && ignoreSensors == false)
     base.pause();
   else
     base.unpause();
@@ -142,4 +154,12 @@ boolean fruitDetect()
 boolean verticalLimiterTrigger()
 {
   return arm.verticalLimiter.detect();
+}
+
+void timeIsUpStopEverything()
+{
+  base.stopNow();
+  arm.stopNow();
+  baseState = STATE_STOP;
+  armState = STATE_STOP;
 }

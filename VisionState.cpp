@@ -1,6 +1,6 @@
 #include "VisionState.h"
 
-void VisionState::wait(int timeInMs, int nextState)
+void VisionState::wait(unsigned long timeInMs, int nextState)
 {
   *this = STATE_WAIT;
   time = 0;

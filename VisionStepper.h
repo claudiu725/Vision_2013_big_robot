@@ -36,13 +36,12 @@ class VisionStepper {
     boolean forwardDirection;
     boolean special;
     int globalState;
-    unsigned long stepsMadeSoFar, stepsRemaining;
-    float maxSpeedDelay, startSpeedDelay, currentDelay, targetDelay, highPhaseDelay;
-    int stepSpeedCounter;
+    unsigned long stepsMadeSoFar, stepsRemaining, stepSpeedCounter;
+    float maxSpeedDelay, startSpeedDelay, currentDelay, targetDelay, highPhaseDelay, pauseDelay;
     int old_state;
-    boolean foundTargetSpeed, raiseSpeed;
+    boolean foundTargetSpeed, raiseSpeed, pauseWhenFound;
     elapsedMicros stepTimer;
-    elapsedMillis stopTimer;
+    elapsedMillis stopTimer, pauseTurnOff;
     
     float stepCmRatio; // steps for a cm
     float degreeStepRatio; //steps for a degree turn;

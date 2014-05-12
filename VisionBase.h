@@ -30,6 +30,7 @@ class VisionBase {
     void turnRight(int angle);
     void pause();
     void unpause();
+    void stopNow();
     void doLoop();
     boolean isStopped();
   public:

@@ -68,3 +68,9 @@ void VisionArm::doLoop()
   horizontalMotor.doLoop();
   verticalMotor.doLoop();
 }
+
+void VisionArm::stopNow()
+{
+  horizontalMotor.stopNow();
+  verticalMotor.stopNow();
+}

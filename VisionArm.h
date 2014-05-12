@@ -27,6 +27,7 @@ class VisionArm {
     void moveHorizontal(float, int);
     void moveVertical(float, int);
     void doLoop();
+    void stopNow();
     boolean isStopped();
 };
 
