@@ -1,7 +1,7 @@
 #ifndef big_robot_constants_h
 #define big_robot_constants_h
 
-const unsigned long defaultStartSpeedDelay = 100000;
+const unsigned long defaultStartSpeedDelay = 100000L;
 const unsigned long highPhaseDelay = 100;
 const unsigned long maxSpeedDelay = 400;
 
@@ -12,6 +12,8 @@ const unsigned long slowSpeedDelay = 7000;
 const unsigned long fastSpeedDelay = 1000;
 const unsigned long mediumSpeedDelay = 3000;
 const unsigned long ultraSlowSpeedDelay = 24000;
+
+const unsigned long pauseSpeedDelay = 10000;
 
 const float wheelDiameter = 12.3;
 const float distanceBetweenWheels = 24.1; //valoare interioara

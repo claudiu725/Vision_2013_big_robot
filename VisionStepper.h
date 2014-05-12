@@ -3,23 +3,24 @@
 
 #include "Arduino.h"
 #include <elapsedMillis.h>
+#include "VisionState.h"
 
 class VisionStepper {
   public:
     void init();
     void initPins(int enablePin, int directionPin, int stepPin);
     void initDirectionForward(boolean forward);
-    void initDelays(int startSpeedDelay, int highPhaseDelay, int maxSpeedDelay);
+    void initDelays(unsigned long startSpeedDelay, unsigned long highPhaseDelay, unsigned long maxSpeedDelay, unsigned long pauseSpeedDelay);
     void initSizes(float wheelDiameter, int wheelRevolutionSteps, float distanceBetweenWheels);
     void initStepCmRatio(float stepCmRatio);
     void doLoop();
     void toggleDirection();
     void setDirectionForward();
     void setDirectionBackward();
-    void setTargetDelay(int targetDelay);
+    void setTargetDelay(unsigned long targetDelay);
     boolean isOff();
     boolean isAtTargetSpeed();
-    void doSteps(int stepNumber);
+    void doSteps(unsigned long stepNumber);
     void doDistanceInCm(float distance);
     void doRotationInAngle(float angle);
     void stopNow();
@@ -30,16 +31,15 @@ class VisionStepper {
     void resetSpecial();
   private:
     void doSetup();
+    unsigned long computeSpeed();
   private:
     int enablePin, directionPin, stepPin;
     int enablePinState, directionPinState, stepPinState;
     boolean forwardDirection;
-    boolean special;
-    int globalState;
+    VisionState motorState, enableState, speedState, stepState;
     unsigned long stepsMadeSoFar, stepsRemaining, stepSpeedCounter;
-    float maxSpeedDelay, startSpeedDelay, currentDelay, targetDelay, highPhaseDelay, pauseDelay;
+    float startSpeedDelay, currentDelay, targetDelay, pauseSpeedDelay, delayBeforeTurnOff, highPhaseDelay, savedWhenPausingDelay;
     int old_state;
-    boolean foundTargetSpeed, raiseSpeed, pauseWhenFound;
     elapsedMicros stepTimer;
     elapsedMillis stopTimer, pauseTurnOff;
     

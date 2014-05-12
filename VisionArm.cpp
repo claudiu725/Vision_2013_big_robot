@@ -16,7 +16,7 @@ void VisionArm::init()
   
   horizontalMotor.init();
   horizontalMotor.initPins(horizontalArmEnablePin, horizontalArmDirectionPin, horizontalArmStepPin);
-  horizontalMotor.initDelays(horizontalArmSpeedDelay, highPhaseDelay, maxSpeedDelay); 
+  horizontalMotor.initDelays(horizontalArmSpeedDelay, highPhaseDelay, maxSpeedDelay, pauseSpeedDelay); 
   horizontalMotor.initStepCmRatio(horizontalArmCmStepRatio);
   
   verticalLimiter.initPin(verticalArmLimiterPin);
@@ -24,7 +24,7 @@ void VisionArm::init()
   
   verticalMotor.init();
   verticalMotor.initPins(verticalArmEnablePin, verticalArmDirectionPin, verticalArmStepPin);
-  verticalMotor.initDelays(verticalArmSpeedDelay, highPhaseDelay, maxSpeedDelay); 
+  verticalMotor.initDelays(verticalArmSpeedDelay, highPhaseDelay, maxSpeedDelay, pauseSpeedDelay); 
   verticalMotor.initStepCmRatio(verticalArmCmStepRatio);
   
   claw.attach(clawPin);

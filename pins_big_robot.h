@@ -53,7 +53,8 @@ const int fruitSenzorPin = 14; //(bariera optica)
 const int fruitColorSenzorPin = 2; //led
 //SCL = 21 !!! doesn't change
 //SDA = 20 !!! doesn't change
-//const int fruitDistancePin = 6;
-const int clawPin = 999;
+//const int fruitDistancePin = 24;
+const int clawPin = 6; //servo
+const int clawBasketPin = 5; //servo
 
 #endif

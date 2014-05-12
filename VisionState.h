@@ -2,7 +2,6 @@
 #define VisionState_h
 
 #include "Arduino.h"
-#include "VisionBase.h"
 #include <elapsedMillis.h>
 
 #define STATE_STOP -1
