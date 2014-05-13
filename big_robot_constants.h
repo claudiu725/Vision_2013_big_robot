@@ -5,7 +5,7 @@ const unsigned long defaultStartSpeedDelay = 100000L;
 const unsigned long highPhaseDelay = 100;
 const unsigned long maxSpeedDelay = 400;
 
-const unsigned long verticalArmSpeedDelay = 800;
+const unsigned long verticalArmSpeedDelay = 2000;
 const unsigned long horizontalArmSpeedDelay = 5000;
 
 const unsigned long slowSpeedDelay = 7000;

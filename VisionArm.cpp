@@ -35,7 +35,7 @@ void VisionArm::moveHorizontal(float distance, int side)
   horizontalMotor.setDirectionForward();
   if(side == BACKWARD)
     horizontalMotor.toggleDirection();      
-  horizontalMotor.setTargetDelay(5000);
+  horizontalMotor.setTargetDelay(horizontalArmSpeedDelay);
   horizontalMotor.doDistanceInCm(distance);
 }
 
@@ -44,7 +44,7 @@ void VisionArm::moveVertical(float distance, int side)
   verticalMotor.setDirectionForward();
   if(side == DOWN)
     verticalMotor.toggleDirection();      
-  verticalMotor.setTargetDelay(200);
+  verticalMotor.setTargetDelay(verticalArmSpeedDelay);
   verticalMotor.doDistanceInCm(distance);
 }
 

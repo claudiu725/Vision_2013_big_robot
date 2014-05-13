@@ -66,13 +66,13 @@ void loop()
   {
     case 0:
       arm.clawRelease();
-      armState = STATE_STOP;
+      armState.wait(1000, STATE_NEXT);
       break;
     case 1:
       arm.moveHorizontal(5, FORWARD);
       armState.waitFor(armStop, STATE_NEXT);
       break;
-    case 2:   
+    case 2:
       arm.moveVertical(3, DOWN);
       armState.waitFor(fruitDetect, STATE_NEXT);
       break;      

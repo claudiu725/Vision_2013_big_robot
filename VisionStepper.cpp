@@ -36,7 +36,7 @@ void VisionStepper::init()
 {
   stepsMadeSoFar = 0;
   stepsRemaining = 0;
-  motorState = STATE_STOP;
+  motorState = STOPPED;
   speedState = STATE_STOP;
   enableState = OFF;
   stepState = STATE_STOP;
@@ -103,7 +103,7 @@ void VisionStepper::doLoop()
         motorState = STOPPING_SLOWING;
       break;
     case PAUSING_SLOWING:
-      savedWhenPausingDelay = currentDelay;
+      savedWhenPausingDelay = targetDelay;
       setTargetDelay(pauseSpeedDelay);
       motorState = PAUSING;
       break;
@@ -118,7 +118,7 @@ void VisionStepper::doLoop()
       break;
     case RESUME:
       setTargetDelay(savedWhenPausingDelay);
-      if (isOff())
+      if (enableState != ON)
         enableState = TURN_ON;
       motorState = RUNNING;
       break;
@@ -223,7 +223,7 @@ float VisionStepper::computeSpeed()
 
 void VisionStepper::pause()
 {
-  if (!(motorState == PAUSING_SLOWING || motorState == PAUSING || motorState == PAUSED))
+  if (motorState == RUNNING)
     motorState = PAUSING_SLOWING;
 }
 
@@ -243,6 +243,7 @@ void VisionStepper::setTargetDelay(unsigned long targetDelay)
   if (this->targetDelay == targetDelay)
     return;
   this->targetDelay = targetDelay;
+  speedState = UNDETERMINED;
 }
 
 boolean VisionStepper::isOff()
