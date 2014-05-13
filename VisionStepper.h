@@ -31,7 +31,7 @@ class VisionStepper {
     void resetSpecial();
   private:
     void doSetup();
-    unsigned long computeSpeed();
+    float computeSpeed();
   private:
     int enablePin, directionPin, stepPin;
     int enablePinState, directionPinState, stepPinState;

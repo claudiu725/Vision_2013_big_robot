@@ -165,22 +165,16 @@ void VisionStepper::doLoop()
   switch (speedState)
   {
     case ACCELERATING:
-      stepSpeedCounter++;
-      currentDelay = computeSpeed();
       if (currentDelay < targetDelay)
         speedState = CONSTANT;
       break;
     case SLOWING:
-      stepSpeedCounter--;
-      currentDelay = computeSpeed();
       if (currentDelay > targetDelay)
         speedState = CONSTANT;
       break;
     case CONSTANT:
-      currentDelay = computeSpeed();
       break;
     case UNDETERMINED:
-      currentDelay = computeSpeed();
       if (currentDelay > targetDelay)
         speedState = SLOWING;
       else if (currentDelay < targetDelay)
@@ -190,7 +184,6 @@ void VisionStepper::doLoop()
       break;
     case START:
       stepSpeedCounter = 0;
-      currentDelay = computeSpeed();
       speedState = ACCELERATING;
       stepState = STEP_LOW;
       break;
@@ -204,21 +197,26 @@ void VisionStepper::doLoop()
     case STEP_LOW:
       stepsMadeSoFar++;
       stepsRemaining--;
+      if (speedState == ACCELERATING)
+        stepSpeedCounter++;
+      else if (speedState == SLOWING)
+        stepSpeedCounter--;
+      currentDelay = computeSpeed();
       stepPinState = LOW;
       digitalWrite(stepPin, stepPinState);
-      stepState.wait(currentDelay, STEP_HIGH);
+      stepState.waitMicros(currentDelay / 6, STEP_HIGH);
       break;
     case STEP_HIGH:
       stepPinState = HIGH;
       digitalWrite(stepPin, stepPinState);
-      stepState.wait(highPhaseDelay, STEP_HIGH);
+      stepState.waitMicros(currentDelay, STEP_LOW);
       break;
     default:
       stepState.doLoop();
   }
 }
 
-unsigned long VisionStepper::computeSpeed()
+float VisionStepper::computeSpeed()
 {
   return startSpeedDelay * 10 / sqrt(2000 * stepSpeedCounter + 100);
 }

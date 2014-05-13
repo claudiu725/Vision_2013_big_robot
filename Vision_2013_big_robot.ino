@@ -26,6 +26,7 @@ VisionState baseState, armState, robotState;
 
 void setup()
 {
+  Serial.begin(9600);
   timeUpTimer = 0;
 
   base.init();
