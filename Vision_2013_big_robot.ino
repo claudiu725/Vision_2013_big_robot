@@ -26,7 +26,6 @@ VisionState baseState, armState, robotState;
 
 void setup()
 {
-  Serial.begin(9600);
   timeUpTimer = 0;
 
   base.init();
@@ -40,7 +39,7 @@ void setup()
 }
 
 void loop()
-{ 
+{
   switch (baseState)
   {
     case 0:
@@ -48,12 +47,14 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 1:
+      baseState.wait(1000, STATE_NEXT);
+      break;
+    case 2:
       base.moveBackward(45,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 2:
-      break;
     case 3:
+      baseState.wait(1000, 0);
       break;
     default:
       baseState.doLoop();

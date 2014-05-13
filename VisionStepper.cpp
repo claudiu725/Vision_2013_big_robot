@@ -127,7 +127,7 @@ void VisionStepper::doLoop()
       motorState = STOPPING;
       break;
     case STOPPING:
-      if (speedState == CONSTANT)
+      if (stepsRemaining == 0)
       {
         enableState = DELAYED_TURN_OFF;
         motorState = STOPPED;
@@ -247,7 +247,7 @@ void VisionStepper::setTargetDelay(unsigned long targetDelay)
 
 boolean VisionStepper::isOff()
 {
-  return enableState == DELAYED_TURN_OFF || enableState == TURN_OFF || enableState == OFF;
+  return motorState == STOPPED;
 }
 
 void VisionStepper::setDirectionForward()

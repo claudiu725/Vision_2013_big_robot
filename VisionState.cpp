@@ -2,25 +2,34 @@
 
 void VisionState::wait(unsigned long timeInMs, int nextState)
 {
+  if (nextState == STATE_NEXT)
+    stateToSetAfterWait = *this + 1;
+  else
+    stateToSetAfterWait = nextState;
   *this = STATE_WAIT;
   time = 0;
   timeToWait = timeInMs;
-  stateToSetAfterWait = nextState;
 }
 
 void VisionState::waitMicros(unsigned long timeInMicros, int nextState)
 {
+  if (nextState == STATE_NEXT)
+    stateToSetAfterWait = *this + 1;
+  else
+    stateToSetAfterWait = nextState;
   *this = STATE_WAIT_MICROS;
   timeInMicros = 0;
   timeToWaitInMicros = timeInMicros;
-  stateToSetAfterWait = nextState;
 }
 
 void VisionState::waitFor(boolean (*functionToTestFor)(), int nextState)
 {
+  if (nextState == STATE_NEXT)
+    stateToSetAfterWait = *this + 1;
+  else
+    stateToSetAfterWait = nextState;
   *this = STATE_WAIT_FOR;
   testFunction = functionToTestFor;
-  stateToSetAfterWait = nextState;
 }
 
 void VisionState::doLoop()
