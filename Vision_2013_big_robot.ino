@@ -40,15 +40,15 @@ void loop()5
   switch (baseState)
   {
     case 0:
-      base.moveForward(2000,highPhaseDelay);
-      baseState.waitFor(baseStop, STATE_STOP);
+      base.moveForward(100,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 1:
       base.moveBackward(100,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_LAST);
       break;
     case 2:
-      base.moveBackward(45,mediumSpeedDelay);
+      base.moveBackward(100,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 3:
@@ -68,21 +68,19 @@ void loop()5
       break;
     case 1:
       arm.moveHorizontal(5, FORWARD);
+      arm.moveVertical(5, DOWN);
       armState.waitFor(armStop, STATE_NEXT);
       break;
     case 2:
-      arm.moveVertical(3, DOWN);
-      armState.waitFor(fruitDetect, STATE_NEXT);
+      arm.moveHorizontal(5, BACKWARD);
+      arm.moveVertical(5, UP);
+      armState.waitFor(armStop, STATE_NEXT);
       break;      
     case 3:
-      arm.verticalMotor.stopNow();
       arm.clawGrab();
-      armState++;
+      armState.wait(1000, 0);
       break;
     case 4:
-      arm.moveHorizontal(20, BACKWARD);
-      arm.moveVertical(50, DOWN);
-      armState.waitFor(armStop, STATE_NEXT);
       break;
     case 5:
       arm.clawRelease();
