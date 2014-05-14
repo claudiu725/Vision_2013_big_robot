@@ -38,6 +38,7 @@ class VisionBase {
     VisionEncoder leftEncoder, rightEncoder;
     VisionSensor backLeft, backBack, backRight, left, right, frontLeft, frontFront, frontRight;
     int directionMovement;
+    boolean oppositeSide;
     boolean obstructionDetected;
 };
 

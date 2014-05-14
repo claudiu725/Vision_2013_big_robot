@@ -28,7 +28,8 @@ void VisionBase::init()
   rightMotor.initSizes(wheelDiameter, wheelRevolutionSteps,distanceBetweenWheels);
   
   directionMovement = NONE;
-  obstructionDetected = false;
+  obstructionDetected = false;;
+  oppositeSide /*= digitalRead(colorYellowPin)*/ = false;
 }
 
 void VisionBase::moveForward(float distance, int step_delay)
@@ -56,8 +57,16 @@ void VisionBase::moveBackward(float distance, int step_delay)
 void VisionBase::turnLeft(int angle)
 {
   directionMovement = LEFT;
-  leftMotor.setDirectionBackward();
-  rightMotor.setDirectionForward();
+  if(!oppositeSide)
+  {
+    leftMotor.setDirectionBackward();
+    rightMotor.setDirectionForward();
+  }
+  else
+  {    
+    leftMotor.setDirectionForward();
+    rightMotor.setDirectionBackward();
+  }
   leftMotor.doRotationInAngle(angle);
   rightMotor.doRotationInAngle(angle); 
 }
@@ -65,11 +74,20 @@ void VisionBase::turnLeft(int angle)
 void VisionBase::turnRight(int angle)
 {  
   directionMovement = RIGHT;
-  leftMotor.setDirectionForward();
-  rightMotor.setDirectionBackward();
+  if(!oppositeSide)
+  {
+    leftMotor.setDirectionForward();
+    rightMotor.setDirectionBackward();
+  }
+  else
+  { 
+    leftMotor.setDirectionBackward();
+    rightMotor.setDirectionForward();   
+  }
   leftMotor.doRotationInAngle(angle);
   rightMotor.doRotationInAngle(angle);
 }
+
 
 void VisionBase::pause()
 {
