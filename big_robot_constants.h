@@ -1,17 +1,22 @@
 #ifndef big_robot_constants_h
 #define big_robot_constants_h
 
-const unsigned long defaultStartSpeedDelay = 100000L;
+const unsigned long defaultStartSpeedDelay = 50000L;
+const unsigned long pauseSpeedDelay = 50000L;
 const unsigned long highPhaseDelay = 100;
+const float stepSpeedCounterAcceleration = 50;
+const float stepSpeedCounterSlowing = 25;
+const unsigned long delayBeforeTurnOff = 500;
 
 const unsigned long slowSpeedDelay = 7000;
 const unsigned long fastSpeedDelay = 1000;
 const unsigned long mediumSpeedDelay = 3000;
 const unsigned long ultraSlowSpeedDelay = 24000;
-const unsigned long delayBeforeTurnOff = 500;
 
-const unsigned long pauseSpeedDelay = 100000L;
-
+const float verticalArmStepSpeedCounterAcceleration = 50;
+const float verticalArmStepSpeedCounterSlowing = 25;
+const float horizontalArmStepSpeedCounterAcceleration = 50;
+const float horizontalArmStepSpeedCounterSlowing = 25;
 const unsigned long verticalArmSpeedDelay = 2000;
 const unsigned long horizontalArmSpeedDelay = 5000;
 

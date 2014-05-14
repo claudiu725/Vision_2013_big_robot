@@ -69,12 +69,14 @@ void VisionStepper::initPins(int enablePin, int directionPin, int stepPin)
   special = false;
 }
 
-void VisionStepper::initDelays(unsigned long startSpeedDelay, unsigned long highPhaseDelay, unsigned long pauseSpeedDelay, unsigned long delayBeforeTurnOff)
+void VisionStepper::initDelays(unsigned long startSpeedDelay, unsigned long highPhaseDelay, unsigned long pauseSpeedDelay, unsigned long delayBeforeTurnOff, float stepSpeedCounterAcceleration, float stepSpeedCounterSlowing)
 {
   this->startSpeedDelay = startSpeedDelay;
   this->highPhaseDelay = highPhaseDelay;
   this->pauseSpeedDelay = pauseSpeedDelay;
   this->delayBeforeTurnOff = delayBeforeTurnOff;
+  this->stepSpeedCounterAcceleration = stepSpeedCounterAcceleration;
+  this->stepSpeedCounterSlowing = stepSpeedCounterSlowing;
   currentDelay = startSpeedDelay;
 }
 

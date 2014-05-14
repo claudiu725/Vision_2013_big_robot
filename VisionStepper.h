@@ -10,7 +10,7 @@
       void init();
       void initPins(int enablePin, int directionPin, int stepPin);
       void initDirectionForward(boolean forward);
-      void initDelays(unsigned long startSpeedDelay, unsigned long highPhaseDelay, unsigned long maxSpeedDelay, unsigned long pauseSpeedDelay);
+      void initDelays(unsigned long startSpeedDelay, unsigned long highPhaseDelay, unsigned long maxSpeedDelay, unsigned long pauseSpeedDelay, float stepSpeedCounterAcceleration, float stepSpeedCounterSlowing);
       void initSizes(float wheelDiameter, int wheelRevolutionSteps, float distanceBetweenWheels);
       void initStepCmRatio(float stepCmRatio);
       void doLoop();
@@ -37,7 +37,8 @@
       int enablePinState, directionPinState, stepPinState;
       boolean forwardDirection;
       VisionState motorState, enableState, speedState, stepState;
-      unsigned long stepsMadeSoFar, stepsRemaining, stepSpeedCounter;
+      long stepsMadeSoFar, stepsRemaining;
+      float stepSpeedCounter, stepSpeedCounterAcceleration, stepSpeedCounterSlowing;
       float startSpeedDelay, currentDelay, targetDelay, pauseSpeedDelay, delayBeforeTurnOff, highPhaseDelay, savedWhenPausingDelay;
       int old_state;
       elapsedMicros stepTimer;
