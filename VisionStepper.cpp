@@ -65,6 +65,8 @@ void VisionStepper::initPins(int enablePin, int directionPin, int stepPin)
   pinMode(stepPin, OUTPUT);
   stepPinState = LOW;
   digitalWrite(stepPin, stepPinState);
+  
+  special = false;
 }
 
 void VisionStepper::initDelays(unsigned long startSpeedDelay, unsigned long highPhaseDelay, unsigned long pauseSpeedDelay, unsigned long delayBeforeTurnOff)
@@ -165,19 +167,19 @@ void VisionStepper::doLoop()
   switch (speedState)
   {
     case ACCELERATING:
-      if (currentDelay < targetDelay)
+      if (currentDelay <= targetDelay)
         speedState = CONSTANT;
       break;
     case SLOWING:
-      if (currentDelay > targetDelay)
+      if (currentDelay >= targetDelay)
         speedState = CONSTANT;
       break;
     case CONSTANT:
       break;
     case UNDETERMINED:
-      if (currentDelay > targetDelay)
+      if (currentDelay < targetDelay)
         speedState = SLOWING;
-      else if (currentDelay < targetDelay)
+      else if (currentDelay > targetDelay)
         speedState = ACCELERATING;
       else
         speedState = CONSTANT;
@@ -201,15 +203,18 @@ void VisionStepper::doLoop()
         stepSpeedCounter++;
       else if (speedState == SLOWING)
         stepSpeedCounter--;
-      currentDelay = computeSpeed();
+      currentDelay = startSpeedDelay * 10 / sqrt(4000 * stepSpeedCounter + 100);
+      //Serial.print(targetDelay);
+      //Serial.print(" ");
+      //Serial.println(currentDelay);
       stepPinState = LOW;
       digitalWrite(stepPin, stepPinState);
-      stepState.waitMicros(currentDelay / 6, STEP_HIGH);
+      stepState.waitMicros(currentDelay, STEP_HIGH);
       break;
     case STEP_HIGH:
       stepPinState = HIGH;
       digitalWrite(stepPin, stepPinState);
-      stepState.waitMicros(currentDelay, STEP_LOW);
+      stepState.waitMicros(highPhaseDelay, STEP_LOW);
       break;
     default:
       stepState.doLoop();
@@ -218,7 +223,7 @@ void VisionStepper::doLoop()
 
 float VisionStepper::computeSpeed()
 {
-  return startSpeedDelay * 10 / sqrt(2000 * stepSpeedCounter + 100);
+  return startSpeedDelay * 10 / sqrt(1 * stepSpeedCounter + 100);
 }
 
 void VisionStepper::pause()
@@ -290,4 +295,14 @@ void VisionStepper::doRotationInAngle(float angle)
 {
   doSteps(angle * degreeStepRatio);
 }
+
+void VisionStepper::setSpecial()
+{
+  special = true;
+}
+void VisionStepper::resetSpecial()
+{
+  special = false;
+}
+
 

@@ -9,6 +9,8 @@
 #define STATE_WAIT_MICROS -3
 #define STATE_WAIT_FOR -4
 #define STATE_NEXT -5
+#define STATE_LAST -6
+#define STATE_NET -7
 
 class VisionState {
   public:
@@ -25,7 +27,7 @@ class VisionState {
     int state, stateToSetAfterWait;
     unsigned long timeToWait, timeToWaitInMicros;
     elapsedMillis time;
-    elapsedMicros timeInMicros;
+    elapsedMicros timeMicros;
     boolean (*testFunction)();
 };
 

@@ -20,34 +20,32 @@ VisionBase base;
 VisionArm arm;
 VisionLance lance;
 boolean ignoreSensors = false;
-elapsedMillis timeUpTimer;
 
 VisionState baseState, armState, robotState;
 
 void setup()
 {
-  timeUpTimer = 0;
-
   base.init();
   arm.init();
   lance.init();
-  ignoreSensors = false;
+  ignoreSensors = true;
   
   baseState.wait(1000, 0);
-  armState.wait(1000, 0);
+  armState.wait(1000, STATE_STOP);
   robotState.wait(NINETYSECONDS, 0);
 }
 
-void loop()
+void loop()5
 {
   switch (baseState)
   {
     case 0:
-      base.moveForward(45,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
+      base.moveForward(2000,highPhaseDelay);
+      baseState.waitFor(baseStop, STATE_STOP);
       break;
     case 1:
-      baseState.wait(1000, STATE_NEXT);
+      base.moveBackward(100,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_LAST);
       break;
     case 2:
       base.moveBackward(45,mediumSpeedDelay);

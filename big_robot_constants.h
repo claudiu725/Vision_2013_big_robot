@@ -3,17 +3,17 @@
 
 const unsigned long defaultStartSpeedDelay = 100000L;
 const unsigned long highPhaseDelay = 100;
-const unsigned long maxSpeedDelay = 400;
-
-const unsigned long verticalArmSpeedDelay = 2000;
-const unsigned long horizontalArmSpeedDelay = 5000;
 
 const unsigned long slowSpeedDelay = 7000;
 const unsigned long fastSpeedDelay = 1000;
 const unsigned long mediumSpeedDelay = 3000;
 const unsigned long ultraSlowSpeedDelay = 24000;
+const unsigned long delayBeforeTurnOff = 500;
 
-const unsigned long pauseSpeedDelay = 10000;
+const unsigned long pauseSpeedDelay = 100000L;
+
+const unsigned long verticalArmSpeedDelay = 2000;
+const unsigned long horizontalArmSpeedDelay = 5000;
 
 const float wheelDiameter = 12.3;
 const float distanceBetweenWheels = 24.1; //valoare interioara

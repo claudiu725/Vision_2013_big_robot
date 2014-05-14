@@ -16,15 +16,15 @@ void VisionBase::init()
   leftEncoder.initPin(leftMotorEncoderPin);
   leftMotor.init();
   leftMotor.initDirectionForward(HIGH);
-  leftMotor.initPins(leftMotorEnablePinLeft, leftMotorDirectionPinLeft, leftMotorStepPinLeft);
-  leftMotor.initDelays(defaultStartSpeedDelay, highPhaseDelay, maxSpeedDelay, pauseSpeedDelay); 
+  leftMotor.initPins(leftMotorEnablePin, leftMotorDirectionPin, leftMotorStepPin);
+  leftMotor.initDelays(defaultStartSpeedDelay, highPhaseDelay, pauseSpeedDelay, delayBeforeTurnOff);
   leftMotor.initSizes(wheelDiameter, wheelRevolutionSteps,distanceBetweenWheels);
   
   rightEncoder.initPin(rightMotorEncoderPin);
   rightMotor.init();
   rightMotor.initDirectionForward(LOW);
   rightMotor.initPins(rightMotorEnablePin, rightMotorDirectionPin, rightMotorStepPin);
-  rightMotor.initDelays(defaultStartSpeedDelay, highPhaseDelay, maxSpeedDelay, pauseSpeedDelay); 
+  rightMotor.initDelays(defaultStartSpeedDelay, highPhaseDelay, pauseSpeedDelay, delayBeforeTurnOff); 
   rightMotor.initSizes(wheelDiameter, wheelRevolutionSteps,distanceBetweenWheels);
   
   directionMovement = NONE;

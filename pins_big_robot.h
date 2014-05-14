@@ -17,9 +17,9 @@ const int backRightSenzorPin = 12;
 
 //Left motor
 const int leftMotorEncoderPin = 9;
-const int leftMotorDirectionPinLeft = 26;
-const int leftMotorStepPinLeft = 34;
-const int leftMotorEnablePinLeft = 36;
+const int leftMotorDirectionPin = 26;
+const int leftMotorStepPin = 34;
+const int leftMotorEnablePin = 36;
 
 //Right motor
 const int rightMotorEncoderPin = 46;
