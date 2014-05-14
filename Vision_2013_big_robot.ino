@@ -35,7 +35,7 @@ void setup()
   robotState.wait(NINETYSECONDS, 0);
 }
 
-void loop()5
+void loop()
 {
   switch (baseState)
   {
