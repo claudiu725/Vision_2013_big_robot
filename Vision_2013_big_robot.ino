@@ -19,6 +19,7 @@
 VisionBase base;
 VisionArm arm;
 VisionLance lance;
+VisionLance basket;
 boolean ignoreSensors = false;
 
 VisionState baseState, armState, robotState;
@@ -27,7 +28,8 @@ void setup()
 {
   base.init();
   arm.init();
-  lance.init();
+  lance.init(lanceServoPin);
+  basket.init(clawBasketPin);
   ignoreSensors = true;
   
   baseState.wait(1000, 0);
@@ -40,16 +42,15 @@ void loop()
   switch (baseState)
   {
     case 0:
-      base.moveForward(70,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
+      base.moveForward(250,fastSpeedDelay);
+      baseState.waitFor(baseStop, 2);
       break;
     case 1:
-      base.moveBackward(70,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_LAST);
+      base.moveBackward(250,fastSpeedDelay);
+      baseState.waitFor(baseStop, 3);
       break;
     case 2:
-      base.moveBackward(100,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
+      baseState.wait(1000, 1);
       break;
     case 3:
       baseState.wait(1000, 0);
@@ -64,6 +65,8 @@ void loop()
   {
     case 0:
       arm.clawRelease();
+      basket.bringTo(140);
+      lance.bringTo(140);
       armState.wait(1000, STATE_NEXT);
       break;
     case 1:
@@ -78,9 +81,34 @@ void loop()
       break;      
     case 3:
       arm.clawGrab();
+      basket.bringTo(35);
+      lance.bringTo(35);
       armState.wait(1000, 0);
       break;
     case 4:
+    /*
+    basket.bringTo(90);
+    if(ok)
+    {
+      if(value>70)
+      {
+        basket.bringTo(value++);
+        lance.bringTo(value++);
+      }
+      else
+        ok = false;
+    }
+    else
+    {
+      if(value<140)
+      {
+          basket.bringTo(value--);
+          lance.bringTo(value--);
+      }
+      else
+        ok = true;
+    }
+    */
       break;
     case 5:
       arm.clawRelease();
@@ -133,6 +161,11 @@ void loop()
   arm.doLoop();
 }
 
+void grabOnPurple()
+{
+  if(arm.fruitColor.isPurple())
+      arm.clawGrab();
+}
 boolean baseStop()
 {
   return base.isStopped();

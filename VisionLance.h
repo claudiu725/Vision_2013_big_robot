@@ -10,8 +10,9 @@
 class VisionLance {
     Servo lance;
   public:
-    void init();  
+    void init(int pin);  
     void lower();
+    void bringTo(float degree);
     void raise();
 };
 

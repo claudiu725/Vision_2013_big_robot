@@ -33,7 +33,7 @@ const int rightMotorEnablePin = 28;
 const int lanceServoPin = 15;
 
 //Horizontal arm
-//const int horizontalArmLimiterPin = 999;
+//const int horizontalArmLimiterPin = 39;
 //const int horizontalArmAntiSlipPin = 33;
 const int horizontalArmDirectionPin = 45;
 const int horizontalArmStepPin = 47;
@@ -47,11 +47,11 @@ const int verticalArmEnablePin = 43;
 
 //Claw
 const int fruitSenzorPin = 14; //(bariera optica)
-const int fruitColorSenzorPin = 22; //led
+//const int fruitColorSenzorPin = 22; //led
 //SCL = 21 !!! doesn't change
 //SDA = 20 !!! doesn't change
 //const int fruitDistancePin = 24;
-const int clawServoPin = 6; //servo
+const int clawServoPin = 3; //servo
 const int clawBasketPin = 5; //servo
 
 #endif

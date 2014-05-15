@@ -1,13 +1,17 @@
 #include "VisionLance.h"
 
-void VisionLance::init()
+void VisionLance::init(int pin)
 {
-  lance.attach(lanceServoPin);
+  lance.attach(pin);
 }
 
 void VisionLance::lower()
 {
   lance.write(0);
+}
+void VisionLance::bringTo(float degree)
+{
+  lance.write(degree);
 }
 
 void VisionLance::raise()

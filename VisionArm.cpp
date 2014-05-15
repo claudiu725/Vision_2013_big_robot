@@ -12,7 +12,7 @@ int rightStepCount = 0;
 void VisionArm::init()
 {
   fruit.initPin(fruitSenzorPin);
-  fruitColor.initPin(fruitColorSenzorPin);
+  //fruitColor.initPin(fruitColorSenzorPin);
   
   horizontalMotor.init();
   horizontalMotor.initPins(horizontalArmEnablePin, horizontalArmDirectionPin, horizontalArmStepPin);
