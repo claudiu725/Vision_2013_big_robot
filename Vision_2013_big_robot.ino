@@ -40,11 +40,11 @@ void loop()
   switch (baseState)
   {
     case 0:
-      base.moveForward(100,mediumSpeedDelay);
+      base.moveForward(70,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 1:
-      base.moveBackward(100,mediumSpeedDelay);
+      base.moveBackward(70,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_LAST);
       break;
     case 2:
@@ -131,7 +131,6 @@ void loop()
 
   base.doLoop();
   arm.doLoop();
-  lance.doLoop();
 }
 
 boolean baseStop()

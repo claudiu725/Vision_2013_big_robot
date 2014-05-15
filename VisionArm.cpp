@@ -27,7 +27,7 @@ void VisionArm::init()
   verticalMotor.initDelays(verticalArmSpeedDelay, highPhaseDelay, pauseSpeedDelay, delayBeforeTurnOff, verticalArmStepSpeedCounterAcceleration, verticalArmStepSpeedCounterSlowing);
   verticalMotor.initStepCmRatio(verticalArmCmStepRatio);
   
-  claw.attach(clawPin);
+  claw.attach(clawServoPin);
 }
 
 void VisionArm::moveHorizontal(float distance, int side)

@@ -30,31 +30,28 @@ const int rightMotorEnablePin = 28;
 //UPPER LEVEL
 
 //Lance
-const int lanceActatorPin = 19;
-const int lanceEnablePin = A0;
-const int lanceDirectionAPin = A1;
-const int lanceDirectionBPin = A2;
+const int lanceServoPin = 15;
 
 //Horizontal arm
 //const int horizontalArmLimiterPin = 999;
-//const int horizontalArmAntiSlipPin = 999;
+//const int horizontalArmAntiSlipPin = 33;
 const int horizontalArmDirectionPin = 45;
 const int horizontalArmStepPin = 47;
 const int horizontalArmEnablePin = 49;
 
 //Vertical arm
-const int verticalArmLimiterPin = 999;
+const int verticalArmLimiterPin = A15;
 const int verticalArmDirectionPin = 53;
 const int verticalArmStepPin = 51;
 const int verticalArmEnablePin = 43;
 
 //Claw
 const int fruitSenzorPin = 14; //(bariera optica)
-const int fruitColorSenzorPin = 2; //led
+const int fruitColorSenzorPin = 22; //led
 //SCL = 21 !!! doesn't change
 //SDA = 20 !!! doesn't change
 //const int fruitDistancePin = 24;
-const int clawPin = 6; //servo
+const int clawServoPin = 6; //servo
 const int clawBasketPin = 5; //servo
 
 #endif

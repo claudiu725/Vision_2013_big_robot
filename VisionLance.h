@@ -5,15 +5,14 @@
 #include "big_robot_constants.h"
 #include "pins_big_robot.h"
 #include <elapsedMillis.h>
+#include <Servo.h>
 
 class VisionLance {
+    Servo lance;
   public:
-    void init();
-    void drop();
+    void init();  
+    void lower();
     void raise();
-    void doLoop();
-  private:
-    elapsedMillis acuatorTimer;
 };
 
 #endif
