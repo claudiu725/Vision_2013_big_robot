@@ -17,6 +17,8 @@ class VisionState {
     void wait(unsigned long timeInMs, int nextState);
     void waitMicros(unsigned long timeInMicros, int nextState);
     void waitFor(boolean (*functionToTestFor)(), int nextState);
+    void save();
+    void restore();
     void doLoop();
     operator int();
     int operator =(const int state);
@@ -24,7 +26,7 @@ class VisionState {
     VisionState& operator++();
     VisionState operator++(int);
   public:
-    int state, stateToSetAfterWait;
+    int state, stateToSetAfterWait, saveState;
     unsigned long timeToWait, timeToWaitInMicros;
     elapsedMillis time;
     elapsedMicros timeMicros;

@@ -54,6 +54,15 @@ void VisionState::doLoop()
   }
 }
 
+void VisionState::save()
+{
+  saveState = *this;
+}
+void VisionState::restore()
+{
+  *this = saveState;
+}
+
 VisionState::operator int()
 {
   return state;

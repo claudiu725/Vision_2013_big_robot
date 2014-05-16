@@ -10,11 +10,13 @@ class VisionSensor {
     boolean detect();
     void enable();
     void disable();
+    void toggleNegate();
     boolean isEnabled();
   private:
     int sensorPin;
     boolean pullup;
     boolean enabled;
+    boolean negate;
 };
 
 #endif

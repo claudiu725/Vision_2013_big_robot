@@ -23,6 +23,8 @@
       void doSteps(unsigned long stepNumber);
       void doDistanceInCm(float distance);
       void doRotationInAngle(float angle);
+      void setRemainingDistance(float distance);
+      unsigned long getStepsFromDistance(float distance);
       void stopNow();
       void setMaxSpeed();
       void pause();

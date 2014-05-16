@@ -11,12 +11,18 @@ int rightStepCount = 0;
 
 void VisionArm::init()
 {
-  fruit.initPin(fruitSenzorPin);
+  fruitBarrier.initPin(fruitBarrierPin);
+  fruitBarrier.toggleNegate();
   //fruitColor.initPin(fruitColorSenzorPin);
+  
+  horizontalLimiter.initPin(horizontalArmLimiterPin);
+  horizontalLimiter.setAsPullup();
+  horizontalAntiSlip.initPin(horizontalArmAntiSlipPin);
+  horizontalAntiSlip.setAsPullup();
   
   horizontalMotor.init();
   horizontalMotor.initPins(horizontalArmEnablePin, horizontalArmDirectionPin, horizontalArmStepPin);
-  horizontalMotor.initDelays(horizontalArmSpeedDelay, highPhaseDelay, pauseSpeedDelay, delayBeforeTurnOff, horizontalArmStepSpeedCounterAcceleration, horizontalArmStepSpeedCounterSlowing);
+  horizontalMotor.initDelays(horizontalArmStartSpeedDelay, highPhaseDelay, pauseSpeedDelay, delayBeforeTurnOff, horizontalArmStepSpeedCounterAcceleration, horizontalArmStepSpeedCounterSlowing);
   horizontalMotor.initStepCmRatio(horizontalArmCmStepRatio);
   
   verticalLimiter.initPin(verticalArmLimiterPin);
@@ -24,15 +30,23 @@ void VisionArm::init()
   
   verticalMotor.init();
   verticalMotor.initPins(verticalArmEnablePin, verticalArmDirectionPin, verticalArmStepPin);
-  verticalMotor.initDelays(verticalArmSpeedDelay, highPhaseDelay, pauseSpeedDelay, delayBeforeTurnOff, verticalArmStepSpeedCounterAcceleration, verticalArmStepSpeedCounterSlowing);
+  verticalMotor.initDelays(verticalArmStartSpeedDelay, verticalArmHighPhaseDelay, pauseSpeedDelay, delayBeforeTurnOff, verticalArmStepSpeedCounterAcceleration, verticalArmStepSpeedCounterSlowing);
   verticalMotor.initStepCmRatio(verticalArmCmStepRatio);
   
   claw.attach(clawServoPin);
+  clawGrab();
+  
+  basket.attach(clawBasketPin);
+  basketClose();
+  
+  lance.attach(lanceServoPin);
+  lanceRaise();
 }
 
 void VisionArm::moveHorizontal(float distance, int side)
 {     
   horizontalMotor.setDirectionForward();
+  horizontalDirection = side;
   if(side == BACKWARD)
     horizontalMotor.toggleDirection();      
   horizontalMotor.setTargetDelay(horizontalArmSpeedDelay);
@@ -42,6 +56,7 @@ void VisionArm::moveHorizontal(float distance, int side)
 void VisionArm::moveVertical(float distance, int side)
 {      
   verticalMotor.setDirectionForward();
+  verticalDirection = side;
   if(side == DOWN)
     verticalMotor.toggleDirection();      
   verticalMotor.setTargetDelay(verticalArmSpeedDelay);
@@ -58,6 +73,26 @@ void VisionArm::clawGrab()
   claw.write(35);
 }
 
+void VisionArm::basketClose()
+{
+  basket.write(0);
+}
+
+void VisionArm::basketOpen()
+{
+  basket.write(89);
+}
+
+void VisionArm::lanceRaise()
+{
+  lance.write(0);
+}
+
+void VisionArm::lanceLower()
+{
+  lance.write(89);
+}
+
 boolean VisionArm::isStopped()
 {
   return horizontalMotor.isOff() && verticalMotor.isOff();
@@ -65,6 +100,8 @@ boolean VisionArm::isStopped()
 
 void VisionArm::doLoop()
 {
+  if (verticalLimiter.detect() && verticalDirection == DOWN)
+    verticalMotor.stopNow();
   horizontalMotor.doLoop();
   verticalMotor.doLoop();
 }
