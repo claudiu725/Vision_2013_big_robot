@@ -22,6 +22,7 @@ class VisionArm {
     VisionStepper horizontalMotor;
     VisionStepper verticalMotor;
     int verticalDirection, horizontalDirection;
+    float upDistance;
     void init();
     void clawGrab();
     void clawRelease();
@@ -31,6 +32,7 @@ class VisionArm {
     void lanceLower();
     void moveHorizontal(float, int);
     void moveVertical(float, int);
+    void moveUp();
     void doLoop();
     void stopNow();
     boolean isStopped();

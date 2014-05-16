@@ -16,6 +16,7 @@ void VisionBase::init()
   leftEncoder.initPin(leftMotorEncoderPin);
   leftMotor.init();
   leftMotor.initDirectionForward(LOW);
+//  leftMotor.setFullStep();
   leftMotor.initPins(leftMotorEnablePin, leftMotorDirectionPin, leftMotorStepPin);
   leftMotor.initDelays(defaultStartSpeedDelay, highPhaseDelay, pauseSpeedDelay, delayBeforeTurnOff, stepSpeedCounterAcceleration, stepSpeedCounterSlowing);
   leftMotor.initSizes(wheelDiameter, wheelRevolutionSteps,distanceBetweenWheels);
@@ -23,6 +24,7 @@ void VisionBase::init()
   rightEncoder.initPin(rightMotorEncoderPin);
   rightMotor.init();
   rightMotor.initDirectionForward(HIGH);
+//  rightMotor.setFullStep();
   rightMotor.initPins(rightMotorEnablePin, rightMotorDirectionPin, rightMotorStepPin);
   rightMotor.initDelays(defaultStartSpeedDelay, highPhaseDelay, pauseSpeedDelay, delayBeforeTurnOff, stepSpeedCounterAcceleration, stepSpeedCounterSlowing);
   rightMotor.initSizes(wheelDiameter, wheelRevolutionSteps,distanceBetweenWheels);
@@ -67,6 +69,8 @@ void VisionBase::turnLeft(int angle)
     leftMotor.setDirectionForward();
     rightMotor.setDirectionBackward();
   }
+  leftMotor.setTargetDelay(turnSpeedDelay);         
+  rightMotor.setTargetDelay(turnSpeedDelay);
   leftMotor.doRotationInAngle(angle);
   rightMotor.doRotationInAngle(angle); 
 }
@@ -82,8 +86,10 @@ void VisionBase::turnRight(int angle)
   else
   { 
     leftMotor.setDirectionBackward();
-    rightMotor.setDirectionForward();   
+    rightMotor.setDirectionForward();
   }
+  leftMotor.setTargetDelay(turnSpeedDelay);         
+  rightMotor.setTargetDelay(turnSpeedDelay);
   leftMotor.doRotationInAngle(angle);
   rightMotor.doRotationInAngle(angle);
 }

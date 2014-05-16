@@ -21,13 +21,15 @@ boolean ignoreSensors = false;
 
 VisionState baseState, armState, robotState, clawState;
 
+boolean fruitWasDetected;
+
 void setup()
 {
   base.init();
   arm.init();
   ignoreSensors = true;
   baseState.wait(1000, 0);
-  armState.wait(4000, STATE_STOP);
+  armState.wait(1000, STATE_STOP);
   robotState.wait(NINETYSECONDS, 0);
   clawState.wait(1000, STATE_STOP);
 }
@@ -44,21 +46,21 @@ void loop()
       robotState.doLoop();
       break;
   }
-  
+/*
   if (!arm.verticalMotor.isOff() && !arm.verticalLimiter.detect())
   {
     arm.verticalMotor.doLoop();
     return;
-  }
+  }*/
   switch (baseState)
   {
-    case 0:
+    case 99:
       base.moveBackward(50,veryFastSpeedDelay);
       baseState.waitFor(baseStop, STATE_STOP);
       break;
     
-    case 99:
-      base.moveForward(30,slowSpeedDelay);
+    case 0:
+      base.moveForward(30,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 1:
@@ -66,16 +68,28 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 2:
-      base.moveForward(40,slowSpeedDelay);
+      base.moveForward(11,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 3:
-      base.turnLeft(10);
+      base.turnRight(30);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 4:
-      base.moveForward(20,slowSpeedDelay);
-      baseState.waitFor(baseStop, STATE_STOP);
+      base.moveForward(10,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 5:
+      base.turnLeft(40);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 6:
+      base.moveForward(50,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 7:
+      armState = 11;
+      baseState = STATE_STOP;
       break;
     default:
       baseState.doLoop();
@@ -118,20 +132,15 @@ void loop()
     case 10:
       armState.wait(1000,7);
       break;
-    
+
     // arm open routine
     case 11:
-      arm.moveHorizontal(10, FORWARD);
+      arm.moveHorizontal(17, FORWARD);
       armState.waitFor(armStop, STATE_NEXT);
       break;
     case 12:
-      armState.wait(1000, STATE_NEXT);
-      break;
-    case 13:
-      arm.moveVertical(99, DOWN);
-      armState.waitFor(armStop, STATE_NEXT);
-      break;
-    case 14:
+      arm.clawRelease();
+      clawState.wait(1000, 20);
       armState.wait(1000, STATE_STOP);
       break;
 
@@ -204,22 +213,83 @@ void loop()
   switch (clawState)
   {
     case 0:
-      arm.clawRelease();
-      clawState.waitFor(fruitBarrierDetect, STATE_NEXT);
+      arm.moveHorizontal(10, FORWARD);
+      clawState.waitFor(armStop, STATE_NEXT);
       break;
     case 1:
+      arm.clawRelease();
+      arm.moveHorizontal(5, FORWARD);
+      clawState.waitFor(armStop, STATE_NEXT);
+      break;
+    case 2:
+      arm.moveVertical(99, DOWN);
+      clawState.waitFor(armStop, STATE_NEXT);
+      break;
+    case 3:
       arm.clawGrab();
       clawState.wait(500, STATE_NEXT);
       break;
-    case 2:
-      if (arm.fruitColor.isPurple())
-        clawState.wait(5000, STATE_NEXT);
-      else
-        clawState.wait(500, STATE_NEXT);
+    case 4:
+      arm.moveHorizontal(7, BACKWARD);
+      base.turnLeft(90);
+      clawState.waitFor(armStop, STATE_NEXT);
       break;
-    case 3:
+    case 5:
+      clawState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 6:
+      arm.clawRelease();
+      base.turnRight(90);
+      clawState.waitFor(baseStop, STATE_NEXT);
+      break;
+      
+    case 10:
+      arm.moveHorizontal(15, BACKWARD);
+      clawState.wait(500, STATE_NEXT);
+      break;
+    case 11:
+      if (arm.fruitColor.isPurple())
+        clawState = 3;
+      else
+        clawState = 4;
+      break;
+    case 12:
+      arm.moveHorizontal(10, BACKWARD);
+      break;
+    case 13:
+      break;
+    case 14:
       arm.clawRelease();
       clawState.wait(1000, 0);
+      break;
+
+    case 20:
+      arm.moveVertical(5, DOWN);
+      clawState.waitFor(armStop, STATE_NEXT);
+      break;
+    case 21:
+      if (fruitBarrierDetect())
+      {
+         arm.clawGrab();
+         arm.moveUp();
+         clawState = STATE_STOP;
+      }
+      else
+         clawState.wait(100, STATE_NEXT);
+      break;
+    case 22:
+      arm.moveVertical(2.5, DOWN);
+      clawState.waitFor(armStop, STATE_NEXT);
+      break;
+    case 23:
+      if (fruitBarrierDetect())
+      {
+         arm.clawGrab();
+      }
+      arm.moveUp();
+      clawState = STATE_STOP;
+      break;
+    
     default:
       clawState.doLoop();
   }
@@ -234,22 +304,23 @@ void loop()
     else
       base.unpause();
   }
+  if (arm.fruitBarrier.detect())
+    fruitWasDetected = true;
   
   if (arm.horizontalLimiter.detect() && !arm.horizontalMotor.isOff() && arm.horizontalDirection == BACKWARD)
     arm.horizontalMotor.setRemainingDistance(0.05);
-    //arm.moveHorizontal(0.1, BACKWARD);
   if (arm.horizontalAntiSlip.detect() && arm.horizontalMotor.isOff())
-    arm.moveHorizontal(0.1, BACKWARD);
+    arm.moveHorizontal(1, BACKWARD);
+  if (arm.verticalLimiter.detect() && !arm.verticalMotor.isOff() && arm.verticalDirection == DOWN)
+  {
+    arm.verticalMotor.stopNow();
+    arm.upDistance = 8.0;
+  }
 
   base.doLoop();
   arm.doLoop();
 }
 
-void grabOnPurple()
-{
-  if(arm.fruitColor.isPurple())
-      arm.clawGrab();
-}
 boolean baseStop()
 {
   return base.isStopped();

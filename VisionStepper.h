@@ -9,6 +9,7 @@
     public:
       void init();
       void initPins(int enablePin, int directionPin, int stepPin);
+      void setFullStep();
       void initDirectionForward(boolean forward);
       void initDelays(unsigned long startSpeedDelay, unsigned long highPhaseDelay, unsigned long maxSpeedDelay, unsigned long pauseSpeedDelay, float stepSpeedCounterAcceleration, float stepSpeedCounterSlowing);
       void initSizes(float wheelDiameter, int wheelRevolutionSteps, float distanceBetweenWheels);
@@ -45,6 +46,7 @@
       elapsedMicros stepTimer;
       elapsedMillis stopTimer, pauseTurnOff;
       boolean special;
+      boolean fullStep;
       
       float stepCmRatio; // steps for a cm
       float degreeStepRatio; //steps for a degree turn;

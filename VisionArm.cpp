@@ -32,9 +32,10 @@ void VisionArm::init()
   verticalMotor.initPins(verticalArmEnablePin, verticalArmDirectionPin, verticalArmStepPin);
   verticalMotor.initDelays(verticalArmStartSpeedDelay, verticalArmHighPhaseDelay, pauseSpeedDelay, delayBeforeTurnOff, verticalArmStepSpeedCounterAcceleration, verticalArmStepSpeedCounterSlowing);
   verticalMotor.initStepCmRatio(verticalArmCmStepRatio);
+  upDistance = 0;
   
   claw.attach(clawServoPin);
-  clawGrab();
+  clawRelease();
   
   basket.attach(clawBasketPin);
   basketClose();
@@ -48,7 +49,7 @@ void VisionArm::moveHorizontal(float distance, int side)
   horizontalMotor.setDirectionForward();
   horizontalDirection = side;
   if(side == BACKWARD)
-    horizontalMotor.toggleDirection();      
+    horizontalMotor.toggleDirection();
   horizontalMotor.setTargetDelay(horizontalArmSpeedDelay);
   horizontalMotor.doDistanceInCm(distance);
 }
@@ -58,9 +59,18 @@ void VisionArm::moveVertical(float distance, int side)
   verticalMotor.setDirectionForward();
   verticalDirection = side;
   if(side == DOWN)
-    verticalMotor.toggleDirection();      
+  {
+    verticalMotor.toggleDirection();
+    upDistance += distance;
+  }
   verticalMotor.setTargetDelay(verticalArmSpeedDelay);
   verticalMotor.doDistanceInCm(distance);
+}
+
+void VisionArm::moveUp()
+{
+  moveVertical(upDistance, UP);
+  upDistance = 0;
 }
 
 void VisionArm::clawRelease()
@@ -70,7 +80,7 @@ void VisionArm::clawRelease()
 
 void VisionArm::clawGrab()
 {
-  claw.write(35);
+  claw.write(20);
 }
 
 void VisionArm::basketClose()

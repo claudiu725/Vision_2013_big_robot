@@ -35,7 +35,6 @@
 
 const unsigned long waitBeforeTurningOn = 500;
 const unsigned long waitBeforeTurningOff = 500;
-boolean fullStep = false;
 
 void VisionStepper::init()
 {
@@ -46,6 +45,12 @@ void VisionStepper::init()
   enableState = OFF;
   stepState = STATE_STOP;
   forwardDirection = HIGH;
+  fullStep = false;
+}
+
+void VisionStepper::setFullStep()
+{
+  fullStep = true;
 }
 
 void VisionStepper::initDirectionForward(boolean forward)
