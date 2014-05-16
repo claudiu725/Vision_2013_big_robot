@@ -26,10 +26,10 @@ void setup()
   base.init();
   arm.init();
   ignoreSensors = true;
-  baseState.wait(1000, STATE_STOP);
+  baseState.wait(1000, 0);
   armState.wait(4000, STATE_STOP);
   robotState.wait(NINETYSECONDS, 0);
-  clawState.wait(1000, 0);
+  clawState.wait(1000, STATE_STOP);
 }
 
 void loop()
@@ -53,18 +53,29 @@ void loop()
   switch (baseState)
   {
     case 0:
-      base.moveForward(120,highPhaseDelay);
-      baseState.waitFor(baseStop, 2);
+      base.moveBackward(50,veryFastSpeedDelay);
+      baseState.waitFor(baseStop, STATE_STOP);
+      break;
+    
+    case 99:
+      base.moveForward(30,slowSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 1:
-      base.moveBackward(120,highPhaseDelay);
-      baseState.waitFor(baseStop, 3);
+      base.turnRight(10);
+      baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 2:
-      baseState.wait(1000, 1);
+      base.moveForward(40,slowSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 3:
-      baseState.wait(1000, 0);
+      base.turnLeft(10);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 4:
+      base.moveForward(20,slowSpeedDelay);
+      baseState.waitFor(baseStop, STATE_STOP);
       break;
     default:
       baseState.doLoop();

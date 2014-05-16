@@ -10,6 +10,7 @@ const unsigned long delayBeforeTurnOff = 500;
 
 const unsigned long slowSpeedDelay = 7000;
 const unsigned long fastSpeedDelay = 1000;
+const unsigned long veryFastSpeedDelay = 300;
 const unsigned long mediumSpeedDelay = 3000;
 const unsigned long ultraSlowSpeedDelay = 24000;
 

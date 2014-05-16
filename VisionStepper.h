@@ -33,7 +33,6 @@
       void resetSpecial();
     private:
       void doSetup();
-      float computeSpeed();
     private:
       int enablePin, directionPin, stepPin;
       int enablePinState, directionPinState, stepPinState;

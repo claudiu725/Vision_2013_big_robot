@@ -13,11 +13,13 @@
 #define STOPPED 9
 
 // enableState states
-#define TURN_ON 0
-#define ON 1
-#define DELAYED_TURN_OFF 2
-#define TURN_OFF 3
-#define OFF 4
+#define TURN_ON_DELAYED 0
+#define TURN_ON_START 1
+#define TURN_ON 2
+#define ON 3
+#define DELAYED_TURN_OFF 4
+#define TURN_OFF 5
+#define OFF 6
 
 // speedState states
 #define ACCELERATING 0
@@ -31,7 +33,9 @@
 #define STEP_LOW 0
 #define STEP_HIGH 1
 
+const unsigned long waitBeforeTurningOn = 500;
 const unsigned long waitBeforeTurningOff = 500;
+boolean fullStep = false;
 
 void VisionStepper::init()
 {
@@ -101,7 +105,7 @@ void VisionStepper::doLoop()
   {
     case STARTING:
       motorState = RUNNING;
-      enableState = TURN_ON;
+      enableState = TURN_ON_DELAYED;
       break;
     case RUNNING:
       break;
@@ -122,7 +126,7 @@ void VisionStepper::doLoop()
     case RESUME:
       setTargetDelay(savedWhenPausingDelay);
       if (enableState != ON)
-        enableState = TURN_ON;
+        enableState = TURN_ON_DELAYED;
       motorState = RUNNING;
       break;
     case STOPPING_SLOWING_WHEN_ARRIVING:
@@ -144,6 +148,15 @@ void VisionStepper::doLoop()
   }
   switch (enableState)
   {
+    case TURN_ON_DELAYED:
+      enablePinState = HIGH;
+      digitalWrite(enablePin, enablePinState);
+      enableState.wait(waitBeforeTurningOn, TURN_ON_START);
+      break;
+    case TURN_ON_START:
+      speedState = START;
+      enableState = ON;
+      break;
     case TURN_ON:
       speedState = START;
       enablePinState = HIGH;
@@ -227,11 +240,6 @@ void VisionStepper::doLoop()
   }
 }
 
-float VisionStepper::computeSpeed()
-{
-  return startSpeedDelay * 10 / sqrt(1 * stepSpeedCounter + 100);
-}
-
 void VisionStepper::pause()
 {
   if (motorState == RUNNING)
@@ -289,6 +297,8 @@ void VisionStepper::doSteps(unsigned long stepNumber)
 {
   stepsMadeSoFar = 0;
   stepsRemaining = stepNumber;
+  if (fullStep)
+    stepsRemaining /= 2;
   motorState = STARTING;
 }
 
