@@ -48,7 +48,7 @@ const int verticalArmEnablePin = 43;
 //Claw
 
 const int fruitBarrierPin = 14; //(bariera optica)
-//const int fruitColorSenzorPin = 22; //led
+const int fruitColorSenzorPin = 22; //led
 //SCL = 21 !!! doesn't change
 //SDA = 20 !!! doesn't change
 //const int fruitDistancePin = 24;

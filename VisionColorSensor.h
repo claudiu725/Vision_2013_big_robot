@@ -28,12 +28,13 @@ struct hsv_color {
 class VisionColorSensor {
   private:
     rgb_color getRgbColor();
-    hsv_color getHsvColor();
     hsv_color rgb_to_hsv(rgb_color rgb);
   public:
+    hsv_color getHsvColor();
     void initPin(int sensorPin);
     boolean isPurple();
     boolean isBlack();
+    boolean isClear();
   private:
     ADJDS311 colorSensor;
     int sensorPin;

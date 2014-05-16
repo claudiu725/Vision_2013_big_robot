@@ -52,11 +52,17 @@ void VisionColorSensor::initPin(int sensorPin)
 boolean VisionColorSensor::isPurple()
 {
   hsv_color hsv = getHsvColor();
-  return true;
+  return hsv.hue <= 25;
 }
 
 boolean VisionColorSensor::isBlack()
 {
   hsv_color hsv = getHsvColor();
-  return true;
+  return hsv.hue >= 43;
+}
+
+boolean VisionColorSensor::isClear()
+{
+  hsv_color hsv = getHsvColor();
+  return hsv.hue > 25 && hsv.hue < 43;
 }

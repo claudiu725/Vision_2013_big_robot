@@ -26,11 +26,10 @@ void setup()
   base.init();
   arm.init();
   ignoreSensors = true;
-  
   baseState.wait(1000, STATE_STOP);
-  armState.wait(4000, 50);//STATE_STOP);//3);
+  armState.wait(4000, STATE_STOP);
   robotState.wait(NINETYSECONDS, 0);
-  clawState.wait(1000, 2);
+  clawState.wait(1000, 0);
 }
 
 void loop()
@@ -75,21 +74,10 @@ void loop()
   switch (armState)            // arm switch
   {
     case 0:
-      arm.clawRelease();
-      armState.wait(1000, STATE_NEXT);
-      break;
-    case 1:
-      arm.moveHorizontal(15, FORWARD);
-      armState.waitFor(armStop, STATE_NEXT);
-      break;
-    case 2:
-      armState.wait(1000, STATE_NEXT);
       break;
       
     // vertical test 3-6
     case 3:
-      //arm.clawGrab();
-      //arm.clawRelease();
       arm.moveVertical(99, DOWN);
       armState.waitFor(armStop, STATE_NEXT);
       break;
@@ -97,9 +85,6 @@ void loop()
       armState.wait(1000, STATE_NEXT);
       break;
     case 5:
-      //basket.bringTo(35);
-      //lance.bringTo(35);
-      //arm.clawRelease();
       arm.moveVertical(8.0, UP);
       armState.waitFor(armStop, STATE_NEXT);
       break;
@@ -107,7 +92,7 @@ void loop()
       armState.wait(1000, 3);
       break;
       
-    // horizontal test 7-9
+    // horizontal test 7-10
     case 7:
       arm.moveHorizontal(10, FORWARD);
       armState.waitFor(armStop, STATE_NEXT);
@@ -123,6 +108,7 @@ void loop()
       armState.wait(1000,7);
       break;
     
+    // arm open routine
     case 11:
       arm.moveHorizontal(10, FORWARD);
       armState.waitFor(armStop, STATE_NEXT);
@@ -137,7 +123,7 @@ void loop()
     case 14:
       armState.wait(1000, STATE_STOP);
       break;
-    
+
     case 30:
       armState.wait(1000, STATE_NEXT);
       break;
@@ -151,13 +137,13 @@ void loop()
     case 33:
       armState.wait(1000, 0);
       break;
-    case 50:
+    
+    // shake routine
+    case 59:
       arm.basketOpen();
       armState = STATE_NEXT;
       armState.save();
       armState.wait(1000, 60);
-      break;
-    case 51:
       break;
     case 60:
       base.turnLeft(10);
@@ -180,7 +166,7 @@ void loop()
       armState.waitFor(baseStop, STATE_NEXT);
       break;
     case 65:
-      arm.moveHorizontal(2, BACKWARD);
+      arm.moveHorizontal(10, BACKWARD);
       base.turnRight(10);
       armState.waitFor(baseStop, STATE_NEXT);
       break;
@@ -189,7 +175,7 @@ void loop()
       armState.waitFor(baseStop, STATE_NEXT);
       break;
     case 67:
-      arm.moveHorizontal(2, FORWARD);
+      arm.moveHorizontal(10, FORWARD);
       base.turnRight(10);
       armState.waitFor(baseStop, STATE_NEXT);
       break;
@@ -198,53 +184,8 @@ void loop()
       armState.restore();
       break;
 
-    /*
-    basket.bringTo(90);
-    if(ok)
-    {
-      if(value>70)
-      {
-        basket.bringTo(value++);
-        lance.bringTo(value++);
-      }
-      else
-        ok = false;
-    }
-    else
-    {
-      if(value<140)
-      {
-          basket.bringTo(value--);
-          lance.bringTo(value--);
-      }
-      else
-        ok = true;
-    }
+    case 80:
       break;
-    case 5:
-      arm.clawRelease();
-      armState.waitFor(fruitDetect, STATE_NEXT);
-      break;
-    case 6:
-      arm.clawGrab();
-      armState.wait(1000, STATE_NEXT);
-      break;
-    case 7:
-      arm.clawRelease();
-      armState.wait(250, STATE_NEXT);
-      break;
-    case 8:
-      arm.moveVertical(3, DOWN);
-      armState.waitFor(verticalLimiterTrigger, STATE_NEXT);
-      break;
-    case 9:
-      arm.verticalMotor.stopNow();
-      armState.wait(100, STATE_NEXT);
-      break;
-    case 10:
-      arm.moveVertical(9.5, UP);
-      armState = STATE_STOP;
-      break;*/
     default:
       armState.doLoop();
   }
@@ -257,10 +198,15 @@ void loop()
       break;
     case 1:
       arm.clawGrab();
-      //arm.moveVertical(99, DOWN);
-      clawState.wait(1000, STATE_NEXT);
+      clawState.wait(500, STATE_NEXT);
       break;
     case 2:
+      if (arm.fruitColor.isPurple())
+        clawState.wait(5000, STATE_NEXT);
+      else
+        clawState.wait(500, STATE_NEXT);
+      break;
+    case 3:
       arm.clawRelease();
       clawState.wait(1000, 0);
     default:

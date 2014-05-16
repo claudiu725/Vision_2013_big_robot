@@ -13,7 +13,7 @@ void VisionArm::init()
 {
   fruitBarrier.initPin(fruitBarrierPin);
   fruitBarrier.toggleNegate();
-  //fruitColor.initPin(fruitColorSenzorPin);
+  fruitColor.initPin(fruitColorSenzorPin);
   
   horizontalLimiter.initPin(horizontalArmLimiterPin);
   horizontalLimiter.setAsPullup();
@@ -65,7 +65,7 @@ void VisionArm::moveVertical(float distance, int side)
 
 void VisionArm::clawRelease()
 {
-  claw.write(140);
+  claw.write(130);
 }
 
 void VisionArm::clawGrab()
@@ -75,22 +75,22 @@ void VisionArm::clawGrab()
 
 void VisionArm::basketClose()
 {
-  basket.write(0);
+  basket.write(3);
 }
 
 void VisionArm::basketOpen()
 {
-  basket.write(89);
+  basket.write(86);
 }
 
 void VisionArm::lanceRaise()
 {
-  lance.write(0);
+  lance.write(3);
 }
 
 void VisionArm::lanceLower()
 {
-  lance.write(89);
+  lance.write(86);
 }
 
 boolean VisionArm::isStopped()
