@@ -26,17 +26,21 @@ boolean fruitWasDetected;
 
 void setup()
 {
+  Serial.begin(9600);
   base.init();
   arm.init();
   ignoreSensors = true;
   baseState.wait(1000, STATE_STOP);
-  armState.wait(7000, 1);
+  armState.waitFor(armVerticalStop, 1);
   robotState.wait(NINETYSECONDS, 0);
   clawState.wait(1000, STATE_STOP);
 }
 
 void loop()
 {
+  //Serial.print(arm.sensorTop.detect());
+  //Serial.print(arm.sensorMiddle.detect());
+  //Serial.println(arm.sensorBottom.detect());
   switch (robotState)
   {
     case 0:
@@ -101,27 +105,28 @@ void loop()
   {
     case 0:
       break;
-      
+
     // vertical test 1-6
     case 1:
       arm.moveVertical(arm.sensorBottom);
       armState.waitFor(armVerticalStop, STATE_NEXT);
       break;
     case 2:
-      arm.moveVertical(arm.sensorTop);
-      armState.waitFor(armVerticalStop, STATE_NEXT);
+      armState.wait(2000, STATE_NEXT);
       break;
     case 3:
-      arm.moveVertical(arm.sensorBottom);
+      arm.moveVertical(arm.sensorTop);
       armState.waitFor(armVerticalStop, STATE_NEXT);
       break;
     case 4:
-      arm.moveVertical(arm.sensorTop);
-      armState.waitFor(armVerticalStop, STATE_NEXT);
+      armState.wait(2000, STATE_NEXT);
       break;
     case 5:
-      arm.moveVertical(arm.sensorBottom);
-      armState.waitFor(armVerticalStop, STATE_STOP);
+      arm.moveVertical(arm.sensorMiddle);
+      armState.waitFor(armVerticalStop, STATE_NEXT);
+      break;
+    case 6:
+      armState.wait(2000, 1);
       break;
       
     // horizontal test 7-10
@@ -271,7 +276,7 @@ void loop()
       break;
 
     case 20:
-      arm.moveVertical(arm.sensorFruitHigh);
+      arm.moveVertical(arm.sensorMiddle);
       clawState.waitFor(armStop, STATE_NEXT);
       break;
     case 21:
@@ -284,7 +289,7 @@ void loop()
          clawState.wait(100, STATE_NEXT);
       break;
     case 22:
-      arm.moveVertical(arm.sensorFruitHigh);
+      arm.moveVertical(arm.sensorMiddle);
       clawState.waitFor(armStop, STATE_NEXT);
       break;
     case 23:
@@ -317,8 +322,8 @@ void loop()
     arm.horizontalMotor.setRemainingDistance(0.05);
   if (arm.horizontalAntiSlip.detect() && arm.horizontalMotor.isOff())
     arm.moveHorizontal(1, BACKWARD);
-  if (arm.verticalLimiter.detect() && !arm.verticalMotor.isOff())
-    arm.verticalMotor.stopNow();
+  //if (arm.verticalLimiter.detect() && !arm.verticalMotor.isOff())
+  //  arm.verticalMotor.stopNow();
 
   base.doLoop();
   arm.doLoop();

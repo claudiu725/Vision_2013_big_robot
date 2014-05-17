@@ -31,8 +31,8 @@ void VisionArm::init()
   sensorTop.initPin(inductiveStartSensorPin);
   sensorTop.initInductivePosition(3);
   
-  sensorFruitHigh.initPin(inductiveFruitHighSensorPin);
-  sensorFruitHigh.initInductivePosition(2);
+  sensorMiddle.initPin(inductiveFruitHighSensorPin);
+  sensorMiddle.initInductivePosition(2);
   
   sensorBottom.initPin(inductiveFruitLowSensorPin);
   sensorBottom.initInductivePosition(0);
@@ -41,6 +41,7 @@ void VisionArm::init()
   verticalMotor.initDirectionForward(LOW);
   verticalMotor.initPins(verticalArmBrushlessPin, verticalArmDirectionRelayPin);
   verticalMotor.initTopBottom(sensorTop, sensorBottom);
+  verticalMotor.initPosition(sensorTop.inductivePosition);
   verticalMotor.initPwms(verticalArmStopPwm, verticalArmNormalPwm);
   
   claw.attach(clawServoPin);

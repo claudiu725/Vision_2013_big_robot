@@ -37,6 +37,11 @@ void VisionBrushless::initTopBottom(VisionSensor& front, VisionSensor& back)
   this->back = &back;
 }
 
+void VisionBrushless::initPosition(int inductivePosition)
+{
+  currentInductivePosition = inductivePosition;
+}
+
 void VisionBrushless::initPwms(int stopPwm, int normalPwm)
 {
   this->stopPwm = stopPwm;
@@ -76,6 +81,7 @@ void VisionBrushless::doLoop()
   switch (motorState)
   {
     case INIT:
+      Serial.println("INIT");
       brushless.write(stopPwm);
       motorState.wait(timeNeededToInitializeECS, STATE_STOP);
       break;
@@ -88,6 +94,7 @@ void VisionBrushless::doLoop()
       motorState.waitMicros(timeMicros, STOP);
       break;
     case GO_TO_FORWARD:
+      Serial.println("going forward");
       brushless.write(normalPwm);
       setDirectionForward();
       motorState = WAIT_FOR_SENSOR_FORWARD;
@@ -97,7 +104,9 @@ void VisionBrushless::doLoop()
       stopIfSensorDetect(*front); 
       break;
     case GO_TO_BACKWARD:
+      Serial.println("going backward");
       brushless.write(normalPwm);
+      setDirectionBackward();
       motorState = WAIT_FOR_SENSOR_BACKWARD;
       break;
     case WAIT_FOR_SENSOR_BACKWARD:
@@ -105,15 +114,18 @@ void VisionBrushless::doLoop()
       stopIfSensorDetect(*back);
       break;
     case STOP:
+      Serial.println("stop 1");
       toggleDirection();
       brushless.write(stopPwm);
       motorState.wait(delayBetweenTogglesInMs, TOGGLE_2);
       break;
     case TOGGLE_2:
+      Serial.println("stop 2");
       toggleDirection();
       motorState.wait(delayBetweenTogglesInMs, TOGGLE_3);
       break;
     case TOGGLE_3:
+      Serial.println("stop 3");
       toggleDirection();
       motorState = STATE_STOP;
       break;
@@ -127,6 +139,8 @@ void VisionBrushless::stopIfSensorDetect(VisionSensor& sensor)
 {
   if (sensor.detect())
   {
+    Serial.print("found sensor with number ");
+    Serial.println(sensor.inductivePosition);
     currentInductivePosition = sensor.inductivePosition;
     motorState = STOP;
   }
@@ -135,7 +149,14 @@ void VisionBrushless::stopIfSensorDetect(VisionSensor& sensor)
 void VisionBrushless::moveTo(VisionSensor& sensor)
 {
   if (!isOff())
+  {
+    Serial.print("trying to move but the motor isn't off");
     return;
+  }
+  Serial.print("moving to sensor with number ");
+  Serial.println(sensor.inductivePosition);
+  Serial.print("current position is ");
+  Serial.println(currentInductivePosition);
   sensorToGoTo = &sensor;
   if (currentInductivePosition == front->inductivePosition)
     motorState = GO_TO_BACKWARD;

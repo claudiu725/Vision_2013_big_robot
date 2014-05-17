@@ -12,6 +12,7 @@ class VisionBrushless {
     void initPins(int brushlessPin, int relayPin);
     void initPwms(int stopPwm, int normalPwm);
     void initTopBottom(VisionSensor& front, VisionSensor& back);
+    void initPosition(int inductivePosition);
     void initDirectionForward(boolean forward);
     void setDirectionForward();
     void setDirectionBackward();

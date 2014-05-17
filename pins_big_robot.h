@@ -43,9 +43,9 @@ const int horizontalArmEnablePin = 49;
 const int verticalArmLimiterPin = A15;
 const int verticalArmDirectionRelayPin = 53;
 const int verticalArmBrushlessPin = 51;
-const int inductiveStartSensorPin = 999;
-const int inductiveFruitHighSensorPin = 999;
-const int inductiveFruitLowSensorPin = 999;
+const int inductiveStartSensorPin = A6;
+const int inductiveFruitHighSensorPin = A7;
+const int inductiveFruitLowSensorPin = A5;
 
 //Claw
 

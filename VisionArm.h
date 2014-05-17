@@ -22,7 +22,7 @@ class VisionArm {
     VisionSensor verticalLimiter, horizontalLimiter, horizontalAntiSlip;
     VisionStepper horizontalMotor;
     VisionBrushless verticalMotor;
-    VisionSensor sensorTop, sensorFruitHigh, sensorBottom;
+    VisionSensor sensorTop, sensorMiddle, sensorBottom;
     int horizontalDirection;
     void init();
     void clawGrab();

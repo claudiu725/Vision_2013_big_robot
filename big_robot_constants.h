@@ -21,16 +21,14 @@ const float horizontalArmStepSpeedCounterSlowing = 25;
 const unsigned long horizontalArmStartSpeedDelay = 10000;
 const unsigned long horizontalArmSpeedDelay = 5000;
 
-const int verticalArmStopPwm = 15;
-const int verticalArmNormalPwm = 60;
-const float verticalArmCmTimeRatio = 123456.0;
-
 const float wheelDiameter = 12.3;
 const float distanceBetweenWheels = 24.1; //valoare interioara
 const int wheelRevolutionSteps = 200;
 
 const float horizontalArmCmStepRatio = 30.86; // 16.2cm per 500 steps
-const float verticalArmCmStepRatio = 4000.0; //2.5cm per 10000 steps
+
+const int verticalArmStopPwm = 15;
+const int verticalArmNormalPwm = 35;
 
 const float encoderRevolutionSteps = 24;
 
