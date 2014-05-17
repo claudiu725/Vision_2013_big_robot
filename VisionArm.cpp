@@ -29,10 +29,10 @@ void VisionArm::init()
   verticalLimiter.setAsPullup();
   
   verticalMotor.init();
-  verticalMotor.initPins(verticalArmEnablePin, verticalArmDirectionPin, verticalArmStepPin);
-  verticalMotor.initDelays(verticalArmStartSpeedDelay, verticalArmHighPhaseDelay, pauseSpeedDelay, delayBeforeTurnOff, verticalArmStepSpeedCounterAcceleration, verticalArmStepSpeedCounterSlowing);
-  verticalMotor.initStepCmRatio(verticalArmCmStepRatio);
-  upDistance = 0;
+  verticalMotor.initDirectionForward(LOW);
+  verticalMotor.initPins(verticalArmBrushlessPin, verticalArmDirectionRelayPin);
+  verticalMotor.initPwms(verticalArmStopPwm, verticalArmNormalPwm);
+  verticalMotor.initTimeCmRatio(verticalArmCmTimeRatio);
   
   claw.attach(clawServoPin);
   clawRelease();
@@ -63,7 +63,6 @@ void VisionArm::moveVertical(float distance, int side)
     verticalMotor.toggleDirection();
     upDistance += distance;
   }
-  verticalMotor.setTargetDelay(verticalArmSpeedDelay);
   verticalMotor.doDistanceInCm(distance);
 }
 
@@ -110,8 +109,6 @@ boolean VisionArm::isStopped()
 
 void VisionArm::doLoop()
 {
-  if (verticalLimiter.detect() && verticalDirection == DOWN)
-    verticalMotor.stopNow();
   horizontalMotor.doLoop();
   verticalMotor.doLoop();
 }

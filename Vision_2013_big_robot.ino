@@ -10,6 +10,7 @@
 #include "VisionBase.h"
 #include "VisionArm.h"
 #include "VisionState.h"
+#include "VisionBrushless.h"
 #include "pins_big_robot.h"
 #include "big_robot_constants.h"
 
@@ -28,8 +29,8 @@ void setup()
   base.init();
   arm.init();
   ignoreSensors = true;
-  baseState.wait(1000, 0);
-  armState.wait(1000, STATE_STOP);
+  baseState.wait(1000, STATE_STOP);
+  armState.wait(7000, 3);
   robotState.wait(NINETYSECONDS, 0);
   clawState.wait(1000, STATE_STOP);
 }
@@ -103,18 +104,21 @@ void loop()
       
     // vertical test 3-6
     case 3:
-      arm.moveVertical(99, DOWN);
-      armState.waitFor(armStop, STATE_NEXT);
+      arm.verticalMotor.setDirectionBackward();
+      arm.verticalMotor.setNormalPwm(25);
+      armState = 4;
       break;
-    case 4:
-      armState.wait(1000, STATE_NEXT);
+    case 4:      
+      arm.verticalMotor.doTimeMs(2000);
+      armState.waitFor(fruitBarrierDetect, STATE_NEXT);
       break;
     case 5:
-      arm.moveVertical(8.0, UP);
-      armState.waitFor(armStop, STATE_NEXT);
+      arm.verticalMotor.toggleDirection();
+      arm.verticalMotor.stopNow();
+      armState.wait(4000, 4);
       break;
     case 6:
-      armState.wait(1000, 3);
+      armState.wait(250, 5);
       break;
       
     // horizontal test 7-10
@@ -311,6 +315,8 @@ void loop()
     arm.horizontalMotor.setRemainingDistance(0.05);
   if (arm.horizontalAntiSlip.detect() && arm.horizontalMotor.isOff())
     arm.moveHorizontal(1, BACKWARD);
+  if (arm.verticalLimiter.detect() && arm.verticalDirection == DOWN)
+    arm.verticalMotor.stopNow();
   if (arm.verticalLimiter.detect() && !arm.verticalMotor.isOff() && arm.verticalDirection == DOWN)
   {
     arm.verticalMotor.stopNow();

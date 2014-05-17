@@ -41,9 +41,8 @@ const int horizontalArmEnablePin = 49;
 
 //Vertical arm
 const int verticalArmLimiterPin = A15;
-const int verticalArmDirectionPin = 53;
-const int verticalArmStepPin = 51;
-const int verticalArmEnablePin = 43;
+const int verticalArmDirectionRelayPin = 53;
+const int verticalArmBrushlessPin = 51;
 
 //Claw
 

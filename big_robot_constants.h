@@ -21,11 +21,9 @@ const float horizontalArmStepSpeedCounterSlowing = 25;
 const unsigned long horizontalArmStartSpeedDelay = 10000;
 const unsigned long horizontalArmSpeedDelay = 5000;
 
-const float verticalArmStepSpeedCounterAcceleration = 0.2;
-const float verticalArmStepSpeedCounterSlowing = 50.0;
-const unsigned long verticalArmStartSpeedDelay = 1000;
-const unsigned long verticalArmSpeedDelay = 270;
-const unsigned long verticalArmHighPhaseDelay = 10;
+const int verticalArmStopPwm = 15;
+const int verticalArmNormalPwm = 60;
+const float verticalArmCmTimeRatio = 123456.0;
 
 const float wheelDiameter = 12.3;
 const float distanceBetweenWheels = 24.1; //valoare interioara

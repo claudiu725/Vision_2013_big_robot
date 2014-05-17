@@ -5,6 +5,7 @@
 #include "VisionStepper.h"
 #include "VisionSensor.h"
 #include "VisionColorSensor.h"
+#include "VisionBrushless.h"
 #include <elapsedMillis.h>
 #include <Servo.h>
 
@@ -20,7 +21,7 @@ class VisionArm {
     VisionColorSensor fruitColor;
     VisionSensor verticalLimiter, horizontalLimiter, horizontalAntiSlip;
     VisionStepper horizontalMotor;
-    VisionStepper verticalMotor;
+    VisionBrushless verticalMotor;
     int verticalDirection, horizontalDirection;
     float upDistance;
     void init();
