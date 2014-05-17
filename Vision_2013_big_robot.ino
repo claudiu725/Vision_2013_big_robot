@@ -105,7 +105,7 @@ void loop()
     // vertical test 3-6
     case 3:
       arm.verticalMotor.setDirectionBackward();
-      arm.verticalMotor.setNormalPwm(25);
+      arm.verticalMotor.setNormalPwm(60);
       armState = 4;
       break;
     case 4:      
@@ -115,10 +115,15 @@ void loop()
     case 5:
       arm.verticalMotor.toggleDirection();
       arm.verticalMotor.stopNow();
-      armState.wait(4000, 4);
+      armState.wait(40, STATE_NEXT);
       break;
     case 6:
-      armState.wait(250, 5);
+      arm.verticalMotor.toggleDirection();
+      armState.wait(40, 99);
+      break;
+    case 99:
+      arm.verticalMotor.toggleDirection();
+      armState.wait(4000, 4);
       break;
       
     // horizontal test 7-10
