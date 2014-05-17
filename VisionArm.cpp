@@ -28,11 +28,18 @@ void VisionArm::init()
   verticalLimiter.initPin(verticalArmLimiterPin);
   verticalLimiter.setAsPullup();
   
+  sensorTop.initPin(inductiveStartSensorPin);
+  sensorTop.initInductivePosition(3);
+  sensorFruitHigh.initPin(inductiveFruitHighSensorPin);
+  sensorFruitHigh.initInductivePosition(2);
+  sensorBottom.initPin(inductiveFruitLowSensorPin);
+  sensorBottom.initInductivePosition(0);
+  
   verticalMotor.init();
   verticalMotor.initDirectionForward(LOW);
   verticalMotor.initPins(verticalArmBrushlessPin, verticalArmDirectionRelayPin);
+  verticalMotor.initTopBottom(sensorTop, sensorBottom);
   verticalMotor.initPwms(verticalArmStopPwm, verticalArmNormalPwm);
-  verticalMotor.initTimeCmRatio(verticalArmCmTimeRatio);
   
   claw.attach(clawServoPin);
   clawRelease();
@@ -45,7 +52,7 @@ void VisionArm::init()
 }
 
 void VisionArm::moveHorizontal(float distance, int side)
-{     
+{
   horizontalMotor.setDirectionForward();
   horizontalDirection = side;
   if(side == BACKWARD)
@@ -54,22 +61,9 @@ void VisionArm::moveHorizontal(float distance, int side)
   horizontalMotor.doDistanceInCm(distance);
 }
 
-void VisionArm::moveVertical(float distance, int side)
-{      
-  verticalMotor.setDirectionForward();
-  verticalDirection = side;
-  if(side == DOWN)
-  {
-    verticalMotor.toggleDirection();
-    upDistance += distance;
-  }
-  verticalMotor.doDistanceInCm(distance);
-}
-
-void VisionArm::moveUp()
+void VisionArm::moveVertical(VisionSensor& sensor)
 {
-  moveVertical(upDistance, UP);
-  upDistance = 0;
+  verticalMotor.moveTo(sensor);
 }
 
 void VisionArm::clawRelease()

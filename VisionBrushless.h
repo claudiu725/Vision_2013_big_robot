@@ -2,6 +2,7 @@
 #define VisionBrushless_h
 
 #include "Arduino.h"
+#include "VisionSensor.h"
 #include "VisionState.h"
 #include <Servo.h>
 
@@ -10,26 +11,28 @@ class VisionBrushless {
     void init();
     void initPins(int brushlessPin, int relayPin);
     void initPwms(int stopPwm, int normalPwm);
-    void initTimeCmRatio(float verticalArmCmTimeRatio);
+    void initTopBottom(VisionSensor& front, VisionSensor& back);
     void initDirectionForward(boolean forward);
     void setDirectionForward();
     void setDirectionBackward();
     void toggleDirection();
     void doLoop();
-    void doDistanceInCm(float distance);
     void setNormalPwm(int normalPwm);
     void doTimeMs(unsigned long time);
     void doTimeMicros(unsigned long time);
+    void moveTo(VisionSensor& sensor);
     void stopNow();
+    void stopIfSensorDetect(VisionSensor& sensor);
     boolean isOff();
-  public:
+  private:
     VisionState motorState;
+    VisionSensor *front, *back, *sensorToGoTo;
+    int currentInductivePosition;
     Servo brushless;
     boolean forwardDirection, directionPinState;
     int stopPwm, normalPwm;
     int brushlessPin, relayPin;
     unsigned long timeMs, timeMicros;
-    float verticalArmCmTimeRatio;
 };
 
 #endif

@@ -22,8 +22,8 @@ class VisionArm {
     VisionSensor verticalLimiter, horizontalLimiter, horizontalAntiSlip;
     VisionStepper horizontalMotor;
     VisionBrushless verticalMotor;
+    VisionSensor sensorTop, sensorFruitHigh, sensorBottom;
     int verticalDirection, horizontalDirection;
-    float upDistance;
     void init();
     void clawGrab();
     void clawRelease();
@@ -32,8 +32,7 @@ class VisionArm {
     void lanceRaise();
     void lanceLower();
     void moveHorizontal(float, int);
-    void moveVertical(float, int);
-    void moveUp();
+    void moveVertical(VisionSensor& sensor);
     void doLoop();
     void stopNow();
     boolean isStopped();

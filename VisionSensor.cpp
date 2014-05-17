@@ -6,7 +6,13 @@ void VisionSensor::initPin(int sensorPin)
   enabled = true;
   pullup = false;
   negate = false;
+  inductivePosition = 1;
   pinMode(sensorPin, INPUT);
+}
+
+void VisionSensor::initInductivePosition(int inductivePosition)
+{
+  this->inductivePosition = inductivePosition;
 }
 
 void VisionSensor::setAsPullup()

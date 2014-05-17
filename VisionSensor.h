@@ -6,6 +6,8 @@
 class VisionSensor {
   public:
     void initPin(int sensorPin);
+    void initInductivePosition(int inductivePosition);
+    void isBelow(int inductivePosition);
     void setAsPullup();
     boolean detect();
     void enable();
@@ -17,6 +19,8 @@ class VisionSensor {
     boolean pullup;
     boolean enabled;
     boolean negate;
+  public:
+    int inductivePosition;
 };
 
 #endif

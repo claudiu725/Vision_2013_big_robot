@@ -30,7 +30,7 @@ void setup()
   arm.init();
   ignoreSensors = true;
   baseState.wait(1000, STATE_STOP);
-  armState.wait(7000, 3);
+  armState.wait(7000, 1);
   robotState.wait(NINETYSECONDS, 0);
   clawState.wait(1000, STATE_STOP);
 }
@@ -102,28 +102,26 @@ void loop()
     case 0:
       break;
       
-    // vertical test 3-6
-    case 3:
-      arm.verticalMotor.setDirectionBackward();
-      arm.verticalMotor.setNormalPwm(60);
-      armState = 4;
+    // vertical test 1-6
+    case 1:
+      arm.moveVertical(arm.sensorBottom);
+      armState.waitFor(armVerticalStop, STATE_NEXT);
       break;
-    case 4:      
-      arm.verticalMotor.doTimeMs(2000);
-      armState.waitFor(fruitBarrierDetect, STATE_NEXT);
+    case 2:      
+      arm.moveVertical(arm.sensorTop);
+      armState.waitFor(armVerticalStop, STATE_NEXT);
+      break;
+    case 3:
+      arm.moveVertical(arm.sensorBottom);
+      armState.waitFor(armVerticalStop, STATE_NEXT);
+      break;
+    case 4:
+      arm.moveVertical(arm.sensorTop);
+      armState.waitFor(armVerticalStop, STATE_NEXT);
       break;
     case 5:
-      arm.verticalMotor.toggleDirection();
-      arm.verticalMotor.stopNow();
-      armState.wait(40, STATE_NEXT);
-      break;
-    case 6:
-      arm.verticalMotor.toggleDirection();
-      armState.wait(40, 99);
-      break;
-    case 99:
-      arm.verticalMotor.toggleDirection();
-      armState.wait(4000, 4);
+      arm.moveVertical(arm.sensorBottom);
+      armState.waitFor(armVerticalStop, STATE_STOP);
       break;
       
     // horizontal test 7-10
@@ -231,7 +229,7 @@ void loop()
       clawState.waitFor(armStop, STATE_NEXT);
       break;
     case 2:
-      arm.moveVertical(99, DOWN);
+      arm.moveVertical(arm.sensorBottom);
       clawState.waitFor(armStop, STATE_NEXT);
       break;
     case 3:
@@ -273,21 +271,20 @@ void loop()
       break;
 
     case 20:
-      arm.moveVertical(5, DOWN);
+      arm.moveVertical(arm.sensorFruitHigh);
       clawState.waitFor(armStop, STATE_NEXT);
       break;
     case 21:
       if (fruitBarrierDetect())
       {
          arm.clawGrab();
-         arm.moveUp();
          clawState = STATE_STOP;
       }
       else
          clawState.wait(100, STATE_NEXT);
       break;
     case 22:
-      arm.moveVertical(2.5, DOWN);
+      arm.moveVertical(arm.sensorFruitHigh);
       clawState.waitFor(armStop, STATE_NEXT);
       break;
     case 23:
@@ -295,7 +292,7 @@ void loop()
       {
          arm.clawGrab();
       }
-      arm.moveUp();
+      arm.moveVertical(arm.sensorTop);
       clawState = STATE_STOP;
       break;
     
@@ -323,10 +320,7 @@ void loop()
   if (arm.verticalLimiter.detect() && arm.verticalDirection == DOWN)
     arm.verticalMotor.stopNow();
   if (arm.verticalLimiter.detect() && !arm.verticalMotor.isOff() && arm.verticalDirection == DOWN)
-  {
     arm.verticalMotor.stopNow();
-    arm.upDistance = 8.0;
-  }
 
   base.doLoop();
   arm.doLoop();
@@ -340,6 +334,16 @@ boolean baseStop()
 boolean armStop()
 {
   return arm.isStopped();
+}
+
+boolean armVerticalStop()
+{
+  return arm.verticalMotor.isOff();
+}
+
+boolean armHorizontalStop()
+{
+  return arm.horizontalMotor.isOff();
 }
 
 boolean fruitBarrierDetect()
