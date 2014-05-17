@@ -107,7 +107,7 @@ void loop()
       arm.moveVertical(arm.sensorBottom);
       armState.waitFor(armVerticalStop, STATE_NEXT);
       break;
-    case 2:      
+    case 2:
       arm.moveVertical(arm.sensorTop);
       armState.waitFor(armVerticalStop, STATE_NEXT);
       break;
@@ -317,9 +317,7 @@ void loop()
     arm.horizontalMotor.setRemainingDistance(0.05);
   if (arm.horizontalAntiSlip.detect() && arm.horizontalMotor.isOff())
     arm.moveHorizontal(1, BACKWARD);
-  if (arm.verticalLimiter.detect() && arm.verticalDirection == DOWN)
-    arm.verticalMotor.stopNow();
-  if (arm.verticalLimiter.detect() && !arm.verticalMotor.isOff() && arm.verticalDirection == DOWN)
+  if (arm.verticalLimiter.detect() && !arm.verticalMotor.isOff())
     arm.verticalMotor.stopNow();
 
   base.doLoop();

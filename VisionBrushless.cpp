@@ -12,6 +12,7 @@
 #define TOGGLE_3 9
 
 const int delayBetweenTogglesInMs = 40;
+const int timeNeededToInitializeECS = 5000;
 
 void VisionBrushless::init()
 {
@@ -75,7 +76,8 @@ void VisionBrushless::doLoop()
   switch (motorState)
   {
     case INIT:
-      motorState = STOP;
+      brushless.write(stopPwm);
+      motorState.wait(timeNeededToInitializeECS, STATE_STOP);
       break;
     case DO_TIME_MS:
       brushless.write(normalPwm);
@@ -134,6 +136,7 @@ void VisionBrushless::moveTo(VisionSensor& sensor)
 {
   if (!isOff())
     return;
+  sensorToGoTo = &sensor;
   if (currentInductivePosition == front->inductivePosition)
     motorState = GO_TO_BACKWARD;
   if (currentInductivePosition == back->inductivePosition)

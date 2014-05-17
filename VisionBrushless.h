@@ -22,8 +22,9 @@ class VisionBrushless {
     void doTimeMicros(unsigned long time);
     void moveTo(VisionSensor& sensor);
     void stopNow();
-    void stopIfSensorDetect(VisionSensor& sensor);
     boolean isOff();
+  private:
+    void stopIfSensorDetect(VisionSensor& sensor);
   private:
     VisionState motorState;
     VisionSensor *front, *back, *sensorToGoTo;

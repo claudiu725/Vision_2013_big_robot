@@ -23,7 +23,7 @@ class VisionArm {
     VisionStepper horizontalMotor;
     VisionBrushless verticalMotor;
     VisionSensor sensorTop, sensorFruitHigh, sensorBottom;
-    int verticalDirection, horizontalDirection;
+    int horizontalDirection;
     void init();
     void clawGrab();
     void clawRelease();

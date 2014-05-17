@@ -30,8 +30,10 @@ void VisionArm::init()
   
   sensorTop.initPin(inductiveStartSensorPin);
   sensorTop.initInductivePosition(3);
+  
   sensorFruitHigh.initPin(inductiveFruitHighSensorPin);
   sensorFruitHigh.initInductivePosition(2);
+  
   sensorBottom.initPin(inductiveFruitLowSensorPin);
   sensorBottom.initInductivePosition(0);
   
