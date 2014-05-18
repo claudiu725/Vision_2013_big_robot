@@ -33,13 +33,14 @@
 #define STEP_LOW 0
 #define STEP_HIGH 1
 
-const unsigned long waitBeforeTurningOn = 500;
-const unsigned long waitBeforeTurningOff = 500;
+
 
 void VisionStepper::init()
 {
   stepsMadeSoFar = 0;
   stepsRemaining = 0;
+  waitBeforeTurningOn = 500;
+  waitBeforeTurningOff = 500;
   motorState = STOPPED;
   speedState = STATE_STOP;
   enableState = OFF;

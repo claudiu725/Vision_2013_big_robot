@@ -31,7 +31,7 @@ void setup()
   arm.init();
   ignoreSensors = true;
   
-  baseState.wait(1000, 0);
+  baseState.wait(1000, STATE_STOP);
   armState.waitFor(armVerticalStop, STATE_STOP);
   robotState.wait(NINETYSECONDS, STATE_STOP);
   clawState.wait(1000, STATE_STOP);
@@ -44,6 +44,14 @@ int retrieveOption;
 
 void loop()
 {
+  Serial.print(base.frontLeft.detect());
+  Serial.print(base.frontFront.detect());
+  Serial.print(base.frontRight.detect());
+  Serial.print(base.left.detect());
+  Serial.print(base.right.detect());
+  Serial.print(base.backLeft.detect());
+  Serial.print(base.backBack.detect());
+  Serial.println(base.backRight.detect());
   switch (robotState)
   {
     case 0:
@@ -58,47 +66,82 @@ void loop()
   switch (baseState)
   {
     case 0:
-      base.moveForward(30,mediumSpeedDelay);
+      base.moveForward(36,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 1:
-      base.turnRight(10);
+      base.turnLeft(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 2:
-      base.moveForward(11,mediumSpeedDelay);
+      base.moveBackward(13,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 3:
-      base.turnRight(30);
+      base.turnRight(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 4:
-      base.moveForward(8,mediumSpeedDelay);
+      base.moveForward(60,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 5:
-      base.turnLeft(40);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 6:
-      base.moveForward(51,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 7:
+    case 5: //PRIMUL FRUCT
       armState = 0;
       baseState.save();
       baseState = STATE_STOP;
       break;
-    case 8:
-      baseState = 20;
-      
-    case 20:
-      armState = 20;
+    case 6:
+      base.moveForward(7,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 7: //AL DOILEA FRUCT
+      armState = 10;
       baseState.save();
       baseState = STATE_STOP;
       break;
-    case 21:
+    case 8:  
+      base.moveForward(10, mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 9: //AL TREILEA FRUCT
+      armState = 10;
+      baseState.save();
+      baseState = STATE_STOP;
+      break;
+    case 10:
+      base.moveForward(27 , mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 11:
+      base.turnRight(90);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 12:
+      base.moveForward(22, mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 13: //primul fruct
+      armState = 0;
+      baseState.save();
+      baseState = STATE_STOP;
+      break;
+    case 14:
+      base.moveForward(7,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 15: //AL DOILEA FRUCT
+      armState = 10;
+      baseState.save();
+      baseState = STATE_STOP;
+      break;
+    case 16:  
+      base.moveForward(10, mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 17: //AL TREILEA FRUCT
+      armState = 10;
+      baseState.save();
+      baseState = STATE_STOP;
       break;
     default:
       baseState.doLoop();
@@ -109,13 +152,13 @@ void loop()
   {
     // arm open routine
     case 0:
-      arm.moveHorizontal(8, FORWARD);
+      arm.clawRelease();
+      arm.moveHorizontal(17, FORWARD);
       armState.waitFor(armHorizontalStop, STATE_NEXT);
       break;
     case 1:
-      arm.clawRelease();
       retrieveOption = RETRIEVE_B;
-      clawState.wait(1000, 0);
+      clawState = 0;
       armState.save();
       armState = STATE_STOP;
       break;
@@ -124,84 +167,20 @@ void loop()
       armState = STATE_STOP;
       break;
       
-    case 20:
-      arm.moveHorizontal(17, FORWARD);
-      armState.waitFor(armHorizontalStop, STATE_NEXT);
-      break;
-    case 21:
-      base.turnRight(5);
-      armState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 22:
+    case 10:
       arm.clawRelease();
-      retrieveOption = RETRIEVE_A;
-      clawState.wait(1000, 0);
-      armState.save();
-      armState = STATE_STOP;
-      break;
-    case 23:
-      break;
-
-    // shake routine
-    case 359:
-      arm.basketOpen();
-      armState = STATE_NEXT;
-      armState.save();
-      armState.wait(1000, STATE_NEXT);
-      break;
-    case 360:
-      base.turnLeft(10);
-      armState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 361:
-      base.turnRight(10);
-      armState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 362:
-      base.turnLeft(10);
-      armState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 363:
-      base.turnRight(10);
-      armState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 364:
-      base.turnLeft(10);
-      armState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 365:
-      arm.moveHorizontal(10, BACKWARD);
-      base.turnRight(10);
-      armState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 366:
-      base.turnLeft(10);
-      armState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 367:
-      arm.moveHorizontal(10, FORWARD);
-      base.turnRight(10);
-      armState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 368:
-      arm.basketOpen();
-      armState.restore();
-      break;
-
-    case 90:
-      arm.moveHorizontal(17, FORWARD);
+      arm.moveHorizontal(7, FORWARD);
       armState.waitFor(armHorizontalStop, STATE_NEXT);
       break;
-    case 91:
+    case 11:
+      retrieveOption = RETRIEVE_A;
       clawState = 0;
+      armState.save();
       armState = STATE_STOP;
       break;
-      
-    case 100:
-      //base.turnLeft(360);
+    case 12:
+      baseState.restore();
       armState = STATE_STOP;
-      break;
-    case 101:
       break;
     default:
       armState.doLoop();
@@ -225,10 +204,10 @@ void loop()
       clawState.waitFor(armVerticalStop, STATE_NEXT);
       break;
     case 3:
-      if (fruitDetect())
+      //if (fruitDetect())
         clawState.call(20);
-      else
-        clawState = STATE_NEXT;
+      //else
+        //clawState = STATE_NEXT;
       break;
     case 4:
       clawState = 40;//didn't find it
@@ -240,7 +219,7 @@ void loop()
       clawState.wait(500, STATE_NEXT);
       break;
     case 21:
-      if (seePurple())
+      if (seePurple() || seeClear())
         clawState = retrieveOption; //got it
       else
       {
@@ -263,26 +242,30 @@ void loop()
     // RETRIEVE FRUIT A
     case 60:
       arm.moveVertical(arm.sensorTop);
-      clawState.waitFor(armVerticalStop, STATE_NEXT);
-      break;
-    case 61:
-      clawState.wait(500, STATE_NEXT);
+      clawState.waitFor(armVerticalStop, 62);
       break;
     case 62:
-      arm.moveHorizontal(17, BACKWARD);
+      arm.moveHorizontal(8, BACKWARD);
       clawState.waitFor(armHorizontalStop, STATE_NEXT);
       break;
     case 63:
-      arm.moveHorizontal(17, FORWARD);
-      clawState.waitFor(armHorizontalStop, STATE_NEXT);
-      break;
-    case 64:
-      arm.clawRelease();
-      arm.moveVertical(arm.sensorTop);
-      clawState.waitFor(armVerticalStop, STATE_NEXT);
+      base.turnLeft(45);
+      clawState.waitFor(baseStop, 65);
       break;
     case 65:
-      clawState = 80;
+      arm.clawRelease();
+      clawState.wait(1000, STATE_NEXT);
+      break;
+    case 66:
+      arm.moveHorizontal(17, BACKWARD);
+      clawState.waitFor(armHorizontalStop, STATE_NEXT);
+      break;
+    case 67:
+      base.turnRight(45);
+      clawState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 68:
+      clawState = 81;
       break;
       
     //done
@@ -301,20 +284,22 @@ void loop()
       clawState.waitFor(armVerticalStop, STATE_NEXT);
       break;
     case 101:
-      arm.moveHorizontal(17, BACKWARD);
+      arm.moveHorizontal(10, BACKWARD);
       clawState.waitFor(armHorizontalStop, STATE_NEXT);
       break;
     case 102:
       base.turnLeft(90);
-      clawState.waitFor(baseStop,STATE_NEXT);
+      clawState.waitFor(baseStop,104);
       break;
+      /*
     case 103:
-      arm.moveHorizontal(10, FORWARD);
+      arm.moveHorizontal(7, FORWARD);
       clawState.waitFor(armHorizontalStop, STATE_NEXT);
       break;
+      */
     case 104:
       arm.clawRelease();
-      arm.moveHorizontal(10, BACKWARD);
+      arm.moveHorizontal(17, BACKWARD);
       clawState.waitFor(armHorizontalStop, STATE_NEXT);
       break;
     case 105:
@@ -322,7 +307,7 @@ void loop()
       clawState.waitFor(baseStop,STATE_NEXT);
       break;
     case 106:
-      clawState = 80;
+      clawState = 81;
       break;
 
     default:

@@ -50,6 +50,9 @@
       
       float stepCmRatio; // steps for a cm
       float degreeStepRatio; //steps for a degree turn;
+    public:
+      unsigned long waitBeforeTurningOn;
+      unsigned long waitBeforeTurningOff;
   };
   
   #endif

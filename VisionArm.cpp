@@ -24,6 +24,7 @@ void VisionArm::init()
   horizontalMotor.initPins(horizontalArmEnablePin, horizontalArmDirectionPin, horizontalArmStepPin);
   horizontalMotor.initDelays(horizontalArmStartSpeedDelay, highPhaseDelay, pauseSpeedDelay, delayBeforeTurnOff, horizontalArmStepSpeedCounterAcceleration, horizontalArmStepSpeedCounterSlowing);
   horizontalMotor.initStepCmRatio(horizontalArmCmStepRatio);
+  horizontalMotor.waitBeforeTurningOff = 9999;
   
   verticalLimiter.initPin(verticalArmLimiterPin);
   verticalLimiter.setAsPullup();
@@ -76,7 +77,7 @@ void VisionArm::clawRelease()
 
 void VisionArm::clawGrab()
 {
-  claw.write(20);
+  claw.write(17);
 }
 
 void VisionArm::basketClose()
