@@ -28,7 +28,7 @@ const int wheelRevolutionSteps = 200;
 const float horizontalArmCmStepRatio = 30.86; // 16.2cm per 500 steps
 
 const int verticalArmStopPwm = 15;
-const int verticalArmNormalPwm = 35;
+const int verticalArmNormalPwm = 30; //33
 
 const float encoderRevolutionSteps = 24;
 

@@ -163,7 +163,7 @@ void VisionBrushless::moveTo(VisionSensor& sensor)
   if (currentInductivePosition == back->inductivePosition)
     motorState = GO_TO_FORWARD;
   if (sensor.inductivePosition == currentInductivePosition)
-    motorState = GO_TO_FORWARD;
+    return;
   if (sensor.inductivePosition > currentInductivePosition)
     motorState = GO_TO_FORWARD;
   else

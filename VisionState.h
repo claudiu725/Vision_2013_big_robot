@@ -19,6 +19,7 @@ class VisionState {
     void waitFor(boolean (*functionToTestFor)(), int nextState);
     void save();
     void restore();
+    void call(const int state);
     void doLoop();
     operator int();
     int operator =(const int state);

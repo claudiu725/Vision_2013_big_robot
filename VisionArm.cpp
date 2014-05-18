@@ -45,7 +45,7 @@ void VisionArm::init()
   verticalMotor.initPwms(verticalArmStopPwm, verticalArmNormalPwm);
   
   claw.attach(clawServoPin);
-  clawRelease();
+  //clawRelease();
   
   basket.attach(clawBasketPin);
   basketClose();
