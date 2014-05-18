@@ -190,7 +190,7 @@ void loop()
   {
     //arm is already extended, check mid and low, stay lowered
     case 0:
-      arm.moveVertical(arm.sensorMiddle);
+      arm.moveVertical(arm.sensorBottom);
       clawState.waitFor(armVerticalStop, STATE_NEXT);
       break;
     case 1:
@@ -200,7 +200,7 @@ void loop()
         clawState = STATE_NEXT;
       break;
     case 2:
-      arm.moveVertical(arm.sensorBottom);
+      arm.moveVertical(arm.sensorMiddle);
       clawState.waitFor(armVerticalStop, STATE_NEXT);
       break;
     case 3:
