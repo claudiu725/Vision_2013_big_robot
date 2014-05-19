@@ -39,8 +39,8 @@ void VisionStepper::init()
 {
   stepsMadeSoFar = 0;
   stepsRemaining = 0;
-  waitBeforeTurningOn = 500;
-  waitBeforeTurningOff = 500;
+  waitBeforeTurningOn = 0;
+  waitBeforeTurningOff = 0;
   motorState = STOPPED;
   speedState = STATE_STOP;
   enableState = OFF;

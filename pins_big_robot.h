@@ -6,16 +6,16 @@ const int enablePin = 31;
 //LOWER LEVEL
 
 //Front
-const int frontLeftSenzorPin = 50;
-const int frontFrontSenzorPin = 48;
-const int frontRightSenzorPin = 42;
+const int frontLeftSenzorPin = 999;
+const int frontFrontSenzorPin = 12;
+const int frontRightSenzorPin = 10;
 //Sides
-const int leftSenzorPin = 40;
-const int rightSenzorPin = 38;
+const int leftSenzorPin = 42;
+const int rightSenzorPin = 48;
 //Back
-const int backLeftSenzorPin = 10;
-const int backBackSenzorPin = 11;
-const int backRightSenzorPin = 12;
+const int backLeftSenzorPin = 999;
+const int backBackSenzorPin = 40;
+const int backRightSenzorPin = 38;
 
 //Left motor
 const int leftMotorEncoderPin = 9;

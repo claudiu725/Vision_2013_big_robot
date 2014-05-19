@@ -47,9 +47,9 @@ void setup()
   
   colorRedStartState = 100;
   colorYellowStartState = 0;
-  testStartState = STATE_STOP;
+  testStartState = 50;
   onePointStartState = STATE_STOP;
-  color = RED; // RED YELLOW TEST ONEPOINT
+  color = TEST; // RED YELLOW TEST ONEPOINT
 }
 
 #define RETRIEVE_A 60
@@ -193,6 +193,15 @@ void loop()
     case 22:
       baseState = STATE_STOP;
       arm.basketOpen();
+      break;
+      
+    case 50:
+      base.moveForward(50, veryFastSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 51:
+      base.moveBackward(50, veryFastSpeedDelay);
+      baseState.waitFor(baseStop, 50);
       break;
 
     case 100:
