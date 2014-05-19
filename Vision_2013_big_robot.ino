@@ -49,7 +49,7 @@ void setup()
   colorYellowStartState = 0;
   testStartState = 50;
   onePointStartState = 200;
-  color = RED; // RED YELLOW TEST ONEPOINT
+  color = YELLOW; // RED YELLOW TEST ONEPOINT
 }
 
 #define RETRIEVE_A 60
@@ -97,7 +97,7 @@ void loop()
   switch (baseState)
   {
     case 0:
-      base.moveForward(36,mediumSpeedDelay);
+      base.moveForward(39,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 1:
@@ -105,7 +105,7 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 2:
-      base.moveBackward(13,mediumSpeedDelay);
+      base.moveBackward(25,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 3:
@@ -113,86 +113,48 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 4:
-      base.moveForward(60,mediumSpeedDelay);
+      base.moveForward(23,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 5: //PRIMUL FRUCT
-      armState = 0;
-      baseState.save();
-      baseState = STATE_STOP;
-      break;
-    case 6:
-      base.moveForward(7,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 7: //AL DOILEA FRUCT
-      armState = 10;
-      baseState.save();
-      baseState = STATE_STOP;
-      break;
-    case 8:  
-      base.moveForward(10, mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 9: //AL TREILEA FRUCT
-      armState = 10;
-      baseState.save();
-      baseState = STATE_STOP;
-      break;
-    case 10:
-      base.moveForward(27 , mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 11:
+    case 5:
       base.turnRight(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 12:
-      base.moveForward(22, mediumSpeedDelay);
+    case 6:
+      arm.moveHorizontal(17, FORWARD);
+      baseState.waitFor(armHorizontalStop, STATE_NEXT);
+      break;
+    case 7:
+      arm.moveHorizontal(17, BACKWARD);
+      baseState.waitFor(armHorizontalStop, STATE_NEXT);
+      break;
+    case 8:
+      base.turnLeft(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 13: //primul fruct - POMUL 2
-      armState = 0;
-      baseState.save();
-      baseState = STATE_STOP;
+    case 9:
+      base.moveForward(47,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 10:
+      base.turnRight(90);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 11:
+      base.moveForward(60,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 12:
+      arm.moveHorizontal(17, FORWARD);
+      baseState.waitFor(armHorizontalStop, STATE_NEXT);
+      break;
+    case 13:
+      base.moveBackward(20,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 14:
-      base.moveForward(7,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 15: //AL DOILEA FRUCT - POMUL 2
-      armState = 10;
-      baseState.save();
-      baseState = STATE_STOP;
-      break;
-    case 16:  
-      base.moveForward(10, mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 17: //AL TREILEA FRUCT - POMUL 2
-      armState = 10;
-      baseState.save();
-      baseState = STATE_STOP;
-      break;
-    case 18:
-      base.moveForward(174, fastSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 19:
-      base.turnRight(91);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 20:
-      base.moveForward(128, fastSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 21:
-      base.turnRight(90);  
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 22:
-      baseState = STATE_STOP;
-      arm.basketOpen();
+      arm.moveHorizontal(17, BACKWARD);
+      baseState.waitFor(armHorizontalStop, STATE_NEXT);
       break;
       
     case 50:
@@ -210,57 +172,57 @@ void loop()
       break;
     case 101:
       base.turnRight(90);
-      baseState.waitFor(baseStop, 105);
+      baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 105:
+    case 102:
       base.moveBackward(15,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 106:
+    case 103:
       base.turnLeft(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 107:
-      base.moveForward(27,mediumSpeedDelay);
+    case 104:
+      base.moveForward(23,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 108:
+    case 105:
       base.turnRight(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 109:
+    case 106:
       arm.moveHorizontal(17, FORWARD);
       baseState.waitFor(armHorizontalStop, STATE_NEXT);
       break;
-    case 110:
+    case 107:
       arm.moveHorizontal(17, BACKWARD);
       baseState.waitFor(armHorizontalStop, STATE_NEXT);
       break;
-    case 111:
+    case 108:
       base.turnLeft(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 112:
-      base.moveForward(43,mediumSpeedDelay);
+    case 109:
+      base.moveForward(47,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 113:
+    case 110:
       base.turnRight(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 114:
+    case 111:
       base.moveBackward(60,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 115:
+    case 112:
       arm.moveHorizontal(17, FORWARD);
       baseState.waitFor(armHorizontalStop, STATE_NEXT);
       break;
-    case 116:
+    case 113:
       base.moveForward(20,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 117:
+    case 114:
       arm.moveHorizontal(17, BACKWARD);
       baseState.waitFor(armHorizontalStop, STATE_NEXT);
       break;
