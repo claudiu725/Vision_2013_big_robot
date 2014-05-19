@@ -213,7 +213,7 @@ void loop()
       baseState.waitFor(baseStop, 105);
       break;
     case 105:
-      base.moveBackward(17,mediumSpeedDelay);
+      base.moveBackward(15,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 106:
@@ -221,7 +221,7 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 107:
-      base.moveForward(100,mediumSpeedDelay);
+      base.moveForward(27,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 108:
@@ -229,86 +229,40 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 109:
-      base.moveBackward(42,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
+      arm.moveHorizontal(17, FORWARD);
+      baseState.waitFor(armHorizontalStop, STATE_NEXT);
       break;
-    case 110: //PRIMUL FRUCT
-      armState = 0;
-      baseState.save();
-      baseState = STATE_STOP;
+    case 110:
+      arm.moveHorizontal(17, BACKWARD);
+      baseState.waitFor(armHorizontalStop, STATE_NEXT);
       break;
     case 111:
-      base.moveForward(7,mediumSpeedDelay);
+      base.turnLeft(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 112: //AL DOILEA FRUCT
-      armState = 10;
-      baseState.save();
-      baseState = STATE_STOP;
-      break;
-    case 113:  
-      base.moveForward(10, mediumSpeedDelay);
+    case 112:
+      base.moveForward(43,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 114: //AL TREILEA FRUCT
-      armState = 10;
-      baseState.save();
-      baseState = STATE_STOP;
-      break;
-    case 115:
-      base.moveForward(27 , mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 116:
+    case 113:
       base.turnRight(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
+    case 114:
+      base.moveBackward(60,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 115:
+      arm.moveHorizontal(17, FORWARD);
+      baseState.waitFor(armHorizontalStop, STATE_NEXT);
+      break;
+    case 116:
+      base.moveForward(20,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
     case 117:
-      base.moveForward(22, mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 118: //primul fruct - POMUL 2
-      armState = 0;
-      baseState.save();
-      baseState = STATE_STOP;
-      break;
-    case 119:
-      base.moveForward(7,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 120: //AL DOILEA FRUCT - POMUL 2
-      armState = 10;
-      baseState.save();
-      baseState = STATE_STOP;
-      break;
-    case 121:  
-      base.moveForward(10, mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 122: //AL TREILEA FRUCT - POMUL 2
-      armState = 10;
-      baseState.save();
-      baseState = STATE_STOP;
-      break;
-    case 123:
-      base.moveForward(174, fastSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 124:
-      base.turnRight(91);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 125:
-      base.moveForward(128, fastSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 126:
-      base.turnRight(90);  
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 127:
-      baseState = STATE_STOP;
-      arm.basketOpen();
+      arm.moveHorizontal(17, BACKWARD);
+      baseState.waitFor(armHorizontalStop, STATE_NEXT);
       break;
 
     default:
