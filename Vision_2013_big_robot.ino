@@ -24,6 +24,7 @@
 VisionBase base;
 VisionArm arm;
 boolean ignoreSensors = false;
+elapsedMillis enemyTimer;
 int baseStartState;
 
 VisionState baseState, armState, robotState, clawState;
@@ -49,7 +50,7 @@ void setup()
   colorYellowStartState = 0;
   testStartState = 300;
   onePointStartState = 200;
-  color = TEST; // RED YELLOW TEST ONEPOINT
+  color = ONEPOINT; // RED YELLOW TEST ONEPOINT
 }
 
 #define RETRIEVE_A 60
@@ -69,11 +70,11 @@ void loop()
       switch (color)
       {
         case RED:
-          baseState = colorRedStartState;
+          baseState.wait(5000,colorRedStartState);
           base.frontFront.disable();
           break;
         case YELLOW:
-          baseState = colorYellowStartState;
+          baseState.wait(5000,colorYellowStartState);
           base.frontFront.disable();
           break;
         case TEST:
@@ -469,8 +470,11 @@ void loop()
     if (!base.isStopped())
     {
       if (base.obstructionDetected == true && ignoreSensors == false)
+      {
         base.pause();
-      else
+        enemyTimer = 0;
+      }
+      else if (enemyTimer > 3000)
         base.unpause();
     }
     if (arm.fruitBarrier.detect())
