@@ -11,11 +11,11 @@ void VisionBase::init()
   right.initPin(rightSenzorPin);
   
   backLeft.initPin(backLeftSenzorPin);
-  //backLeft.disable();
+  backLeft.disable();
   backBack.initPin(backBackSenzorPin);
-  //backBack.disable();
+  backBack.disable();
   backRight.initPin(backRightSenzorPin);
-  backRight.disable();
+  //backRight.disable();
   
   //leftEncoder.initPin(leftMotorEncoderPin);
   //leftMotor.init();

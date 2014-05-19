@@ -38,7 +38,7 @@ void setup()
   arm.init();
   enableSensor.initPin(enablePin);
   enableSensor.setAsPullup();
-  ignoreSensors = true;
+  ignoreSensors = false;
 
   robotState = 0;
   baseState = STATE_STOP;
@@ -47,9 +47,9 @@ void setup()
   
   colorRedStartState = 100;
   colorYellowStartState = 0;
-  testStartState = 50;
+  testStartState = 300;
   onePointStartState = 200;
-  color = YELLOW; // RED YELLOW TEST ONEPOINT
+  color = TEST; // RED YELLOW TEST ONEPOINT
 }
 
 #define RETRIEVE_A 60
@@ -70,9 +70,11 @@ void loop()
       {
         case RED:
           baseState = colorRedStartState;
+          base.frontFront.disable();
           break;
         case YELLOW:
           baseState = colorYellowStartState;
+          base.frontFront.disable();
           break;
         case TEST:
           baseState = testStartState;
@@ -105,7 +107,7 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 2:
-      base.moveBackward(25,mediumSpeedDelay);
+      base.moveBackward(27,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 3:
@@ -226,7 +228,69 @@ void loop()
       arm.moveHorizontal(17, BACKWARD);
       baseState.waitFor(armHorizontalStop, STATE_NEXT);
       break;
+      
+    case 200:
+      base.moveForward(39,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 201:
+      base.turnLeft(90);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 202:
+      base.moveBackward(7,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 203:
+      base.turnRight(180);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 204:
+      base.moveForward(200,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
 
+
+    case 300:
+      base.moveForward(39,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 301:
+      base.turnLeft(90);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 302:
+      base.moveBackward(27,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 303:
+      base.turnRight(90);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 304:
+      base.moveForward(23,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 305:
+      base.turnRight(90);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 306:
+      arm.moveHorizontal(17, FORWARD);
+      baseState.waitFor(armHorizontalStop, STATE_NEXT);
+      break;
+    case 307:
+      arm.moveHorizontal(17, BACKWARD);
+      baseState.waitFor(armHorizontalStop, STATE_NEXT);
+      break;
+    case 308:
+      base.turnLeft(90);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 309:
+      base.moveForward(47,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
     default:
       baseState.doLoop();
   }
