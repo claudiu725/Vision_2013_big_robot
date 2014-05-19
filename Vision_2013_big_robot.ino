@@ -38,7 +38,7 @@ void setup()
   arm.init();
   enableSensor.initPin(enablePin);
   enableSensor.setAsPullup();
-  //ignoreSensors = true;
+  ignoreSensors = true;
 
   robotState = 0;
   baseState = STATE_STOP;
@@ -229,7 +229,7 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 109:
-      base.moveBackward(35,mediumSpeedDelay);
+      base.moveBackward(42,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 110: //PRIMUL FRUCT
