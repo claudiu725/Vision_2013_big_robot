@@ -3,6 +3,7 @@
 void VisionBase::init()
 {
   frontLeft.initPin(frontLeftSenzorPin);
+  frontLeft.toggleNegate();
   frontFront.initPin(frontFrontSenzorPin);
   frontRight.initPin(frontRightSenzorPin);
   
@@ -10,8 +11,11 @@ void VisionBase::init()
   right.initPin(rightSenzorPin);
   
   backLeft.initPin(backLeftSenzorPin);
+  backLeft.disable();
   backBack.initPin(backBackSenzorPin);
+  backBack.disable();
   backRight.initPin(backRightSenzorPin);
+  backRight.disable();
   
   //leftEncoder.initPin(leftMotorEncoderPin);
   //leftMotor.init();
@@ -143,10 +147,10 @@ void VisionBase::checkObstructions()
   obstructionDetected = false;
   if (frontDetected() && directionMovement == FRONT)
     obstructionDetected = true;
-  if (leftDetected() && directionMovement == LEFT)
-    obstructionDetected = true;
-  if (rightDetected() && directionMovement == RIGHT)
-    obstructionDetected = true;
+  //if (leftDetected() && directionMovement == LEFT)
+  //  obstructionDetected = true;
+  //if (rightDetected() && directionMovement == RIGHT)
+  //  obstructionDetected = true;
   if (backDetected() && directionMovement == BACK)
     obstructionDetected = true;
 }

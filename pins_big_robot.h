@@ -6,7 +6,7 @@ const int enablePin = 31;
 //LOWER LEVEL
 
 //Front
-const int frontLeftSenzorPin = 999;
+const int frontLeftSenzorPin = 11; // inversed
 const int frontFrontSenzorPin = 12;
 const int frontRightSenzorPin = 10;
 //Sides

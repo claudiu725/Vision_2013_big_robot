@@ -38,7 +38,7 @@ void setup()
   arm.init();
   enableSensor.initPin(enablePin);
   enableSensor.setAsPullup();
-  ignoreSensors = true;
+  //ignoreSensors = true;
 
   robotState = 0;
   baseState = STATE_STOP;
@@ -48,8 +48,8 @@ void setup()
   colorRedStartState = 100;
   colorYellowStartState = 0;
   testStartState = 50;
-  onePointStartState = STATE_STOP;
-  color = TEST; // RED YELLOW TEST ONEPOINT
+  onePointStartState = 200;
+  color = RED; // RED YELLOW TEST ONEPOINT
 }
 
 #define RETRIEVE_A 60
@@ -209,20 +209,8 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 101:
-      base.turnRight(90+90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 102:
-      arm.moveHorizontal(10, FORWARD);
-      baseState.waitFor(armStop, STATE_NEXT);
-      break;
-    case 103:
-      base.turnLeft(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 104:
-      arm.moveHorizontal(17, BACKWARD);
-      baseState.waitFor(armStop, STATE_NEXT);
+      base.turnRight(90);
+      baseState.waitFor(baseStop, 105);
       break;
     case 105:
       base.moveBackward(17,mediumSpeedDelay);
