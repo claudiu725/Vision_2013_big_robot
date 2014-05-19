@@ -33,6 +33,7 @@ class VisionBase {
     void stopNow();
     void doLoop();
     boolean isStopped();
+    void disable();
   public:
     VisionStepper leftMotor, rightMotor;
     VisionEncoder leftEncoder, rightEncoder;

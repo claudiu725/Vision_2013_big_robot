@@ -1,6 +1,8 @@
 #ifndef pins_big_robot_h
 #define pins_big_robot_h
 
+const int enablePin = 31;
+
 //LOWER LEVEL
 
 //Front

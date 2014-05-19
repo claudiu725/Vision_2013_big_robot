@@ -105,6 +105,11 @@ boolean VisionArm::isStopped()
   return horizontalMotor.isOff() && verticalMotor.isOff();
 }
 
+void VisionArm::disable()
+{
+  horizontalMotor.disable();
+}
+
 void VisionArm::doLoop()
 {
   horizontalMotor.doLoop();

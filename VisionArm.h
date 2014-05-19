@@ -35,6 +35,7 @@ class VisionArm {
     void moveVertical(VisionSensor& sensor);
     void doLoop();
     void stopNow();
+    void disable();
     boolean isStopped();
 };
 

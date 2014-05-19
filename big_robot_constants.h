@@ -4,8 +4,8 @@
 const unsigned long defaultStartSpeedDelay = 50000L;
 const unsigned long pauseSpeedDelay = 50000L;
 const unsigned long highPhaseDelay = 50;
-const float stepSpeedCounterAcceleration = 5;
-const float stepSpeedCounterSlowing = 6;
+const float stepSpeedCounterAcceleration = 2;
+const float stepSpeedCounterSlowing = 3;
 const unsigned long delayBeforeTurnOff = 500;
 
 const unsigned long slowSpeedDelay = 7000;

@@ -16,25 +16,40 @@
 
 #define NINETYSECONDS 88000L
 
+#define RED 0
+#define YELLOW 1
+#define TEST 2
+#define ONEPOINT 3
+
 VisionBase base;
 VisionArm arm;
 boolean ignoreSensors = false;
+int baseStartState;
 
 VisionState baseState, armState, robotState, clawState;
-
+VisionSensor enableSensor;
+int colorRedStartState, colorYellowStartState, testStartState, onePointStartState, color;
 boolean fruitWasDetected;
+boolean robotRunning;
 
 void setup()
 {
-  Serial.begin(9600);
   base.init();
   arm.init();
+  enableSensor.initPin(enablePin);
+  enableSensor.setAsPullup();
   ignoreSensors = true;
-  
-  baseState.wait(1000, STATE_STOP);
+
+  robotState = 0;
+  baseState = STATE_STOP;
   armState.waitFor(armVerticalStop, STATE_STOP);
-  robotState.wait(NINETYSECONDS, STATE_STOP);
-  clawState.wait(1000, STATE_STOP);
+  clawState = STATE_STOP;
+  
+  colorRedStartState = 100;
+  colorYellowStartState = 0;
+  testStartState = STATE_STOP;
+  onePointStartState = STATE_STOP;
+  color = RED; // RED YELLOW TEST ONEPOINT
 }
 
 #define RETRIEVE_A 60
@@ -44,17 +59,33 @@ int retrieveOption;
 
 void loop()
 {
-  Serial.print(base.frontLeft.detect());
-  Serial.print(base.frontFront.detect());
-  Serial.print(base.frontRight.detect());
-  Serial.print(base.left.detect());
-  Serial.print(base.right.detect());
-  Serial.print(base.backLeft.detect());
-  Serial.print(base.backBack.detect());
-  Serial.println(base.backRight.detect());
   switch (robotState)
   {
     case 0:
+      robotRunning = false;
+      robotState.waitFor(enableSensorDetect, STATE_NEXT);
+      break;
+    case 1:
+      switch (color)
+      {
+        case RED:
+          baseState = colorRedStartState;
+          break;
+        case YELLOW:
+          baseState = colorYellowStartState;
+          break;
+        case TEST:
+          baseState = testStartState;
+          break;
+        case ONEPOINT:
+          baseState = onePointStartState;
+          break;
+      }
+      robotRunning = true;
+      robotState.wait(NINETYSECONDS, STATE_NEXT);
+      break;
+    case 2:
+      robotRunning = false;
       timeIsUpStopEverything();
       robotState = STATE_STOP;
       break;
@@ -120,7 +151,7 @@ void loop()
       base.moveForward(22, mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 13: //primul fruct
+    case 13: //primul fruct - POMUL 2
       armState = 0;
       baseState.save();
       baseState = STATE_STOP;
@@ -129,7 +160,7 @@ void loop()
       base.moveForward(7,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 15: //AL DOILEA FRUCT
+    case 15: //AL DOILEA FRUCT - POMUL 2
       armState = 10;
       baseState.save();
       baseState = STATE_STOP;
@@ -138,11 +169,151 @@ void loop()
       base.moveForward(10, mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 17: //AL TREILEA FRUCT
+    case 17: //AL TREILEA FRUCT - POMUL 2
       armState = 10;
       baseState.save();
       baseState = STATE_STOP;
       break;
+    case 18:
+      base.moveForward(174, fastSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 19:
+      base.turnRight(91);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 20:
+      base.moveForward(128, fastSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 21:
+      base.turnRight(90);  
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 22:
+      baseState = STATE_STOP;
+      arm.basketOpen();
+      break;
+
+    case 100:
+      base.moveForward(39,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 101:
+      base.turnRight(90+90);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 102:
+      arm.moveHorizontal(10, FORWARD);
+      baseState.waitFor(armStop, STATE_NEXT);
+      break;
+    case 103:
+      base.turnLeft(90);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 104:
+      arm.moveHorizontal(17, BACKWARD);
+      baseState.waitFor(armStop, STATE_NEXT);
+      break;
+    case 105:
+      base.moveBackward(17,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 106:
+      base.turnLeft(90);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 107:
+      base.moveForward(100,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 108:
+      base.turnRight(90);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 109:
+      base.moveBackward(35,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 110: //PRIMUL FRUCT
+      armState = 0;
+      baseState.save();
+      baseState = STATE_STOP;
+      break;
+    case 111:
+      base.moveForward(7,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 112: //AL DOILEA FRUCT
+      armState = 10;
+      baseState.save();
+      baseState = STATE_STOP;
+      break;
+    case 113:  
+      base.moveForward(10, mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 114: //AL TREILEA FRUCT
+      armState = 10;
+      baseState.save();
+      baseState = STATE_STOP;
+      break;
+    case 115:
+      base.moveForward(27 , mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 116:
+      base.turnRight(90);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 117:
+      base.moveForward(22, mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 118: //primul fruct - POMUL 2
+      armState = 0;
+      baseState.save();
+      baseState = STATE_STOP;
+      break;
+    case 119:
+      base.moveForward(7,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 120: //AL DOILEA FRUCT - POMUL 2
+      armState = 10;
+      baseState.save();
+      baseState = STATE_STOP;
+      break;
+    case 121:  
+      base.moveForward(10, mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 122: //AL TREILEA FRUCT - POMUL 2
+      armState = 10;
+      baseState.save();
+      baseState = STATE_STOP;
+      break;
+    case 123:
+      base.moveForward(174, fastSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 124:
+      base.turnRight(91);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 125:
+      base.moveForward(128, fastSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 126:
+      base.turnRight(90);  
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 127:
+      baseState = STATE_STOP;
+      arm.basketOpen();
+      break;
+
     default:
       baseState.doLoop();
   }
@@ -315,25 +486,27 @@ void loop()
   }
 
   //*************************************************************************//
-
-  base.checkObstructions();
-  if (!base.isStopped())
+  if (robotRunning)
   {
-    if (base.obstructionDetected == true && ignoreSensors == false)
-      base.pause();
-    else
-      base.unpause();
-  }
-  if (arm.fruitBarrier.detect())
-    fruitWasDetected = true;
-  
-  if (arm.horizontalLimiter.detect() && !arm.horizontalMotor.isOff() && arm.horizontalDirection == BACKWARD)
-    arm.horizontalMotor.setRemainingDistance(0.05);
-  if (arm.horizontalAntiSlip.detect() && arm.horizontalMotor.isOff())
-    arm.moveHorizontal(1, BACKWARD);
+    base.checkObstructions();
+    if (!base.isStopped())
+    {
+      if (base.obstructionDetected == true && ignoreSensors == false)
+        base.pause();
+      else
+        base.unpause();
+    }
+    if (arm.fruitBarrier.detect())
+      fruitWasDetected = true;
 
-  base.doLoop();
-  arm.doLoop();
+    if (arm.horizontalLimiter.detect() && !arm.horizontalMotor.isOff() && arm.horizontalDirection == BACKWARD)
+      arm.horizontalMotor.setRemainingDistance(0.05);
+    if (arm.horizontalAntiSlip.detect() && arm.horizontalMotor.isOff())
+      arm.moveHorizontal(1, BACKWARD);
+
+    base.doLoop();
+    arm.doLoop();
+  }
 }
 
 boolean seePurple()
@@ -401,10 +574,18 @@ boolean horizontalSensor()
   return arm.horizontalAntiSlip.detect() || arm.horizontalLimiter.detect();
 }
 
+boolean enableSensorDetect()
+{
+  return enableSensor.detect();
+}
+
 void timeIsUpStopEverything()
 {
   base.stopNow();
   arm.stopNow();
+  base.disable();
+  arm.disable();
   baseState = STATE_STOP;
   armState = STATE_STOP;
+  clawState = STATE_STOP;
 }

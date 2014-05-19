@@ -32,6 +32,7 @@
       void unpause();
       void setSpecial();
       void resetSpecial();
+      void disable();
     private:
       void doSetup();
     private:

@@ -337,4 +337,14 @@ void VisionStepper::resetSpecial()
   special = false;
 }
 
+void VisionStepper::disable()
+{
+  enablePinState = LOW;
+  digitalWrite(enablePin, enablePinState);
+  motorState = STOPPED;
+  speedState = STATE_STOP;
+  enableState = OFF;
+  stepState = STATE_STOP;
+}
+
 
