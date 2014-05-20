@@ -13,7 +13,7 @@ const int frontRightSenzorPin = 10;
 const int leftSenzorPin = 42;
 const int rightSenzorPin = 48;
 //Back
-const int backLeftSenzorPin = 999;
+const int backLeftSenzorPin = 50;
 const int backBackSenzorPin = 40;
 const int backRightSenzorPin = 38;
 
