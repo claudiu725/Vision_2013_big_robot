@@ -35,12 +35,22 @@ boolean robotRunning;
 
 void setup()
 {
+  Serial.begin(9600);
   base.init();
   arm.init();
   enableSensor.initPin(enablePin);
   enableSensor.setAsPullup();
   ignoreSensors = false;
-
+  while (1) {
+  Serial.print(base.frontLeft.detect());
+  Serial.print(base.frontFront.detect());
+  Serial.print(base.frontRight.detect());
+  Serial.print(base.left.detect());
+  Serial.print(base.right.detect());
+  Serial.print(base.backLeft.detect());
+  Serial.print(base.backBack.detect());
+  Serial.println(base.backRight.detect());
+  }
   robotState = 0;
   baseState = STATE_STOP;
   armState.waitFor(armVerticalStop, STATE_STOP);
@@ -50,7 +60,7 @@ void setup()
   colorYellowStartState = 0;
   testStartState = 300;
   onePointStartState = 200;
-  color = ONEPOINT; // RED YELLOW TEST ONEPOINT
+  color = YELLOW; // RED YELLOW TEST ONEPOINT
 }
 
 #define RETRIEVE_A 60
@@ -71,11 +81,9 @@ void loop()
       {
         case RED:
           baseState.wait(5000,colorRedStartState);
-          base.frontFront.disable();
           break;
         case YELLOW:
           baseState.wait(5000,colorYellowStartState);
-          base.frontFront.disable();
           break;
         case TEST:
           baseState = testStartState;
@@ -116,10 +124,12 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 4:
+      base.frontFront.disable();
       base.moveForward(23,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 5:
+      base.frontFront.enable();
       base.turnRight(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
@@ -186,10 +196,12 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 104:
+      base.frontFront.disable();
       base.moveForward(23,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 105:
+      base.frontFront.enable();
       base.turnRight(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
@@ -239,15 +251,11 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 202:
-      base.moveBackward(7,mediumSpeedDelay);
+      base.moveBackward(60,slowSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 203:
-      base.turnRight(180);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 204:
-      base.moveForward(200,mediumSpeedDelay);
+      base.moveForward(60,slowSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
 

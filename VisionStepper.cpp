@@ -248,7 +248,7 @@ void VisionStepper::doLoop()
 
 void VisionStepper::pause()
 {
-  if (motorState == RUNNING)
+  if (motorState == RUNNING || motorState == STOPPING)
     motorState = PAUSING_SLOWING;
 }
 
