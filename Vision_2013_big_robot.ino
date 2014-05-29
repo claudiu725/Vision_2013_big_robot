@@ -31,36 +31,21 @@ VisionState baseState, robotState;
 VisionSensor enableSensor;
 int colorRedStartState, colorYellowStartState, testStartState, onePointStartState, color;
 boolean robotRunning;
-Servo servos[4];
-int states[4], current;
 
 void setup()
 {
   Serial.begin(19200);
-  current = 0;
-  servos[0].attach(22); //arm
-  servos[1].attach(24); //flip triangle
-  servos[2].attach(26); //fruits
-  servos[3].attach(28); //spin sensors
-  states[0] = 45;
-  states[1] = 45;
-  states[2] = 45;
-  states[3] = 45;
-  servos[0].write(states[0]);
-  servos[1].write(states[1]);
-  servos[2].write(states[2]);
-  servos[3].write(states[3]);
   
-  //base.init();
+  base.init();
   //arm.init();
   enableSensor.initPin(enablePin);
   enableSensor.setAsPullup();
-  ignoreSensors = false;
+  ignoreSensors = true;//false;
   robotState = 0;
   baseState = STATE_STOP;
 
   colorRedStartState = 100;
-  colorYellowStartState = 0;
+  colorYellowStartState = STATE_STOP;
   testStartState = 300;
   onePointStartState = 200;
   color = YELLOW; // RED YELLOW TEST ONEPOINT
@@ -72,101 +57,41 @@ void serialEvent()
     char inChar = (char)Serial.read();
     Serial.print(inChar);
     switch (inChar) {
-      case 'z':
-        current = 0;
-        break;
-      case 'x':
-        current = 1;
-        break;
-      case 'c':
-        current = 2;
-        break;
-      case 'v':
-        current = 3;
-        break;
-      case '`':
-        states[current] = 45;
-        servos[current].write(states[current]);
-        break;
       case '1':
-        states[current] = 5;
-        servos[current].write(states[current]);
+        base.moveForward(50,mediumSpeedDelay);
         break;
       case '2':
-        states[current] = 15;
-        servos[current].write(states[current]);
+        base.moveBackward(50,mediumSpeedDelay);
         break;
       case '3':
-        states[current] = 25;
-        servos[current].write(states[current]);
+        base.moveForward(25,mediumSpeedDelay);
         break;
       case '4':
-        states[current] = 35;
-        servos[current].write(states[current]);
+        base.moveBackward(25,mediumSpeedDelay);
         break;
       case '5':
-        states[current] = 45;
-        servos[current].write(states[current]);
+        base.moveForward(10,mediumSpeedDelay);
         break;
       case '6':
-        states[current] = 55;
-        servos[current].write(states[current]);
-        break;
-      case '7':
-        states[current] = 65;
-        servos[current].write(states[current]);
-        break;
-      case '8':
-        states[current] = 75;
-        servos[current].write(states[current]);
-        break;
-      case '9':
-        states[current] = 85;
-        servos[current].write(states[current]);
+        base.moveBackward(10,mediumSpeedDelay);
         break;
       case 'q':
-        states[current] = 95;
-        servos[current].write(states[current]);
+        base.turnLeft(90);
         break;
       case 'w':
-        states[current] = 105;
-        servos[current].write(states[current]);
+        base.turnRight(90);
         break;
       case 'e':
-        states[current] = 115;
-        servos[current].write(states[current]);
+        base.turnLeft(45);
         break;
       case 'r':
-        states[current] = 125;
-        servos[current].write(states[current]);
+        base.turnRight(45);
         break;
       case 't':
-        states[current] = 135;
-        servos[current].write(states[current]);
+        base.turnLeft(10);
         break;
       case 'y':
-        states[current] = 145;
-        servos[current].write(states[current]);
-        break;
-      case 'u':
-        states[current] = 155;
-        servos[current].write(states[current]);
-        break;
-      case 'i':
-        states[current] = 165;
-        servos[current].write(states[current]);
-        break;
-      case 'o':
-        states[current] = 175;
-        servos[current].write(states[current]);
-        break;
-      case '+':
-        states[current] += 5;
-        servos[current].write(states[current]);
-        break;
-      case '-':
-        states[current] -= 5;
-        servos[current].write(states[current]);
+        base.turnRight(10);
         break;
     }
   }
@@ -177,7 +102,7 @@ void loop()
   switch (robotState)
   {
     case 0:
-      robotRunning = false;
+      robotRunning = true;//false;
       robotState.waitFor(enableSensorDetect, STATE_NEXT);
       break;
     case 1:

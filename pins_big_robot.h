@@ -18,16 +18,14 @@ const int backBackSenzorPin = 40;
 const int backRightSenzorPin = 38;
 
 //Left motor
-const int leftMotorEncoderPin = 9;
-const int leftMotorDirectionPin = 26;
-const int leftMotorStepPin = 34;
-const int leftMotorEnablePin = 36;
+const int leftMotorDirectionPin = 5;
+const int leftMotorStepPin = 6;
+const int leftMotorEnablePin = 7;
 
 //Right motor
-const int rightMotorEncoderPin = 46;
-const int rightMotorDirectionPin = 30;
-const int rightMotorStepPin = 32;
-const int rightMotorEnablePin = 28;
+const int rightMotorDirectionPin = 2;
+const int rightMotorStepPin = 3;
+const int rightMotorEnablePin = 4;
 
 //UPPER LEVEL
 
@@ -51,12 +49,7 @@ const int inductiveFruitLowSensorPin = A5;
 
 //Claw
 
-const int fruitBarrierPin = 14; //(bariera optica)
-const int fruitColorSenzorPin = 22; //led
-//SCL = 21 !!! doesn't change
-//SDA = 20 !!! doesn't change
-//const int fruitDistancePin = 24;
-const int clawServoPin = 3; //servo
-const int clawBasketPin = 5; //servo
+const int clawServoPin = 999; //servo
+const int clawBasketPin = 999; //servo
 
 #endif

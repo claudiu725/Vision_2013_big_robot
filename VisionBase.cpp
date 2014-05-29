@@ -18,12 +18,12 @@ void VisionBase::init()
   //backRight.disable();
   
   //leftEncoder.initPin(leftMotorEncoderPin);
-  //leftMotor.init();
-  //leftMotor.initDirectionForward(LOW);
+  leftMotor.init();
+  leftMotor.initDirectionForward(LOW);
 //  leftMotor.setFullStep();
-  leftMotor.initPins(rightMotorEnablePin, leftMotorDirectionPin, rightMotorStepPin);
-  //leftMotor.initDelays(defaultStartSpeedDelay, highPhaseDelay, pauseSpeedDelay, delayBeforeTurnOff, stepSpeedCounterAcceleration, stepSpeedCounterSlowing);
-  //leftMotor.initSizes(wheelDiameter, wheelRevolutionSteps,distanceBetweenWheels);
+  leftMotor.initPins(leftMotorEnablePin, leftMotorDirectionPin, leftMotorStepPin);
+  leftMotor.initDelays(defaultStartSpeedDelay, highPhaseDelay, pauseSpeedDelay, delayBeforeTurnOff, stepSpeedCounterAcceleration, stepSpeedCounterSlowing);
+  leftMotor.initSizes(wheelDiameter, wheelRevolutionSteps,distanceBetweenWheels);
   
   //rightEncoder.initPin(rightMotorEncoderPin);
   rightMotor.init();
@@ -34,29 +34,29 @@ void VisionBase::init()
   rightMotor.initSizes(wheelDiameter, wheelRevolutionSteps,distanceBetweenWheels);
   
   directionMovement = NONE;
-  obstructionDetected = false;;
+  obstructionDetected = false;
   oppositeSide /*= digitalRead(colorYellowPin)*/ = false;
 }
 
 void VisionBase::moveForward(float distance, int step_delay)
 {       
   directionMovement = FRONT;
-  //leftMotor.setTargetDelay(step_delay);         
+  leftMotor.setTargetDelay(step_delay);         
   rightMotor.setTargetDelay(step_delay);
   leftMotor.setDirectionForward();
   rightMotor.setDirectionForward();
-  //leftMotor.doDistanceInCm(distance);
+  leftMotor.doDistanceInCm(distance);
   rightMotor.doDistanceInCm(distance);
 }
 
 void VisionBase::moveBackward(float distance, int step_delay)
 {    
   directionMovement = BACK;
-  //leftMotor.setTargetDelay(step_delay);         
+  leftMotor.setTargetDelay(step_delay);         
   rightMotor.setTargetDelay(step_delay);
   leftMotor.setDirectionBackward();
   rightMotor.setDirectionBackward();
-  //leftMotor.doDistanceInCm(distance);
+  leftMotor.doDistanceInCm(distance);
   rightMotor.doDistanceInCm(distance);
 }
 
@@ -73,9 +73,9 @@ void VisionBase::turnLeft(int angle)
     leftMotor.setDirectionForward();
     rightMotor.setDirectionBackward();
   }
-  //leftMotor.setTargetDelay(turnSpeedDelay);         
+  leftMotor.setTargetDelay(turnSpeedDelay);         
   rightMotor.setTargetDelay(turnSpeedDelay);
-  //leftMotor.doRotationInAngle(angle);
+  leftMotor.doRotationInAngle(angle);
   rightMotor.doRotationInAngle(angle); 
 }
 
@@ -92,28 +92,28 @@ void VisionBase::turnRight(int angle)
     leftMotor.setDirectionBackward();
     rightMotor.setDirectionForward();
   }
-  //leftMotor.setTargetDelay(turnSpeedDelay);         
+  leftMotor.setTargetDelay(turnSpeedDelay);         
   rightMotor.setTargetDelay(turnSpeedDelay);
-  //leftMotor.doRotationInAngle(angle);
+  leftMotor.doRotationInAngle(angle);
   rightMotor.doRotationInAngle(angle);
 }
 
 
 void VisionBase::pause()
 {
-  //leftMotor.pause();
+  leftMotor.pause();
   rightMotor.pause();
 }
 
 void VisionBase::unpause()
 {
-  //leftMotor.unpause();
+  leftMotor.unpause();
   rightMotor.unpause();
 }
 
 void VisionBase::stopNow()
 {
-  //leftMotor.stopNow();
+  leftMotor.stopNow();
   rightMotor.stopNow();
 }
 
@@ -139,7 +139,7 @@ boolean VisionBase::backDetected()
 
 boolean VisionBase::isStopped()
 {
-  return rightMotor.isOff();
+  return leftMotor.isOff() && rightMotor.isOff();
 }
 
 void VisionBase::checkObstructions()
@@ -158,12 +158,13 @@ void VisionBase::checkObstructions()
 void VisionBase::doLoop()
 {
   //leftEncoder.doLoop();
-  //leftMotor.doLoop();
+  leftMotor.doLoop();
   //rightEncoder.doLoop();
   rightMotor.doLoop();
 }
 
 void VisionBase::disable()
 {
+  leftMotor.disable();
   rightMotor.disable();
 }
