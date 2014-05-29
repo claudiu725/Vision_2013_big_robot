@@ -32,11 +32,11 @@ VisionSensor enableSensor;
 int colorRedStartState, colorYellowStartState, testStartState, onePointStartState, color;
 boolean robotRunning;
 Servo servos[4];
-int states[4], current, increment;
+int states[4], current;
 
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(19200);
   current = 0;
   servos[0].attach(22); //arm
   servos[1].attach(24); //flip triangle
@@ -46,14 +46,13 @@ void setup()
   states[1] = 45;
   states[2] = 45;
   states[3] = 45;
-  increment = 5;
   servos[0].write(states[0]);
   servos[1].write(states[1]);
   servos[2].write(states[2]);
   servos[3].write(states[3]);
   
-  base.init();
-  arm.init();
+  //base.init();
+  //arm.init();
   enableSensor.initPin(enablePin);
   enableSensor.setAsPullup();
   ignoreSensors = false;
@@ -71,6 +70,7 @@ void serialEvent()
 {
   while (Serial.available()) {
     char inChar = (char)Serial.read();
+    Serial.print(inChar);
     switch (inChar) {
       case 'z':
         current = 0;
