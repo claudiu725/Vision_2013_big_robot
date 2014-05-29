@@ -27,35 +27,36 @@ boolean ignoreSensors = false;
 elapsedMillis enemyTimer;
 int baseStartState;
 
-VisionState baseState, armState, robotState, clawState;
+VisionState baseState, robotState;
 VisionSensor enableSensor;
 int colorRedStartState, colorYellowStartState, testStartState, onePointStartState, color;
-boolean fruitWasDetected;
 boolean robotRunning;
+Servo servos[3];
+int states[3], current, increment;
 
 void setup()
 {
   Serial.begin(9600);
+  current = 0;
+  servos[0].attach(30);
+  servos[1].attach(40);
+  servos[2].attach(50);
+  states[0] = 45;
+  states[1] = 45;
+  states[2] = 45;
+  increment = 5;
+  servos[0].write(states[0]);
+  servos[1].write(states[1]);
+  servos[2].write(states[2]);
+  
   base.init();
   arm.init();
   enableSensor.initPin(enablePin);
   enableSensor.setAsPullup();
   ignoreSensors = false;
-  while (1) {
-  Serial.print(base.frontLeft.detect());
-  Serial.print(base.frontFront.detect());
-  Serial.print(base.frontRight.detect());
-  Serial.print(base.left.detect());
-  Serial.print(base.right.detect());
-  Serial.print(base.backLeft.detect());
-  Serial.print(base.backBack.detect());
-  Serial.println(base.backRight.detect());
-  }
   robotState = 0;
   baseState = STATE_STOP;
-  armState.waitFor(armVerticalStop, STATE_STOP);
-  clawState = STATE_STOP;
-  
+
   colorRedStartState = 100;
   colorYellowStartState = 0;
   testStartState = 300;
@@ -63,10 +64,107 @@ void setup()
   color = YELLOW; // RED YELLOW TEST ONEPOINT
 }
 
-#define RETRIEVE_A 60
-#define RETRIEVE_B 100
-
-int retrieveOption;
+void serialEvent()
+{
+  while (Serial.available()) {
+    char inChar = (char)Serial.read();
+    switch (inChar) {
+      case 'z':
+        current = 0;
+        break;
+      case 'x':
+        current = 1;
+        break;
+      case 'c':
+        current = 2;
+        break;
+      case '`':
+        states[current] = 45;
+        servos[current].write(states[current]);
+        break;
+      case '1':
+        states[current] = 5;
+        servos[current].write(states[current]);
+        break;
+      case '2':
+        states[current] = 15;
+        servos[current].write(states[current]);
+        break;
+      case '3':
+        states[current] = 25;
+        servos[current].write(states[current]);
+        break;
+      case '4':
+        states[current] = 35;
+        servos[current].write(states[current]);
+        break;
+      case '5':
+        states[current] = 45;
+        servos[current].write(states[current]);
+        break;
+      case '6':
+        states[current] = 55;
+        servos[current].write(states[current]);
+        break;
+      case '7':
+        states[current] = 65;
+        servos[current].write(states[current]);
+        break;
+      case '8':
+        states[current] = 75;
+        servos[current].write(states[current]);
+        break;
+      case '9':
+        states[current] = 85;
+        servos[current].write(states[current]);
+        break;
+      case 'q':
+        states[current] = 95;
+        servos[current].write(states[current]);
+        break;
+      case 'w':
+        states[current] = 105;
+        servos[current].write(states[current]);
+        break;
+      case 'e':
+        states[current] = 115;
+        servos[current].write(states[current]);
+        break;
+      case 'r':
+        states[current] = 125;
+        servos[current].write(states[current]);
+        break;
+      case 't':
+        states[current] = 135;
+        servos[current].write(states[current]);
+        break;
+      case 'y':
+        states[current] = 145;
+        servos[current].write(states[current]);
+        break;
+      case 'u':
+        states[current] = 155;
+        servos[current].write(states[current]);
+        break;
+      case 'i':
+        states[current] = 165;
+        servos[current].write(states[current]);
+        break;
+      case 'o':
+        states[current] = 175;
+        servos[current].write(states[current]);
+        break;
+      case '+':
+        states[current] += 5;
+        servos[current].write(states[current]);
+        break;
+      case '-':
+        states[current] -= 5;
+        servos[current].write(states[current]);
+        break;
+    }
+  }
+}
 
 void loop()
 {
@@ -133,342 +231,9 @@ void loop()
       base.turnRight(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 6:
-      arm.moveHorizontal(17, FORWARD);
-      baseState.waitFor(armHorizontalStop, STATE_NEXT);
-      break;
-    case 7:
-      arm.moveHorizontal(17, BACKWARD);
-      baseState.waitFor(armHorizontalStop, STATE_NEXT);
-      break;
-    case 8:
-      base.turnLeft(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 9:
-      base.moveForward(47,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 10:
-      base.turnRight(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 11:
-      base.moveForward(60,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 12:
-      arm.moveHorizontal(17, FORWARD);
-      baseState.waitFor(armHorizontalStop, STATE_NEXT);
-      break;
-    case 13:
-      base.moveBackward(20,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 14:
-      arm.moveHorizontal(17, BACKWARD);
-      baseState.waitFor(armHorizontalStop, STATE_NEXT);
-      break;
-      
-    case 50:
-      base.moveForward(50, veryFastSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 51:
-      base.moveBackward(50, veryFastSpeedDelay);
-      baseState.waitFor(baseStop, 50);
-      break;
 
-    case 100:
-      base.moveForward(39,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 101:
-      base.turnRight(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 102:
-      base.moveBackward(15,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 103:
-      base.turnLeft(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 104:
-      base.frontFront.disable();
-      base.moveForward(23,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 105:
-      base.frontFront.enable();
-      base.turnRight(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 106:
-      arm.moveHorizontal(17, FORWARD);
-      baseState.waitFor(armHorizontalStop, STATE_NEXT);
-      break;
-    case 107:
-      arm.moveHorizontal(17, BACKWARD);
-      baseState.waitFor(armHorizontalStop, STATE_NEXT);
-      break;
-    case 108:
-      base.turnLeft(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 109:
-      base.moveForward(47,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 110:
-      base.turnRight(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 111:
-      base.moveBackward(60,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 112:
-      arm.moveHorizontal(17, FORWARD);
-      baseState.waitFor(armHorizontalStop, STATE_NEXT);
-      break;
-    case 113:
-      base.moveForward(20,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 114:
-      arm.moveHorizontal(17, BACKWARD);
-      baseState.waitFor(armHorizontalStop, STATE_NEXT);
-      break;
-      
-    case 200:
-      base.moveForward(39,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 201:
-      base.turnLeft(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 202:
-      base.moveBackward(60,slowSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 203:
-      base.moveForward(60,slowSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-
-
-    case 300:
-      base.moveForward(39,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 301:
-      base.turnLeft(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 302:
-      base.moveBackward(27,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 303:
-      base.turnRight(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 304:
-      base.moveForward(23,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 305:
-      base.turnRight(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 306:
-      arm.moveHorizontal(17, FORWARD);
-      baseState.waitFor(armHorizontalStop, STATE_NEXT);
-      break;
-    case 307:
-      arm.moveHorizontal(17, BACKWARD);
-      baseState.waitFor(armHorizontalStop, STATE_NEXT);
-      break;
-    case 308:
-      base.turnLeft(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 309:
-      base.moveForward(47,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
     default:
       baseState.doLoop();
-  }
-  
-  //*************************************************************************//
-  switch (armState)
-  {
-    // arm open routine
-    case 0:
-      arm.clawRelease();
-      arm.moveHorizontal(17, FORWARD);
-      armState.waitFor(armHorizontalStop, STATE_NEXT);
-      break;
-    case 1:
-      retrieveOption = RETRIEVE_B;
-      clawState = 0;
-      armState.save();
-      armState = STATE_STOP;
-      break;
-    case 2:
-      baseState.restore();
-      armState = STATE_STOP;
-      break;
-      
-    case 10:
-      arm.clawRelease();
-      arm.moveHorizontal(7, FORWARD);
-      armState.waitFor(armHorizontalStop, STATE_NEXT);
-      break;
-    case 11:
-      retrieveOption = RETRIEVE_A;
-      clawState = 0;
-      armState.save();
-      armState = STATE_STOP;
-      break;
-    case 12:
-      baseState.restore();
-      armState = STATE_STOP;
-      break;
-    default:
-      armState.doLoop();
-  }
-  
-  switch (clawState)
-  {
-    //arm is already extended, check mid and low, stay lowered
-    case 0:
-      arm.moveVertical(arm.sensorBottom);
-      clawState.waitFor(armVerticalStop, STATE_NEXT);
-      break;
-    case 1:
-      if (fruitDetect())
-        clawState.call(20);
-      else
-        clawState = STATE_NEXT;
-      break;
-    case 2:
-      arm.moveVertical(arm.sensorMiddle);
-      clawState.waitFor(armVerticalStop, STATE_NEXT);
-      break;
-    case 3:
-      //if (fruitDetect())
-        clawState.call(20);
-      //else
-        //clawState = STATE_NEXT;
-      break;
-    case 4:
-      clawState = 40;//didn't find it
-      break;
-
-    //found something, grab it and check it to be purple
-    case 20:
-      arm.clawGrab();
-      clawState.wait(500, STATE_NEXT);
-      break;
-    case 21:
-      if (seePurple() || seeClear())
-        clawState = retrieveOption; //got it
-      else
-      {
-        arm.clawRelease();
-        clawState.restore(); //return to case 0+
-      }
-      break;
-
-    //failure, did not detect anything
-    case 40:
-      arm.moveVertical(arm.sensorTop);
-      clawState.waitFor(armVerticalStop, STATE_NEXT);
-      break;
-    case 41:
-      clawState = 80; //done
-      break;      
-
-    //found something, claw grabbed fruit and checked it to be purple
-    //now take it up, pull it back and drop it in the cup
-    // RETRIEVE FRUIT A
-    case 60:
-      arm.moveVertical(arm.sensorTop);
-      clawState.waitFor(armVerticalStop, 62);
-      break;
-    case 62:
-      arm.moveHorizontal(8, BACKWARD);
-      clawState.waitFor(armHorizontalStop, STATE_NEXT);
-      break;
-    case 63:
-      base.turnLeft(45);
-      clawState.waitFor(baseStop, 65);
-      break;
-    case 65:
-      arm.clawRelease();
-      clawState.wait(1000, STATE_NEXT);
-      break;
-    case 66:
-      arm.moveHorizontal(17, BACKWARD);
-      clawState.waitFor(armHorizontalStop, STATE_NEXT);
-      break;
-    case 67:
-      base.turnRight(45);
-      clawState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 68:
-      clawState = 81;
-      break;
-      
-    //done
-    case 80:
-      arm.moveHorizontal(17, BACKWARD);
-      clawState.waitFor(armHorizontalStop, STATE_NEXT);
-      break;
-    case 81:
-      armState.restore();
-      clawState = STATE_STOP;
-      break;
-
-    // RETRIEVE FRUIT B    
-    case 100:
-      arm.moveVertical(arm.sensorTop);
-      clawState.waitFor(armVerticalStop, STATE_NEXT);
-      break;
-    case 101:
-      arm.moveHorizontal(10, BACKWARD);
-      clawState.waitFor(armHorizontalStop, STATE_NEXT);
-      break;
-    case 102:
-      base.turnLeft(90);
-      clawState.waitFor(baseStop,104);
-      break;
-      /*
-    case 103:
-      arm.moveHorizontal(7, FORWARD);
-      clawState.waitFor(armHorizontalStop, STATE_NEXT);
-      break;
-      */
-    case 104:
-      arm.clawRelease();
-      arm.moveHorizontal(17, BACKWARD);
-      clawState.waitFor(armHorizontalStop, STATE_NEXT);
-      break;
-    case 105:
-      base.turnRight(90);
-      clawState.waitFor(baseStop,STATE_NEXT);
-      break;
-    case 106:
-      clawState = 81;
-      break;
-
-    default:
-      clawState.doLoop();
   }
 
   //*************************************************************************//
@@ -485,32 +250,10 @@ void loop()
       else if (enemyTimer > 3000)
         base.unpause();
     }
-    if (arm.fruitBarrier.detect())
-      fruitWasDetected = true;
-
-    if (arm.horizontalLimiter.detect() && !arm.horizontalMotor.isOff() && arm.horizontalDirection == BACKWARD)
-      arm.horizontalMotor.setRemainingDistance(0.05);
-    if (arm.horizontalAntiSlip.detect() && arm.horizontalMotor.isOff())
-      arm.moveHorizontal(1, BACKWARD);
 
     base.doLoop();
     arm.doLoop();
   }
-}
-
-boolean seePurple()
-{
-  return arm.fruitColor.isPurple();
-}
-
-boolean seeBlack()
-{
-  return arm.fruitColor.isBlack();
-}
-
-boolean seeClear()
-{
-  return arm.fruitColor.isClear();
 }
 
 boolean baseStop()
@@ -528,41 +271,6 @@ boolean armVerticalStop()
   return arm.verticalMotor.isOff();
 }
 
-boolean armHorizontalStop()
-{
-  return arm.horizontalMotor.isOff();
-}
-
-boolean armHorizontalStopOrFruit()
-{
-  return arm.horizontalMotor.isOff() || arm.fruitBarrier.detect();
-}
-
-boolean fruitDetect()
-{
-  return arm.fruitBarrier.detect();
-}
-
-boolean verticalLimiterTrigger()
-{
-  return arm.verticalLimiter.detect();
-}
-
-boolean horizontalLimiterTrigger()
-{
-  return arm.horizontalLimiter.detect();
-}
-
-boolean horizontalAntiSlipTrigger()
-{
-  return arm.horizontalAntiSlip.detect();
-}
-
-boolean horizontalSensor()
-{
-  return arm.horizontalAntiSlip.detect() || arm.horizontalLimiter.detect();
-}
-
 boolean enableSensorDetect()
 {
   return enableSensor.detect();
@@ -573,8 +281,5 @@ void timeIsUpStopEverything()
   base.stopNow();
   arm.stopNow();
   base.disable();
-  arm.disable();
   baseState = STATE_STOP;
-  armState = STATE_STOP;
-  clawState = STATE_STOP;
 }

@@ -11,30 +11,12 @@ int rightStepCount = 0;
 
 void VisionArm::init()
 {
-  fruitBarrier.initPin(fruitBarrierPin);
-  fruitBarrier.toggleNegate();
-  fruitColor.initPin(fruitColorSenzorPin);
-  
-  horizontalLimiter.initPin(horizontalArmLimiterPin);
-  horizontalLimiter.setAsPullup();
-  horizontalAntiSlip.initPin(horizontalArmAntiSlipPin);
-  horizontalAntiSlip.setAsPullup();
-  
-  horizontalMotor.init();
-  horizontalMotor.initPins(horizontalArmEnablePin, horizontalArmDirectionPin, horizontalArmStepPin);
-  horizontalMotor.initDelays(horizontalArmStartSpeedDelay, highPhaseDelay, pauseSpeedDelay, delayBeforeTurnOff, horizontalArmStepSpeedCounterAcceleration, horizontalArmStepSpeedCounterSlowing);
-  horizontalMotor.initStepCmRatio(horizontalArmCmStepRatio);
-  horizontalMotor.waitBeforeTurningOff = 9999;
-  
-  verticalLimiter.initPin(verticalArmLimiterPin);
-  verticalLimiter.setAsPullup();
-  
   sensorTop.initPin(inductiveStartSensorPin);
   sensorTop.initInductivePosition(3);
-  
+
   sensorMiddle.initPin(inductiveFruitHighSensorPin);
   sensorMiddle.initInductivePosition(2);
-  
+
   sensorBottom.initPin(inductiveFruitLowSensorPin);
   sensorBottom.initInductivePosition(0);
   
@@ -50,19 +32,6 @@ void VisionArm::init()
   
   basket.attach(clawBasketPin);
   basketClose();
-  
-  lance.attach(lanceServoPin);
-  lanceRaise();
-}
-
-void VisionArm::moveHorizontal(float distance, int side)
-{
-  horizontalMotor.setDirectionForward();
-  horizontalDirection = side;
-  if(side == BACKWARD)
-    horizontalMotor.toggleDirection();
-  horizontalMotor.setTargetDelay(horizontalArmSpeedDelay);
-  horizontalMotor.doDistanceInCm(distance);
 }
 
 void VisionArm::moveVertical(VisionSensor& sensor)
@@ -90,34 +59,17 @@ void VisionArm::basketOpen()
   basket.write(86);
 }
 
-void VisionArm::lanceRaise()
-{
-  lance.write(3);
-}
-
-void VisionArm::lanceLower()
-{
-  lance.write(86);
-}
-
 boolean VisionArm::isStopped()
 {
-  return horizontalMotor.isOff() && verticalMotor.isOff();
-}
-
-void VisionArm::disable()
-{
-  horizontalMotor.disable();
+  return verticalMotor.isOff();
 }
 
 void VisionArm::doLoop()
 {
-  horizontalMotor.doLoop();
   verticalMotor.doLoop();
 }
 
 void VisionArm::stopNow()
 {
-  horizontalMotor.stopNow();
   verticalMotor.stopNow();
 }

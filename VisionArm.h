@@ -16,11 +16,7 @@
 
 class VisionArm {
   public:    
-    Servo claw, basket, lance;
-    VisionSensor fruitBarrier, fruitDistance;
-    VisionColorSensor fruitColor;
-    VisionSensor verticalLimiter, horizontalLimiter, horizontalAntiSlip;
-    VisionStepper horizontalMotor;
+    Servo claw, basket, horizontalMotor;
     VisionBrushless verticalMotor;
     VisionSensor sensorTop, sensorMiddle, sensorBottom;
     int horizontalDirection;
@@ -29,9 +25,6 @@ class VisionArm {
     void clawRelease();
     void basketClose();
     void basketOpen();
-    void lanceRaise();
-    void lanceLower();
-    void moveHorizontal(float, int);
     void moveVertical(VisionSensor& sensor);
     void doLoop();
     void stopNow();
