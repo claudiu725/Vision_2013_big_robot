@@ -16,21 +16,9 @@ const unsigned long ultraSlowSpeedDelay = 24000;
 
 const unsigned long turnSpeedDelay = 5000;
 
-const float horizontalArmStepSpeedCounterAcceleration = 50;
-const float horizontalArmStepSpeedCounterSlowing = 25;
-const unsigned long horizontalArmStartSpeedDelay = 10000;
-const unsigned long horizontalArmSpeedDelay = 5000;
-
 const float wheelDiameter = 12.3;
 const float distanceBetweenWheels = 24.1; //valoare interioara
 const int wheelRevolutionSteps = 200;
-
-const float horizontalArmCmStepRatio = 30.86; // 16.2cm per 500 steps
-
-const int verticalArmStopPwm = 15;
-const int verticalArmNormalPwm = 30; //33
-
-const float encoderRevolutionSteps = 24;
 
 const int acuatorWaitTime = 1000;
 

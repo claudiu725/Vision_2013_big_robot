@@ -11,23 +11,14 @@ int rightStepCount = 0;
 
 void VisionArm::init()
 {
-  sensorTop.initPin(inductiveStartSensorPin);
-  sensorTop.initInductivePosition(3);
-
-  sensorMiddle.initPin(inductiveFruitHighSensorPin);
-  sensorMiddle.initInductivePosition(2);
-
-  sensorBottom.initPin(inductiveFruitLowSensorPin);
-  sensorBottom.initInductivePosition(0);
+//  verticalMotor.init();
+//  verticalMotor.initDirectionForward(LOW);
+//  verticalMotor.initPins(verticalArmBrushlessPin, verticalArmDirectionRelayPin);
+//  verticalMotor.initTopBottom(sensorTop, sensorBottom);
+//  verticalMotor.initPosition(sensorTop.inductivePosition);
+//  verticalMotor.initPwms(verticalArmStopPwm, verticalArmNormalPwm);
   
-  verticalMotor.init();
-  verticalMotor.initDirectionForward(LOW);
-  verticalMotor.initPins(verticalArmBrushlessPin, verticalArmDirectionRelayPin);
-  verticalMotor.initTopBottom(sensorTop, sensorBottom);
-  verticalMotor.initPosition(sensorTop.inductivePosition);
-  verticalMotor.initPwms(verticalArmStopPwm, verticalArmNormalPwm);
-  
-  claw.attach(clawServoPin);
+//  claw.attach(clawServoPin);
   //clawRelease();
   
   basket.attach(clawBasketPin);
@@ -36,7 +27,7 @@ void VisionArm::init()
 
 void VisionArm::moveVertical(VisionSensor& sensor)
 {
-  verticalMotor.moveTo(sensor);
+//  verticalMotor.moveTo(sensor);
 }
 
 void VisionArm::clawRelease()
@@ -61,15 +52,15 @@ void VisionArm::basketOpen()
 
 boolean VisionArm::isStopped()
 {
-  return verticalMotor.isOff();
+  return 0;//verticalMotor.isOff();
 }
 
 void VisionArm::doLoop()
 {
-  verticalMotor.doLoop();
+//  verticalMotor.doLoop();
 }
 
 void VisionArm::stopNow()
 {
-  verticalMotor.stopNow();
+//  verticalMotor.stopNow();
 }

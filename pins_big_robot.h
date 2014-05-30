@@ -1,21 +1,16 @@
 #ifndef pins_big_robot_h
 #define pins_big_robot_h
 
-const int enablePin = 33;
+const int enablePin = 999;
 
-//LOWER LEVEL
+//SENSOR LEVEL
 
 //Front
-const int frontLeftSenzorPin = 11; // inversed
-const int frontFrontSenzorPin = 12;
-const int frontRightSenzorPin = 10;
-//Sides
-const int leftSenzorPin = 42;
-const int rightSenzorPin = 48;
+const int frontLeftSenzorPin = 999;
+const int frontRightSenzorPin = 999;
 //Back
-const int backLeftSenzorPin = 50;
-const int backBackSenzorPin = 40;
-const int backRightSenzorPin = 38;
+const int backLeftSenzorPin = 999;
+const int backRightSenzorPin = 999;
 
 //Left motor
 const int leftMotorDirectionPin = 5;
@@ -29,27 +24,19 @@ const int rightMotorEnablePin = 4;
 
 //UPPER LEVEL
 
-//Lance
-const int lanceServoPin = 15;
-
 //Horizontal arm
-const int horizontalArmLimiterPin = 6;
-const int horizontalArmAntiSlipPin = 39;
-const int horizontalArmDirectionPin = 45;
-const int horizontalArmStepPin = 47;
-const int horizontalArmEnablePin = 49;
+const int horizontalEncoderPin = 999;
+const int horizontalArmDirectionPin = 999;
+const int horizontalArmEnablePin = 999;
 
 //Vertical arm
-const int verticalArmLimiterPin = A15;
-const int verticalArmDirectionRelayPin = 53;
-const int verticalArmBrushlessPin = 51;
-const int inductiveStartSensorPin = A6;
-const int inductiveFruitHighSensorPin = A7;
-const int inductiveFruitLowSensorPin = A5;
+const int verticalDistancePin = 999;
+const int verticalArmDirectionPin = 999;
+const int verticalArmEnablePin = 999;
 
 //Claw
 
-const int clawServoPin = 999; //servo
+const int clawMotorPin = 999; //servo
 const int clawBasketPin = 999; //servo
 
 #endif

@@ -10,7 +10,7 @@
 #include "VisionBase.h"
 #include "VisionArm.h"
 #include "VisionState.h"
-#include "VisionBrushless.h"
+#include "VisionDC.h"
 #include "pins_big_robot.h"
 #include "big_robot_constants.h"
 
@@ -35,7 +35,6 @@ boolean robotRunning;
 void setup()
 {
   Serial.begin(19200);
-  
   base.init();
   //arm.init();
   enableSensor.initPin(enablePin);
@@ -55,44 +54,38 @@ void serialEvent()
 {
   while (Serial.available()) {
     char inChar = (char)Serial.read();
-    Serial.print(inChar);
+    double x;
     switch (inChar) {
-      case '1':
-        base.moveForward(50,mediumSpeedDelay);
-        break;
-      case '2':
-        base.moveBackward(50,mediumSpeedDelay);
-        break;
-      case '3':
-        base.moveForward(25,mediumSpeedDelay);
-        break;
-      case '4':
-        base.moveBackward(25,mediumSpeedDelay);
-        break;
-      case '5':
-        base.moveForward(10,mediumSpeedDelay);
-        break;
-      case '6':
-        base.moveBackward(10,mediumSpeedDelay);
-        break;
-      case 'q':
-        base.turnLeft(90);
-        break;
       case 'w':
-        base.turnRight(90);
+        x = Serial.parseFloat();
+        x = x==0 ? 10 : x;
+        base.moveForward(x,mediumSpeedDelay);
+        Serial.print("Move forward:");
+        Serial.println(x);
         break;
-      case 'e':
-        base.turnLeft(45);
+      case 's':
+        x = Serial.parseFloat();
+        x = x==0 ? 10 : x;
+        base.moveBackward(x,mediumSpeedDelay);
+        Serial.print("Move backward:");
+        Serial.println(x);
         break;
-      case 'r':
-        base.turnRight(45);
+      case 'a':
+        x = Serial.parseFloat();
+        x = x==0 ? 90 : x;
+        base.turnLeft(x);
+        Serial.print("Turn left:");
+        Serial.println(x);
         break;
-      case 't':
-        base.turnLeft(10);
+      case 'd':
+        x = Serial.parseFloat();
+        x = x==0 ? 90 : x;
+        base.turnRight(x);
+        Serial.print("Turn right:");
+        Serial.println(x);
         break;
-      case 'y':
-        base.turnRight(10);
-        break;
+      default:
+        Serial.print(inChar);
     }
   }
 }
@@ -199,7 +192,7 @@ boolean armStop()
 
 boolean armVerticalStop()
 {
-  return arm.verticalMotor.isOff();
+  return 0;//arm.verticalMotor.isOff();
 }
 
 boolean enableSensorDetect()

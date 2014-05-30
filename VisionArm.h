@@ -17,8 +17,8 @@
 class VisionArm {
   public:    
     Servo claw, basket, horizontalMotor;
-    VisionBrushless verticalMotor;
-    VisionSensor sensorTop, sensorMiddle, sensorBottom;
+    //VisionDC verticalMotor;
+    //VisionDistanceSensor verticalDistanceSensor;
     int horizontalDirection;
     void init();
     void clawGrab();
