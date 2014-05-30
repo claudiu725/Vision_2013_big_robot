@@ -6,6 +6,12 @@ void VisionEncoder::initPin(int sensorPin)
   sensor.setAsPullup();
   state = sensor.detect();
   stepCount = 0;
+  revolutionSteps = 1;
+}
+
+void VisionEncoder::initRevolutionSteps(int revolutionSteps)
+{
+  this->revolutionSteps = revolutionSteps;
 }
 
 void VisionEncoder::reset()
@@ -15,7 +21,7 @@ void VisionEncoder::reset()
 
 long VisionEncoder::count()
 {
-  return stepCount * wheelRevolutionSteps / encoderRevolutionSteps;
+  return stepCount * wheelRevolutionSteps / revolutionSteps;
 }
 
 void VisionEncoder::doLoop()

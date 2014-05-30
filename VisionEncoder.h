@@ -8,13 +8,14 @@
 class VisionEncoder {
   public:
     void initPin(int sensorPin);
+    void initRevolutionSteps(int revolutionSteps);
     void reset();
     long count();
     void doLoop();
   private:
     VisionSensor sensor;
     boolean state;
-    long stepCount;
+    long stepCount, revolutionSteps;
 };
 
 #endif
