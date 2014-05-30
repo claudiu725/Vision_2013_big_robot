@@ -5,7 +5,7 @@
 #include "VisionStepper.h"
 #include "VisionSensor.h"
 #include "VisionColorSensor.h"
-#include "VisionBrushless.h"
+#include "VisionDC.h"
 #include <elapsedMillis.h>
 #include <Servo.h>
 
@@ -16,15 +16,19 @@
 
 class VisionArm {
   public:    
-    Servo claw, basket, horizontalMotor;
-    //VisionDC verticalMotor;
-    //VisionDistanceSensor verticalDistanceSensor;
+    Servo basket, sensorScanner, flipper, horizontalMotor;
+    elapsedMillis sensorToggleTimer;
+    VisionDC verticalMotor, clawMotor;
     int horizontalDirection;
     void init();
     void clawGrab();
     void clawRelease();
     void basketClose();
     void basketOpen();
+    void flipIn();
+    void flipOut();
+    void horizIn();
+    void horizOut();
     void moveVertical(VisionSensor& sensor);
     void doLoop();
     void stopNow();

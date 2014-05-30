@@ -9,7 +9,7 @@ void VisionEncoder::initPin(int sensorPin)
   revolutionSteps = 1;
 }
 
-void VisionEncoder::initRevolutionSteps(int revolutionSteps)
+void VisionEncoder::initRevolutionSteps(long revolutionSteps)
 {
   this->revolutionSteps = revolutionSteps;
 }

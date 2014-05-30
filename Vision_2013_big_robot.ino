@@ -36,7 +36,7 @@ void setup()
 {
   Serial.begin(19200);
   base.init();
-  //arm.init();
+  arm.init();
   enableSensor.initPin(enablePin);
   enableSensor.setAsPullup();
   ignoreSensors = true;//false;
@@ -44,10 +44,10 @@ void setup()
   baseState = STATE_STOP;
 
   colorRedStartState = 100;
-  colorYellowStartState = STATE_STOP;
-  testStartState = 300;
+  colorYellowStartState = 0;
+  testStartState = STATE_STOP;
   onePointStartState = 200;
-  color = YELLOW; // RED YELLOW TEST ONEPOINT
+  color = TEST; // RED YELLOW TEST ONEPOINT
 }
 
 void serialEvent()
@@ -84,6 +84,38 @@ void serialEvent()
         Serial.print("Turn right:");
         Serial.println(x);
         break;
+      case 't':
+        arm.horizIn();
+        Serial.println("horizIn");
+        break;
+      case 'g':
+        arm.horizOut();
+        Serial.println("horizOut");
+        break;
+      case 'y':
+        arm.flipIn();
+        Serial.println("flipIn");
+        break;
+      case 'h':
+        arm.flipOut();
+        Serial.println("flipOut");
+        break;
+      case 'u':
+        arm.basketClose();
+        Serial.println("basketClose");
+        break;
+      case 'j':
+        arm.basketOpen();
+        Serial.println("basketOpen");
+        break;
+      case 'i':
+        robotRunning = false;
+        Serial.println("robotRunning false");
+        break;
+      case 'k':
+        robotRunning = true;
+        Serial.println("robotRunning true");
+        break;
       default:
         Serial.print(inChar);
     }
@@ -95,7 +127,7 @@ void loop()
   switch (robotState)
   {
     case 0:
-      robotRunning = true;//false;
+      robotRunning = false;
       robotState.waitFor(enableSensorDetect, STATE_NEXT);
       break;
     case 1:

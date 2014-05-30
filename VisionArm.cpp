@@ -11,53 +11,87 @@ int rightStepCount = 0;
 
 void VisionArm::init()
 {
-//  verticalMotor.init();
-//  verticalMotor.initDirectionForward(LOW);
-//  verticalMotor.initPins(verticalArmBrushlessPin, verticalArmDirectionRelayPin);
-//  verticalMotor.initTopBottom(sensorTop, sensorBottom);
-//  verticalMotor.initPosition(sensorTop.inductivePosition);
-//  verticalMotor.initPwms(verticalArmStopPwm, verticalArmNormalPwm);
+  verticalMotor.init();
+  verticalMotor.initPins(verticalArmForwardPin, verticalArmBackwardPin);
   
-//  claw.attach(clawServoPin);
-  //clawRelease();
+  verticalMotor.encoder.initPin(verticalArmEncoderPin);
+  verticalMotor.encoder.initRevolutionSteps(verticalEncoderRevolutionSteps);
   
-  basket.attach(clawBasketPin);
+  clawMotor.init();
+  clawMotor.initPins(clawMotorForwardPin, clawMotorBackwardPin);
+  clawMotor.encoder.initPin(clawMotorEncoderAPin);
+  clawMotor.encoder.initRevolutionSteps(clawEncoderRevolutionSteps);
+
+  flipper.attach(flipperPin);
+  flipIn();
+  
+  sensorScanner.attach(sensorScannerPin);
+  sensorScanner.write(sensorScannerMiddle);
+  
+  basket.attach(basketPin);
   basketClose();
+  
+  horizontalMotor.attach(horizontalArmPin);
+  horizIn();
 }
 
 void VisionArm::moveVertical(VisionSensor& sensor)
 {
-//  verticalMotor.moveTo(sensor);
 }
 
 void VisionArm::clawRelease()
 {
-  claw.write(130);
 }
 
 void VisionArm::clawGrab()
 {
-  claw.write(17);
 }
 
 void VisionArm::basketClose()
 {
-  basket.write(3);
+  basket.write(basketClosedAngle);
 }
 
 void VisionArm::basketOpen()
 {
-  basket.write(86);
+  basket.write(basketOpenAngle);
+}
+
+void VisionArm::flipIn()
+{
+  flipper.write(flipperInAngle);
+}
+
+void VisionArm::flipOut()
+{
+  flipper.write(flipperOutAngle);
+}
+
+void VisionArm::horizIn()
+{
+  horizontalMotor.write(horizontalArmInsideAngle);
+}
+void VisionArm::horizOut()
+{
+  horizontalMotor.write(horizontalArmOutsideAngle);
 }
 
 boolean VisionArm::isStopped()
 {
-  return 0;//verticalMotor.isOff();
+  return true;//verticalMotor.isOff();
 }
 
 void VisionArm::doLoop()
 {
 //  verticalMotor.doLoop();
+  if (sensorToggleTimer > sensorScannerToggleInterval)
+  {
+    if (sensorScanner.read() == sensorScannerLeft)
+      sensorScanner.write(sensorScannerRight);
+    else
+      sensorScanner.write(sensorScannerLeft);
+    sensorToggleTimer = 0;
+  }
 }
 
 void VisionArm::stopNow()

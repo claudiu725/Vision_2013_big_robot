@@ -20,6 +20,24 @@ const float wheelDiameter = 12.3;
 const float distanceBetweenWheels = 24.1; //valoare interioara
 const int wheelRevolutionSteps = 200;
 
-const int acuatorWaitTime = 1000;
+const int horizontalArmInsideAngle = 65;
+const int horizontalArmOutsideAngle = 180;
+
+const float verticalMotorStepsPerCm = 500;
+const unsigned long verticalEncoderRevolutionSteps = 8400;
+
+const float clawMotorStepsPerCm = 500;
+const unsigned long clawEncoderRevolutionSteps = 8400;
+
+const int flipperInAngle = 180;
+const int flipperOutAngle = 45;
+
+const int basketOpenAngle = 0;
+const int basketClosedAngle = 155;
+
+const int sensorScannerLeft = 130;
+const int sensorScannerMiddle = 90;
+const int sensorScannerRight = 65;
+const unsigned long sensorScannerToggleInterval = 1000;
 
 #endif

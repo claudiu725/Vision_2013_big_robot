@@ -8,7 +8,7 @@
 class VisionEncoder {
   public:
     void initPin(int sensorPin);
-    void initRevolutionSteps(int revolutionSteps);
+    void initRevolutionSteps(long revolutionSteps);
     void reset();
     long count();
     void doLoop();
