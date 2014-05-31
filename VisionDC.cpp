@@ -22,13 +22,11 @@ void VisionDC::initPins(int forwardPin, int backwardPin)
 {
   this->backwardPin = backwardPin;
   pinMode(backwardPin, OUTPUT);
-  digitalWrite(backwardPin, LOW);
   
   this->forwardPin = forwardPin;
   pinMode(forwardPin, OUTPUT);
-  digitalWrite(forwardPin, LOW);
-  
-  motorState = INIT;
+
+  stopNow();
 }
 
 void VisionDC::initStepCmRatio(float stepCmRatio)
@@ -87,9 +85,6 @@ void VisionDC::doLoop()
       break;
     case GOING_BACKWARD:
       break;
-    case STOP:
-      stop();
-      motorState = STATE_STOP;
     default:
       motorState.doLoop();
       break;
@@ -126,19 +121,20 @@ void VisionDC::doTimeMicros(unsigned long time)
 
 void VisionDC::stopNow()
 {
-  motorState = STOP;
+  stop();
+  motorState = STATE_STOP;
 }
 
 void VisionDC::go()
 {
   digitalWrite(forwardPin, currentDirection);
-  digitalWrite(forwardPin, !currentDirection);
+  digitalWrite(backwardPin, !currentDirection);
 }
 
 void VisionDC::stop()
 {
   digitalWrite(forwardPin, LOW);
-  digitalWrite(forwardPin, LOW);
+  digitalWrite(backwardPin, LOW);
 }
 
 boolean VisionDC::isOff()

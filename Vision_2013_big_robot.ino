@@ -116,6 +116,32 @@ void serialEvent()
         robotRunning = true;
         Serial.println("robotRunning true");
         break;
+        
+      case 'z':
+        arm.verticalMotor.go();
+        Serial.println("verticalMotor go");
+        break;
+      case 'x':
+        arm.verticalMotor.stopNow();
+        Serial.println("verticalMotor stop");
+        break;
+      case 'c':
+        arm.verticalMotor.toggleDirection();
+        Serial.println("verticalMotor toggle");
+        break;
+        
+      case 'v':
+        arm.clawMotor.go();
+        Serial.println("clawMotor go");
+        break;
+      case 'b':
+        arm.clawMotor.stopNow();
+        Serial.println("clawMotor stop");
+        break;
+      case 'n':
+        arm.clawMotor.toggleDirection();
+        Serial.println("clawMotor toggleDirection");
+        break;
       default:
         Serial.print(inChar);
     }

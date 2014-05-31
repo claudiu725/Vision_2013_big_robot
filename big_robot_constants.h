@@ -21,7 +21,7 @@ const float distanceBetweenWheels = 24.1; //valoare interioara
 const int wheelRevolutionSteps = 200;
 
 const int horizontalArmInsideAngle = 65;
-const int horizontalArmOutsideAngle = 180;
+const int horizontalArmOutsideAngle = 175;
 
 const float verticalMotorStepsPerCm = 500;
 const unsigned long verticalEncoderRevolutionSteps = 8400;
@@ -38,6 +38,6 @@ const int basketClosedAngle = 155;
 const int sensorScannerLeft = 130;
 const int sensorScannerMiddle = 90;
 const int sensorScannerRight = 65;
-const unsigned long sensorScannerToggleInterval = 1000;
+const unsigned long sensorScannerToggleInterval = 400;
 
 #endif

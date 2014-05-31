@@ -24,7 +24,6 @@ class VisionDC {
     void move(unsigned long cm);
     void stopNow();
     boolean isOff();
-  private:
     void go();
     void stop();
   private:

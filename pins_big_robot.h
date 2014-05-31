@@ -27,23 +27,23 @@ const int rightMotorEnablePin = 2;
 //CLAW LEVEL
 
 //Horizontal arm
-const int horizontalArmPin = 14;
+const int horizontalArmPin = 15;
 
 //Vertical arm
-const int verticalArmForwardPin = 38;
-const int verticalArmBackwardPin = 36;
+const int verticalArmForwardPin = 42;
+const int verticalArmBackwardPin = 40;
 const int verticalArmEncoderPin = 999;
 
 //Claw
-const int clawMotorForwardPin = 42;
-const int clawMotorBackwardPin = 40;
+const int clawMotorForwardPin = 38;
+const int clawMotorBackwardPin = 36;
 const int clawMotorEncoderAPin = 46;
 const int clawMotorEncoderBPin = 48;
 
 //OTHERS
 
-const int basketPin = 15;
-const int flipperPin = 16;
-const int sensorScannerPin = 17;
+const int basketPin = 16;
+const int flipperPin = 17;
+const int sensorScannerPin = 14;
 
 #endif
