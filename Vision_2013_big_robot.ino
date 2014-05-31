@@ -142,6 +142,16 @@ void serialEvent()
         arm.clawMotor.toggleDirection();
         Serial.println("clawMotor toggleDirection");
         break;
+        
+
+      case ',':
+        Serial.print("verticalMotor encoder ");
+        Serial.println(arm.verticalMotor.encoder.count());
+        break;
+      case '.':
+        Serial.print("clawMotor encoder ");
+        Serial.println(arm.clawMotor.encoder.count());
+        break;
       default:
         Serial.print(inChar);
     }

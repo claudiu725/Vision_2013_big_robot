@@ -21,13 +21,13 @@ const float distanceBetweenWheels = 24.1; //valoare interioara
 const int wheelRevolutionSteps = 200;
 
 const int horizontalArmInsideAngle = 65;
-const int horizontalArmOutsideAngle = 175;
+const int horizontalArmOutsideAngle = 120;
 
 const float verticalMotorStepsPerCm = 500;
-const unsigned long verticalEncoderRevolutionSteps = 8400;
+const unsigned long verticalEncoderRevolutionSteps = 1600;
 
 const float clawMotorStepsPerCm = 500;
-const unsigned long clawEncoderRevolutionSteps = 8400;
+const unsigned long clawEncoderRevolutionSteps = 1600;
 
 const int flipperInAngle = 180;
 const int flipperOutAngle = 45;

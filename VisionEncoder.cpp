@@ -3,7 +3,6 @@
 void VisionEncoder::initPin(int sensorPin)
 {
   sensor.initPin(sensorPin);
-  sensor.setAsPullup();
   state = sensor.detect();
   stepCount = 0;
   revolutionSteps = 1;
@@ -21,7 +20,7 @@ void VisionEncoder::reset()
 
 long VisionEncoder::count()
 {
-  return stepCount * wheelRevolutionSteps / revolutionSteps;
+  return stepCount;
 }
 
 void VisionEncoder::doLoop()
