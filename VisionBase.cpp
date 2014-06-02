@@ -110,22 +110,12 @@ void VisionBase::stopNow()
 
 boolean VisionBase::frontDetected()
 {
-  return frontLeft.detect() || frontFront.detect() || frontRight.detect();
-}
-
-boolean VisionBase::leftDetected()
-{
-  return left.detect();
-}
-
-boolean VisionBase::rightDetected()
-{
-  return right.detect();
+  return frontLeft.detect() || frontRight.detect();
 }
 
 boolean VisionBase::backDetected()
 {
-  return backLeft.detect() || backBack.detect() || backRight.detect();
+  return backLeft.detect() || backRight.detect();
 }
 
 boolean VisionBase::isStopped()

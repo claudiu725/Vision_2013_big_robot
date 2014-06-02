@@ -22,8 +22,6 @@ class VisionBase {
     void moveForward(float distance, int step_delay);
     void moveBackward(float distance, int step_delay);
     boolean frontDetected();
-    boolean leftDetected();
-    boolean rightDetected();
     boolean backDetected();
     void checkObstructions();
     void turnLeft(int angle);
@@ -37,7 +35,7 @@ class VisionBase {
   public:
     VisionStepper leftMotor, rightMotor;
     VisionEncoder leftEncoder, rightEncoder;
-    VisionSensor backLeft, backBack, backRight, left, right, frontLeft, frontFront, frontRight;
+    VisionSensor backLeft, backRight, frontLeft, frontRight;
     int directionMovement;
     boolean oppositeSide;
     boolean obstructionDetected;

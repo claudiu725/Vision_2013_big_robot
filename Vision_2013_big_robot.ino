@@ -166,6 +166,17 @@ void serialEvent()
         Serial.print("clawMotor encoder ");
         Serial.println(arm.clawMotor.encoder.count());
         break;
+      case '/':
+        Serial.print("sensors ");
+        Serial.print("backLeft ");
+        Serial.print(base.backLeft.detect());
+        Serial.print("backRight ");
+        Serial.print(base.backRight.detect());
+        Serial.print("frontLeft ");
+        Serial.print(base.frontLeft.detect());
+        Serial.print("frontRight ");
+        Serial.println(base.frontRight.detect());
+        break;
       default:
         Serial.print(inChar);
     }
@@ -228,12 +239,10 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 4:
-      base.frontFront.disable();
       base.moveForward(23,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 5:
-      base.frontFront.enable();
       base.turnRight(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
