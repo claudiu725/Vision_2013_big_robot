@@ -129,6 +129,13 @@ void serialEvent()
         arm.verticalMotor.toggleDirection();
         Serial.println("verticalMotor toggle");
         break;
+      case 'Z':
+        x = Serial.parseFloat();
+        x = x==0 ? 1 : x;
+        arm.verticalMotor.doTurns(x);
+        Serial.print("verticalMotor doTurns ");
+        Serial.println(x);
+        break;
         
       case 'v':
         arm.clawMotor.go();
@@ -141,6 +148,13 @@ void serialEvent()
       case 'n':
         arm.clawMotor.toggleDirection();
         Serial.println("clawMotor toggleDirection");
+        break;
+      case 'V':
+        x = Serial.parseFloat();
+        x = x==0 ? 1 : x;
+        arm.clawMotor.doTurns(x);
+        Serial.print("clawMotor doTurns ");
+        Serial.println(x);
         break;
         
 

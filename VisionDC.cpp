@@ -3,13 +3,9 @@
 #define INIT 0
 #define DO_TIME_MS 1
 #define DO_TIME_MICROS 2
-#define GO_FORWARD 3
-#define GOING_FORWARD 4
-#define GO_BACKWARD 5
-#define GOING_BACKWARD 6
+#define GO 3
+#define GOING 4
 #define STOP 7
-#define TOGGLE_2 8
-#define TOGGLE_3 9
 
 const int delayBetweenTogglesInMs = 40;
 
@@ -29,9 +25,9 @@ void VisionDC::initPins(int forwardPin, int backwardPin)
   stopNow();
 }
 
-void VisionDC::initStepCmRatio(float stepCmRatio)
+void VisionDC::initTurnCmRatio(float turnCmRatio)
 {
-  this->stepCmRatio = stepCmRatio;
+  this->turnCmRatio = turnCmRatio;
 }
 
 void VisionDC::initDirectionForward(boolean forward)
@@ -71,40 +67,23 @@ void VisionDC::doLoop()
     case DO_TIME_MICROS:
       motorState.waitMicros(timeMicros, STOP);
       break;
-    case GO_FORWARD:
-      setDirectionForward();
+    case GO:
       go();
-      motorState = GOING_FORWARD;
+      encoder.reset();
+      motorState = GOING;
       break;
-    case GOING_FORWARD:
+    case GOING:
+      if (encoder.count() > targetSteps)
+        motorState = STOP;
       break;
-    case GO_BACKWARD:
-      setDirectionForward();
-      go();
-      motorState = GOING_BACKWARD;
-      break;
-    case GOING_BACKWARD:
+    case STOP:
+      stop();
+      motorState = STATE_STOP;
       break;
     default:
       motorState.doLoop();
       break;
   }
-}
-
-void VisionDC::doSteps(unsigned long stepNumber)
-{
-//  stepsRemaining = stepNumber;
-  motorState = GO_FORWARD;
-}
-
-void VisionDC::doDistanceInCm(float distance)
-{
-  doSteps(getStepsFromDistance(distance));
-}
-
-unsigned long VisionDC::getStepsFromDistance(float distance)
-{
-  return distance * stepCmRatio;
 }
 
 void VisionDC::doTimeMs(unsigned long time)
@@ -117,6 +96,29 @@ void VisionDC::doTimeMicros(unsigned long time)
 {
   timeMicros = time;
   motorState = DO_TIME_MICROS;
+}
+
+void VisionDC::doSteps(long stepNumber)
+{
+  if (stepNumber < 0)
+  {
+    setDirectionBackward();
+    stepNumber = -stepNumber;
+  } else {
+    setDirectionForward();
+  }
+  targetSteps = stepNumber;
+  motorState = GO;
+}
+
+void VisionDC::doTurns(float turns)
+{
+  doSteps(turns * encoder.revolutionSteps);
+}
+
+void VisionDC::doCm(float distance)
+{
+  doTurns(distance * turnCmRatio);
 }
 
 void VisionDC::stopNow()

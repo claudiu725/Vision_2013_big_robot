@@ -15,7 +15,9 @@ class VisionEncoder {
   private:
     VisionSensor sensor;
     boolean state;
-    long stepCount, revolutionSteps;
+    long stepCount;
+  public:
+    long revolutionSteps;
 };
 
 #endif
