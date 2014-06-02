@@ -13,10 +13,10 @@ class VisionEncoder {
     long count();
     void doLoop();
   private:
-    VisionSensor sensor;
     boolean state;
     long stepCount;
   public:
+    VisionSensor sensor;
     long revolutionSteps;
 };
 

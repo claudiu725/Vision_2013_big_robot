@@ -283,7 +283,7 @@ boolean armStop()
 
 boolean armVerticalStop()
 {
-  return 0;//arm.verticalMotor.isOff();
+  return arm.verticalMotor.isOff();
 }
 
 boolean enableSensorDetect()

@@ -16,11 +16,13 @@ void VisionArm::init()
   verticalMotor.initPins(verticalArmForwardPin, verticalArmBackwardPin);
   
   verticalMotor.encoder.initPin(verticalArmEncoderPin);
+  verticalMotor.encoder.sensor.setAsPullup();
   verticalMotor.encoder.initRevolutionSteps(verticalEncoderRevolutionSteps);
   
   clawMotor.init();//initial INFILETEAZA (deschide gheara)
   clawMotor.initDirectionForward(HIGH);
   clawMotor.initPins(clawMotorForwardPin, clawMotorBackwardPin);
+  
   clawMotor.encoder.initPin(clawMotorEncoderPin);
   clawMotor.encoder.initRevolutionSteps(clawEncoderRevolutionSteps);
 

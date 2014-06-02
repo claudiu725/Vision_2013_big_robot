@@ -32,7 +32,7 @@ const int horizontalArmPin = 15;
 //Vertical arm
 const int verticalArmForwardPin = 22;
 const int verticalArmBackwardPin = 24;
-const int verticalArmEncoderPin = 999;
+const int verticalArmEncoderPin = 19;
 
 //Claw
 const int clawMotorForwardPin = 26;
