@@ -290,12 +290,12 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 21:
-      base.moveForward(10,slowSpeedDelay);
+      base.moveForward(7,slowSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 22:
       //arm.horizIn();
-      base.turnLeft(85);
+      base.turnLeft(86.5);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 23:
@@ -348,9 +348,11 @@ void loop()
       break;
     case 44:
       arm.basketOpen();
-      baseState = 99;
+      baseState.wait(1000, STATE_NEXT);
       break;
-    case 99:
+    case 45:
+      base.moveBackward(20,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
       break;
       
     default:
