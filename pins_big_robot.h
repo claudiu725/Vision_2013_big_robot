@@ -1,6 +1,8 @@
 #ifndef pins_big_robot_h
 #define pins_big_robot_h
 
+#include "Arduino.h"
+
 const int enablePin = 52;
 
 //SENSOR LEVEL
