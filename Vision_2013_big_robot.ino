@@ -45,7 +45,7 @@ void setup()
 
   colorRedStartState = 100;
   colorYellowStartState = 0;
-  testStartState = STATE_STOP;
+  testStartState = 0;
   onePointStartState = 200;
   color = TEST; // RED YELLOW TEST ONEPOINT
 }
@@ -223,27 +223,57 @@ void loop()
   switch (baseState)
   {
     case 0:
-      base.moveForward(39,mediumSpeedDelay);
+      base.moveBackward(1,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 1:
-      base.turnLeft(90);
+      base.moveForward(35,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 2:
-      base.moveBackward(27,mediumSpeedDelay);
+      base.turnLeft(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 3:
-      base.turnRight(90);
+      base.moveBackward(6,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 4:
-      base.moveForward(23,mediumSpeedDelay);
+      base.turnRight(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 5:
+      base.moveForward(100,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 6:
+      base.turnRight(45);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 7:
+      base.moveForward(30,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 8:
+      base.turnRight(45);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 9:
+      base.moveForward(60,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 10:
       base.turnRight(90);
+      arm.horizOut();
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 11:
+      base.moveBackward(10,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 12:
+      base.moveForward(10,mediumSpeedDelay);
+      arm.horizIn();
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
 
@@ -274,6 +304,11 @@ void loop()
 boolean baseStop()
 {
   return base.isStopped();
+}
+
+boolean baseHalf()
+{
+  return base.leftMotor.stepsRemaining < base.leftMotor.stepsMadeSoFar;
 }
 
 boolean armStop()

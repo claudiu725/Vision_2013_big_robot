@@ -35,12 +35,13 @@
       void disable();
     private:
       void doSetup();
+    public:
+      long stepsMadeSoFar, stepsRemaining;
     private:
       int enablePin, directionPin, stepPin;
       int enablePinState, directionPinState, stepPinState;
       boolean forwardDirection;
       VisionState motorState, enableState, speedState, stepState;
-      long stepsMadeSoFar, stepsRemaining;
       float stepSpeedCounter, stepSpeedCounterAcceleration, stepSpeedCounterSlowing;
       float startSpeedDelay, currentDelay, targetDelay, pauseSpeedDelay, delayBeforeTurnOff, highPhaseDelay, savedWhenPausingDelay;
       int old_state;
