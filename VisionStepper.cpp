@@ -305,7 +305,8 @@ void VisionStepper::doSteps(unsigned long stepNumber)
   stepsRemaining = stepNumber;
   if (fullStep)
     stepsRemaining /= 2;
-  motorState = STARTING;
+  if (isOff())
+    motorState = STARTING;
 }
 
 void VisionStepper::doDistanceInCm(float distance)

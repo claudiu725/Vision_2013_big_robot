@@ -8,10 +8,10 @@ const int enablePin = 52;
 //SENSOR LEVEL
 
 //Front
-const int frontLeftSenzorPin = A8;
+const int frontLeftSenzorPin = A10;
 const int frontRightSenzorPin = A9;
 //Back
-const int backLeftSenzorPin = A10;
+const int backLeftSenzorPin = A8;
 const int backRightSenzorPin = A11;
 
 //BASE LEVEL
@@ -29,7 +29,7 @@ const int rightMotorEnablePin = 2;
 //CLAW LEVEL
 
 //Horizontal arm
-const int horizontalArmPin = 15;
+const int horizontalArmPin = 33;
 
 //Vertical arm
 const int verticalArmForwardPin = 22;
@@ -44,8 +44,8 @@ const int clawMotorEncoderPin = 46;
 
 //OTHERS
 
-const int basketPin = 16;
-const int flipperPin = 17;
-const int sensorScannerPin = 14;
+const int basketPin = 35;
+const int flipperPin = 37;
+const int sensorScannerPin = 31;
 
 #endif

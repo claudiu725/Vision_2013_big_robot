@@ -39,7 +39,7 @@ void setup()
   arm.init();
   enableSensor.initPin(enablePin);
   enableSensor.setAsPullup();
-  ignoreSensors = true;//false;
+  ignoreSensors = false;//true;
   robotState = 0;
   baseState = STATE_STOP;
 
