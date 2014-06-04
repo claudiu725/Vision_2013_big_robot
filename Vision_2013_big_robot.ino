@@ -286,7 +286,7 @@ void loop()
       baseState.waitFor(baseStop, 20);
       break;
     case 20:
-      base.moveBackward(13,slowSpeedDelay);
+      base.moveBackward(16,slowSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 21:
@@ -295,7 +295,7 @@ void loop()
       break;
     case 22:
       //arm.horizIn();
-      base.turnLeft(88);
+      base.turnLeft(85);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 23:
