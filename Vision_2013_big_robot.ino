@@ -223,7 +223,7 @@ void loop()
   switch (baseState)
   {
     case 0:
-      base.moveBackward(1,mediumSpeedDelay);
+      base.moveBackward(3,slowSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 1:
@@ -243,40 +243,116 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 5:
+      arm.basketOpen();
       base.moveForward(100,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
+      baseState.waitFor(baseHalf, STATE_NEXT);
       break;
     case 6:
-      base.turnRight(45);
+      arm.basketClose();
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 7:
-      base.moveForward(30,mediumSpeedDelay);
+      base.turnLeft(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 8:
-      base.turnRight(45);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 9:
-      base.moveForward(60,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 10:
-      base.turnRight(90);
+      base.moveBackward(40,mediumSpeedDelay);
       arm.horizOut();
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
+    
+    case 9:
+      arm.horizIn();
+      baseState.wait(1000, STATE_NEXT);
+      break;
+    case 10:
+      base.turnRight(90);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
     case 11:
-      base.moveBackward(10,mediumSpeedDelay);
+      base.moveForward(20,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 12:
-      base.moveForward(10,mediumSpeedDelay);
-      arm.horizIn();
+      base.turnRight(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-
+    case 13:
+      base.moveForward(30,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 14:
+      base.turnRight(90);
+      baseState.waitFor(baseStop, 20);
+      break;
+    case 20:
+      base.moveBackward(13,slowSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 21:
+      base.moveForward(10,slowSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 22:
+      //arm.horizIn();
+      base.turnLeft(88);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 23:
+      base.moveForward(150,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 24:
+      base.turnRight(45);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 25:
+      base.moveForward(35,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 26:
+      base.turnRight(45);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 27:
+      base.moveForward(40,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 28:
+      base.turnRight(45);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 29:
+      base.moveForward(50,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 30:
+      base.turnRight(45);
+      baseState.waitFor(baseStop, 40);
+      break;
+    case 40:
+      base.moveForward(10,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 41:
+      base.moveBackward(10,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 42:
+      base.turnLeft(90);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 43:
+      base.moveForward(40,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 44:
+      arm.basketOpen();
+      baseState = 99;
+      break;
+    case 99:
+      break;
+      
     default:
       baseState.doLoop();
   }

@@ -8,11 +8,11 @@ const int enablePin = 52;
 //SENSOR LEVEL
 
 //Front
-const int frontLeftSenzorPin = A10;
-const int frontRightSenzorPin = A9;
+const int frontLeftSenzorPin = A2;
+const int frontRightSenzorPin = A1;
 //Back
-const int backLeftSenzorPin = A8;
-const int backRightSenzorPin = A11;
+const int backLeftSenzorPin = A0;
+const int backRightSenzorPin = A3;
 
 //BASE LEVEL
 

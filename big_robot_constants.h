@@ -11,7 +11,7 @@ const unsigned long delayBeforeTurnOff = 1000;
 const unsigned long slowSpeedDelay = 7000;
 const unsigned long fastSpeedDelay = 1000;
 const unsigned long veryFastSpeedDelay = 300;
-const unsigned long mediumSpeedDelay = 3000;
+const unsigned long mediumSpeedDelay = 500;
 const unsigned long ultraSlowSpeedDelay = 24000;
 
 const unsigned long turnSpeedDelay = 5000;
@@ -20,8 +20,8 @@ const float wheelDiameter = 12.3;
 const float distanceBetweenWheels = 34.5; //valoare interioara
 const int wheelRevolutionSteps = 200;
 
-const int horizontalArmInsideAngle = 65;
-const int horizontalArmOutsideAngle = 120;
+const int horizontalArmInsideAngle = 40;
+const int horizontalArmOutsideAngle = 160;
 
 const float verticalMotorStepsPerCm = 500;
 const unsigned long verticalEncoderRevolutionSteps = 1600;
@@ -29,7 +29,7 @@ const unsigned long verticalEncoderRevolutionSteps = 1600;
 const float clawMotorStepsPerCm = 500;
 const unsigned long clawEncoderRevolutionSteps = 1600;
 
-const int flipperInAngle = 110;
+const int flipperInAngle = 120;
 const int flipperOutAngle = 45;
 
 const int basketOpenAngle = 5;
