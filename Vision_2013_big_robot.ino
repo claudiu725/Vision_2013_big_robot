@@ -20,6 +20,7 @@
 #define YELLOW 1
 #define TEST 2
 #define ONEPOINT 3
+#define YELLOW_FAST 4
 
 VisionBase base;
 VisionArm arm;
@@ -47,7 +48,7 @@ void setup()
   colorYellowStartState = 0;
   testStartState = 0;
   onePointStartState = 200;
-  color = TEST; // RED YELLOW TEST ONEPOINT
+  color = YELLOW_FAST; // RED YELLOW YELLOW_FAST TEST ONEPOINT
 }
 
 void serialEvent()
@@ -195,10 +196,11 @@ void loop()
       switch (color)
       {
         case RED:
-          baseState.wait(5000,colorRedStartState);
+          baseState.wait(0,colorRedStartState);
           break;
+        case YELLOW_FAST:
         case YELLOW:
-          baseState.wait(5000,colorYellowStartState);
+          baseState.wait(0,colorYellowStartState);
           break;
         case TEST:
           baseState = testStartState;
@@ -295,7 +297,10 @@ void loop()
       
     case 20:
       base.turnRight(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
+      if (color == YELLOW_FAST)
+        baseState.waitFor(baseStop, 60);
+      else
+        baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 21:
       arm.horizOut();
@@ -377,6 +382,49 @@ void loop()
       baseState.wait(1000, STATE_NEXT);
       break;
     case 45:
+      base.moveBackward(20,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    
+    case 60:
+      arm.horizOut();
+      base.moveBackward(80,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 61:
+      arm.horizIn();
+      base.turnLeft(90);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 62:
+      base.moveForward(90,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 63:
+      base.turnLeft(90);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 64:
+      base.moveForward(40,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 65:
+      base.moveBackward(20,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 66:
+      base.turnRight(90);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 67:
+      base.moveForward(30,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 68:
+      arm.basketOpen();
+      baseState.wait(1000, STATE_NEXT);
+      break;
+    case 69:
       base.moveBackward(20,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
