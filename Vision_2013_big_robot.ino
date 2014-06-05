@@ -256,11 +256,10 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 8:
-      base.moveBackward(40,mediumSpeedDelay);
       arm.horizOut();
+      base.moveBackward(40,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    
     case 9:
       arm.horizIn();
       baseState.wait(1000, STATE_NEXT);
@@ -278,44 +277,54 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 13:
-      base.moveForward(30,mediumSpeedDelay);
+      base.moveForward(35,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 14:
       base.turnRight(90);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 15:
+      base.moveBackward(15,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 16:
+      base.moveForward(30,mediumSpeedDelay);
       baseState.waitFor(baseStop, 20);
       break;
+      
     case 20:
-      base.moveBackward(16,slowSpeedDelay);
+      base.turnRight(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 21:
-      base.moveForward(7,slowSpeedDelay);
+      arm.horizOut();
+      base.moveBackward(85, 3000);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 22:
-      //arm.horizIn();
-      base.turnLeft(86.5);
+      arm.horizIn();
+      base.moveForward(15, mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 23:
-      base.moveForward(150,mediumSpeedDelay);
+      base.moveBackward(50, mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 24:
-      base.turnRight(45);
+      base.turnRight(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 25:
-      base.moveForward(35,mediumSpeedDelay);
+      base.moveForward(25,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 26:
-      base.turnRight(45);
+      base.turnRight(87);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 27:
-      base.moveForward(40,mediumSpeedDelay);
+      base.moveForward(20,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 28:
@@ -323,13 +332,30 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 29:
-      base.moveForward(50,mediumSpeedDelay);
+      base.moveForward(40,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 30:
       base.turnRight(45);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 31:
+      base.moveForward(50,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 32:
+      base.turnRight(45);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 33:
+      base.moveForward(50,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 34:
+      base.turnRight(45);
       baseState.waitFor(baseStop, 40);
       break;
+      
     case 40:
       base.moveForward(10,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
