@@ -29,15 +29,15 @@ const unsigned long verticalEncoderRevolutionSteps = 1600;
 const float clawMotorStepsPerCm = 500;
 const unsigned long clawEncoderRevolutionSteps = 1600;
 
-const int flipperInAngle = 180;
-const int flipperOutAngle = 45;
+const int flipperInAngle = 130;
+const int flipperOutAngle = 15;
 
-const int basketOpenAngle = 0;
+const int basketOpenAngle = 5;
 const int basketClosedAngle = 155;
 
-const int sensorScannerLeft = 130;
-const int sensorScannerMiddle = 90;
-const int sensorScannerRight = 65;
+const int sensorScannerLeft = 155;
+const int sensorScannerMiddle = 135;
+const int sensorScannerRight = 115;
 const unsigned long sensorScannerToggleInterval = 400;
 
 #endif

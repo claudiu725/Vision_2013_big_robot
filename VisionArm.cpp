@@ -75,6 +75,7 @@ void VisionArm::horizIn()
 {
   horizontalMotor.write(horizontalArmInsideAngle);
 }
+
 void VisionArm::horizOut()
 {
   horizontalMotor.write(horizontalArmOutsideAngle);
@@ -82,7 +83,7 @@ void VisionArm::horizOut()
 
 boolean VisionArm::isStopped()
 {
-  return true;//verticalMotor.isOff();
+  return verticalMotor.isOff();
 }
 
 void VisionArm::doLoop()
