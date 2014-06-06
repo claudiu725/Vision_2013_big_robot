@@ -11,20 +11,20 @@ int rightStepCount = 0;
 
 void VisionArm::init()
 {
-  verticalMotor.init();//initial merge SUS
-  verticalMotor.initDirectionForward(HIGH);
-  verticalMotor.initPins(verticalArmForwardPin, verticalArmBackwardPin);
+//  verticalMotor.init();//initial merge SUS
+//  verticalMotor.initDirectionForward(HIGH);
+//  verticalMotor.initPins(verticalArmForwardPin, verticalArmBackwardPin);
   
-  verticalMotor.encoder.initPin(verticalArmEncoderPin);
-  verticalMotor.encoder.sensor.setAsPullup();
-  verticalMotor.encoder.initRevolutionSteps(verticalEncoderRevolutionSteps);
+//  verticalMotor.encoder.initPin(verticalArmEncoderPin);
+//  verticalMotor.encoder.sensor.setAsPullup();
+//  verticalMotor.encoder.initRevolutionSteps(verticalEncoderRevolutionSteps);
   
-  clawMotor.init();//initial INFILETEAZA (deschide gheara)
-  clawMotor.initDirectionForward(HIGH);
-  clawMotor.initPins(clawMotorForwardPin, clawMotorBackwardPin);
+//  clawMotor.init();//initial INFILETEAZA (deschide gheara)
+//  clawMotor.initDirectionForward(HIGH);
+//  clawMotor.initPins(clawMotorForwardPin, clawMotorBackwardPin);
   
-  clawMotor.encoder.initPin(clawMotorEncoderPin);
-  clawMotor.encoder.initRevolutionSteps(clawEncoderRevolutionSteps);
+//  clawMotor.encoder.initPin(clawMotorEncoderPin);
+//  clawMotor.encoder.initRevolutionSteps(clawEncoderRevolutionSteps);
 
   flipper.attach(flipperPin);
   flipIn();
@@ -88,8 +88,8 @@ boolean VisionArm::isStopped()
 void VisionArm::doLoop()
 {
 //  verticalMotor.doLoop();
-  verticalMotor.encoder.doLoop();
-  clawMotor.encoder.doLoop();
+//  verticalMotor.encoder.doLoop();
+//  clawMotor.encoder.doLoop();
   if (sensorToggleTimer > sensorScannerToggleInterval)
   {
     if (sensorScanner.read() == sensorScannerLeft)

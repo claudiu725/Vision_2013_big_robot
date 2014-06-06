@@ -32,14 +32,14 @@ const int rightMotorEnablePin = 2;
 const int horizontalArmPin = 33;
 
 //Vertical arm
-const int verticalArmForwardPin = 22;
-const int verticalArmBackwardPin = 24;
-const int verticalArmEncoderPin = 18;
+//const int verticalArmForwardPin = 22;
+//const int verticalArmBackwardPin = 24;
+//const int verticalArmEncoderPin = 18;
 
 //Claw
-const int clawMotorForwardPin = 26;
-const int clawMotorBackwardPin = 28;
-const int clawMotorEncoderPin = 46;
+//const int clawMotorForwardPin = 26;
+//const int clawMotorBackwardPin = 28;
+//const int clawMotorEncoderPin = 46;
 //const int clawMotorEncoderBPin = 48;
 
 //OTHERS
