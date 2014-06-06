@@ -21,6 +21,7 @@
 #define TEST 2
 #define ONEPOINT 3
 #define YELLOW_FAST 4
+#define RED_FAST 5
 
 VisionBase base;
 VisionArm arm;
@@ -48,7 +49,7 @@ void setup()
   colorYellowStartState = 0;
   testStartState = 0;
   onePointStartState = 200;
-  color = RED; // RED YELLOW YELLOW_FAST TEST ONEPOINT
+  color = RED; // RED RED_FAST YELLOW YELLOW_FAST TEST ONEPOINT
 }
 
 void serialEvent()
@@ -197,11 +198,11 @@ void loop()
       {
         case RED_FAST:
         case RED:
-          baseState.wait(0,colorRedStartState);
+          baseState.wait(4000,colorRedStartState);
           break;
         case YELLOW_FAST:
         case YELLOW:
-          baseState.wait(0,colorYellowStartState);
+          baseState.wait(4000,colorYellowStartState);
           break;
         case TEST:
           baseState = testStartState;
@@ -464,11 +465,10 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 108:
-      base.moveBackward(40,mediumSpeedDelay);
       arm.horizOut();
+      base.moveBackward(40,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    
     case 109:
       arm.horizIn();
       baseState.wait(1000, STATE_NEXT);
@@ -485,45 +485,58 @@ void loop()
       base.turnLeft(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 113:            // fruits from second tree
-      base.moveForward(30,mediumSpeedDelay);
+    case 113:
+      base.moveForward(35,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 114:
       base.turnLeft(90);
-      baseState.waitFor(baseStop, 120);
-      break;
-    case 120:
-      base.moveBackward(16,slowSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
+    case 115:
+      base.moveBackward(15,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 116:
+      base.moveForward(30,mediumSpeedDelay);
+      baseState.waitFor(baseStop, 120);
+      break;
+      
+    case 120:
+      base.turnLeft(90);
+      if (color == RED_FAST)
+        baseState.waitFor(baseStop, 160);
+      else
+        baseState.waitFor(baseStop, STATE_NEXT);
+      break;
     case 121:
-      base.moveForward(10,slowSpeedDelay);
+      arm.horizOut();
+      base.moveBackward(85, 3000);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 122:
-      //arm.horizIn();
-      base.turnRight(89);
+      arm.horizIn();
+      base.moveForward(15, mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 123:
-      base.moveForward(150,mediumSpeedDelay);
+      base.moveBackward(50, mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 124:
-      base.turnLeft(45);
+      base.turnLeft(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 125:
-      base.moveForward(35,mediumSpeedDelay);
+      base.moveForward(25,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 126:
-      base.turnLeft(45);
+      base.turnLeft(87);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 127:
-      base.moveForward(40,mediumSpeedDelay);
+      base.moveForward(20,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 128:
@@ -531,13 +544,30 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 129:
-      base.moveForward(50,mediumSpeedDelay);
+      base.moveForward(40,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 130:
       base.turnLeft(45);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 131:
+      base.moveForward(50,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 132:
+      base.turnLeft(45);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 133:
+      base.moveForward(50,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 134:
+      base.turnLeft(45);
       baseState.waitFor(baseStop, 140);
       break;
+      
     case 140:
       base.moveForward(10,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
@@ -556,7 +586,54 @@ void loop()
       break;
     case 144:
       arm.basketOpen();
-      baseState = 99;
+      baseState.wait(1000, STATE_NEXT);
+      break;
+    case 145:
+      base.moveBackward(20,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+      
+    case 160:
+      arm.horizOut();
+      base.moveBackward(80,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 161:
+      arm.horizIn();
+      base.turnRight(90);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 162:
+      base.moveForward(90,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 163:
+      base.turnRight(90);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 164:
+      base.moveForward(40,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 165:
+      base.moveBackward(20,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 166:
+      base.turnLeft(90);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 167:
+      base.moveForward(30,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 168:
+      arm.basketOpen();
+      baseState.wait(1000, STATE_NEXT);
+      break;
+    case 169:
+      base.moveBackward(20,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
       break;
       
     default:
