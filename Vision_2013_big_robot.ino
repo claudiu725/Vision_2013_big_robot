@@ -49,7 +49,7 @@ void setup()
   colorYellowStartState = 0;
   testStartState = 0;
   onePointStartState = 100;
-  color = ONEPOINT; // RED RED_FAST YELLOW YELLOW_FAST TEST ONEPOINT
+  color = YELLOW_FAST; // RED RED_FAST YELLOW YELLOW_FAST TEST ONEPOINT
 }
 
 void serialEvent()
@@ -306,7 +306,7 @@ void loop()
       break;
     case 21:
       arm.horizOut();
-      base.moveBackward(85, 3000);
+      base.moveBackward(83, 3000);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 22:
@@ -315,7 +315,7 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 23:
-      base.moveBackward(50, mediumSpeedDelay);
+      base.moveBackward(51, mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 24:
@@ -429,6 +429,7 @@ void loop()
     case 69:
       base.moveBackward(50,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
+      break;
 
     //RED
     case 100:
@@ -511,7 +512,7 @@ void loop()
       break;
     case 121:
       arm.horizOut();
-      base.moveBackward(85, 3000);
+      base.moveBackward(83, 3000);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 122:
@@ -520,7 +521,7 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 123:
-      base.moveBackward(50, mediumSpeedDelay);
+      base.moveBackward(51, mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 124:
