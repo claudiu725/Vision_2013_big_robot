@@ -50,7 +50,7 @@ void setup()
   colorYellowStartState = 0;
   testStartState = 0;
   onePointStartState = 100;
-  color = YELLOW_FAST; // RED RED_FAST YELLOW YELLOW_FAST TEST ONEPOINT
+  color = RED_FAST; // RED RED_FAST YELLOW YELLOW_FAST TEST ONEPOINT
 }
 
 void serialEvent()
@@ -405,7 +405,10 @@ void loop()
       baseState.waitFor(waitedEnough, 80);
       break;
     case 63:
-      base.turnLeft(90);
+      if (avoidToTheLeft)
+        base.turnLeft(90);
+      else
+        base.turnRight(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 64:
@@ -417,7 +420,10 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 66:
-      base.turnRight(90);
+      if (avoidToTheLeft)
+        base.turnRight(90);
+      else
+        base.turnLeft(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 67:
@@ -434,7 +440,7 @@ void loop()
       break;
       
     case 80:
-      base.undo();
+      base.undo(mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 81:
@@ -451,14 +457,14 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 82:
-      base.moveForward(30,mediumSpeedDelay);
+      base.moveForward(50,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 83:
       if (avoidToTheLeft)
-        base.turnRight(90);
-      else
         base.turnLeft(90);
+      else
+        base.turnRight(90);
       baseState.waitFor(baseStop, 62);
       break;
 
@@ -642,7 +648,10 @@ void loop()
       baseState.waitFor(waitedEnough, 180);
       break;
     case 163:
-      base.turnRight(90);
+      if (avoidToTheLeft)
+        base.turnRight(90);
+      else
+        base.turnLeft(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 164:
@@ -654,7 +663,10 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 166:
-      base.turnLeft(90);
+      if (avoidToTheLeft)
+        base.turnLeft(90);
+      else
+        base.turnRight(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 167:
@@ -671,32 +683,32 @@ void loop()
       break;
       
     case 180:
-      base.undo();
+      base.undo(mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 181:
       if (avoidToTheLeft)
       {
-        base.turnLeft(90);
+        base.turnRight(90);
         avoidToTheLeft = false;
       }
       else
       {
-        base.turnRight(90);
+        base.turnLeft(90);
         avoidToTheLeft = true;
       }
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 182:
-      base.moveForward(30,mediumSpeedDelay);
+      base.moveForward(50,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 183:
       if (avoidToTheLeft)
-        base.turnLeft(90);
-      else
         base.turnRight(90);
-      baseState.waitFor(baseStop, 162);
+      else
+        base.turnLeft(90);
+      baseState.waitFor(baseStop, 62);
       break;
       
     case 200:
@@ -732,7 +744,7 @@ void loop()
 
 boolean waitedEnough()
 {
-  return base.isPausing() && (totalPauseTimer > 8000);
+  return base.isPausing() && (totalPauseTimer > 5000);
 }
 
 boolean baseStop()

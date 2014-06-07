@@ -310,8 +310,8 @@ void VisionStepper::doSteps(unsigned long stepNumber)
   stepsRemaining = stepNumber;
   if (fullStep)
     stepsRemaining /= 2;
-  if (isOff())
-    motorState = STARTING;
+  //if (isOff())
+  motorState = STARTING;
 }
 
 void VisionStepper::undo()
@@ -358,5 +358,4 @@ void VisionStepper::disable()
   enableState = OFF;
   stepState = STATE_STOP;
 }
-
 

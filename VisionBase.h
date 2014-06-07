@@ -33,7 +33,7 @@ class VisionBase {
     boolean isStopped();
     boolean isPausing();
     void disable();
-    void undo();
+    void undo(int step_delay);
   public:
     VisionStepper leftMotor, rightMotor;
     VisionEncoder leftEncoder, rightEncoder;

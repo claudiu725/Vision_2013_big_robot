@@ -149,9 +149,19 @@ void VisionBase::doLoop()
   rightMotor.doLoop();
 }
 
-void VisionBase::undo()
+void VisionBase::undo(int step_delay)
 {
+  if (directionMovement == FRONT)
+    directionMovement = BACK;
+  else if (directionMovement == BACK)
+    directionMovement = FRONT;
+  else if (directionMovement == LEFT)
+    directionMovement = RIGHT;
+  else if (directionMovement == RIGHT)
+    directionMovement = LEFT;
+  leftMotor.setTargetDelay(step_delay);
   leftMotor.undo();
+  rightMotor.setTargetDelay(step_delay);
   rightMotor.undo();
 }
 
