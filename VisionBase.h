@@ -37,7 +37,7 @@ class VisionBase {
   public:
     VisionStepper leftMotor, rightMotor;
     VisionEncoder leftEncoder, rightEncoder;
-    VisionSensor backLeft, backRight, frontLeft, frontRight;
+    VisionSensor backLeft, backRight, frontLeft, frontRight, frontAll;
     int directionMovement;
     boolean oppositeSide;
     boolean obstructionDetected;

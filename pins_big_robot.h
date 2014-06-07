@@ -9,6 +9,7 @@ const int enablePin = 52;
 
 //Front
 const int frontLeftSenzorPin = A0;
+const int frontAllSenzorPin = A5;
 const int frontRightSenzorPin = A3;
 //Back
 const int backLeftSenzorPin = A4;//A2;

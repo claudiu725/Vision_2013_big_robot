@@ -192,6 +192,8 @@ void loop()
   {
     case 0:
       robotRunning = false;
+      if (base.frontAll.detect())
+        base.frontAll.disable();
       robotState.waitFor(enableSensorDetect, STATE_NEXT);
       break;
     case 1:
@@ -276,10 +278,12 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 11:
+      base.frontAll.disable();
       base.moveForward(20,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 12:
+      base.frontAll.enable();
       base.turnRight(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;

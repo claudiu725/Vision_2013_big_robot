@@ -4,6 +4,7 @@ void VisionBase::init()
 {
   frontLeft.initPin(frontLeftSenzorPin);
   frontRight.initPin(frontRightSenzorPin);
+  frontAll.initPin(frontAllSenzorPin);
   
   backLeft.initPin(backLeftSenzorPin);
   backRight.initPin(backRightSenzorPin);
@@ -115,7 +116,7 @@ void VisionBase::stopNow()
 
 boolean VisionBase::frontDetected()
 {
-  return frontLeft.detect() || frontRight.detect();
+  return frontLeft.detect() || frontRight.detect() || frontAll.detect();
 }
 
 boolean VisionBase::backDetected()
