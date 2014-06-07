@@ -2,10 +2,7 @@
 
 void VisionState::wait(unsigned long timeInMs, int nextState)
 {
-  if (nextState == STATE_NEXT)
-    stateToSetAfterWait = *this + 1;
-  else
-    stateToSetAfterWait = nextState;
+  stateToSetAfterWait = processSpecialStates(nextState);
   *this = STATE_WAIT;
   time = 0;
   timeToWait = timeInMs;
@@ -13,10 +10,7 @@ void VisionState::wait(unsigned long timeInMs, int nextState)
 
 void VisionState::waitMicros(unsigned long timeInMicros, int nextState)
 {
-  if (nextState == STATE_NEXT)
-    stateToSetAfterWait = *this + 1;
-  else
-    stateToSetAfterWait = nextState;
+  stateToSetAfterWait = processSpecialStates(nextState);
   *this = STATE_WAIT_MICROS;
   timeMicros = 0;
   timeToWaitInMicros = timeInMicros;
@@ -24,13 +18,27 @@ void VisionState::waitMicros(unsigned long timeInMicros, int nextState)
 
 void VisionState::waitFor(boolean (*functionToTestFor)(), int nextState)
 {
-  if (nextState == STATE_NEXT)
-    stateToSetAfterWait = *this + 1;
-  else if (nextState == STATE_LAST)
-    stateToSetAfterWait = *this - 1;
-  else stateToSetAfterWait = nextState;
-  *this = STATE_WAIT_FOR;
+  stateToSetAfterWait = processSpecialStates(nextState);
   testFunction = functionToTestFor;
+  *this = STATE_WAIT_FOR;
+}
+
+void VisionState::waitFor(boolean (*functionTestA)(), int nextStateA, boolean (*functionTestB)(), int nextStateB)
+{
+  stateToSetAfterWait = processSpecialStates(nextStateA);
+  testFunction = functionTestA;
+  stateToSetAfterWaitB = processSpecialStates(nextStateB);
+  testFunctionB = functionTestB;
+  *this = STATE_WAIT_FOR_BRANCH_SS;
+}
+
+int VisionState::processSpecialStates(int nextState)
+{
+  if (nextState == STATE_NEXT)
+    return *this + 1;
+  else if (nextState == STATE_LAST)
+    return *this - 1;
+  else return nextState;
 }
 
 void VisionState::doLoop()
@@ -48,6 +56,18 @@ void VisionState::doLoop()
         *this = stateToSetAfterWait;
       break;
     case STATE_WAIT_FOR:
+      if (testFunction())
+        *this = stateToSetAfterWait;
+      break;
+    case STATE_WAIT_FOR_BRANCH_SS:
+      if (testFunction())
+        *this = stateToSetAfterWait;
+      if (testFunctionB())
+        *this = stateToSetAfterWaitB;
+      break;
+    case STATE_WAIT_FOR_BRANCH_TS:
+      if (timeMicros > timeToWaitInMicros)
+        *this = stateToSetAfterWait;
       if (testFunction())
         *this = stateToSetAfterWait;
       break;
