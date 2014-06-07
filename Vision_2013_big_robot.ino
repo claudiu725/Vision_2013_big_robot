@@ -269,7 +269,7 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 9:
-      base.moveBackward(40,mediumSpeedDelay);
+      base.moveBackward(40,2000);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 10:
@@ -297,11 +297,36 @@ void loop()
     case 15:
       arm.horizOut();
       base.turnLeft(360, 500);
-      baseState.waitFor(baseHalf, STATE_NEXT);
+      baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 16:
       arm.horizIn();
-      baseState.wait(1000, STATE_NEXT);
+      baseState.wait(500, STATE_NEXT);
+      break;
+    case 17:
+      base.moveForward(85,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 18:
+      base.turnLeft(90);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 19:
+      base.moveForward(42,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 20:
+      base.turnRight(180);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 21:
+      arm.horizOut();
+      base.turnRight(180);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 22:
+      arm.horizIn();
+      baseState.wait(0, STATE_NEXT);
       break;
 
     //RED
