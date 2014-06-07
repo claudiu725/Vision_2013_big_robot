@@ -384,7 +384,7 @@ void loop()
       baseState.wait(1000, STATE_NEXT);
       break;
     case 45:
-      base.moveBackward(20,mediumSpeedDelay);
+      base.moveBackward(50,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     
@@ -427,7 +427,7 @@ void loop()
       baseState.wait(1000, STATE_NEXT);
       break;
     case 69:
-      base.moveBackward(20,mediumSpeedDelay);
+      base.moveBackward(50,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
 
     //RED
@@ -589,7 +589,7 @@ void loop()
       baseState.wait(1000, STATE_NEXT);
       break;
     case 145:
-      base.moveBackward(20,mediumSpeedDelay);
+      base.moveBackward(50,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
       
@@ -632,7 +632,7 @@ void loop()
       baseState.wait(1000, STATE_NEXT);
       break;
     case 169:
-      base.moveBackward(20,mediumSpeedDelay);
+      base.moveBackward(50,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
       
