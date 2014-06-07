@@ -677,12 +677,12 @@ void loop()
     case 181:
       if (avoidToTheLeft)
       {
-        base.turnRight(90);
+        base.turnLeft(90);
         avoidToTheLeft = false;
       }
       else
       {
-        base.turnLeft(90);
+        base.turnRight(90);
         avoidToTheLeft = true;
       }
       baseState.waitFor(baseStop, STATE_NEXT);
