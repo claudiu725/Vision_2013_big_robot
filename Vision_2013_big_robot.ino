@@ -47,9 +47,9 @@ void setup()
 
   colorRedStartState = 100;
   colorYellowStartState = 0;
-  testStartState = 0;
+  testStartState = 999;
   onePointStartState = 100;
-  color = ONEPOINT; // RED RED_FAST YELLOW YELLOW_FAST TEST ONEPOINT
+  color = TEST; // RED RED_FAST YELLOW YELLOW_FAST TEST ONEPOINT
 }
 
 void serialEvent()
@@ -205,7 +205,7 @@ void loop()
           baseState.wait(4000,colorYellowStartState);
           break;
         case TEST:
-          baseState.wait(4000,testStartState);
+          baseState.wait(0,testStartState);
           break;
         case ONEPOINT:
           baseState.wait(15000,onePointStartState);
@@ -641,6 +641,10 @@ void loop()
       baseState.waitFor(baseStop, STATE_STOP);
       break;
       
+    case 999:
+      base.moveBackward(0.1, mediumSpeedDelay);
+      break;
+      
     default:
       baseState.doLoop();
   }
@@ -649,15 +653,19 @@ void loop()
   if (robotRunning)
   {
     base.checkObstructions();
-    if (!base.isStopped())
+    //if (!base.isStopped())
     {
       if (base.obstructionDetected == true && ignoreSensors == false)
       {
+        arm.basketOpen();
         base.pause();
         enemyTimer = 0;
       }
       else if (enemyTimer > 3000)
+      {
         base.unpause();
+        arm.basketClose();
+      }
     }
 
     base.doLoop();
