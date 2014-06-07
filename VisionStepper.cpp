@@ -254,8 +254,13 @@ void VisionStepper::pause()
 
 void VisionStepper::unpause()
 {
-  if (motorState == PAUSING_SLOWING || motorState == PAUSING || motorState == PAUSED)
+  if (isPausing())
     motorState = RESUME;
+}
+
+boolean VisionStepper::isPausing()
+{
+  return motorState == PAUSING_SLOWING || motorState == PAUSING || motorState == PAUSED;
 }
 
 void VisionStepper::stopNow()
@@ -307,6 +312,12 @@ void VisionStepper::doSteps(unsigned long stepNumber)
     stepsRemaining /= 2;
   if (isOff())
     motorState = STARTING;
+}
+
+void VisionStepper::undo()
+{
+  toggleDirection();
+  doSteps(stepsMadeSoFar);
 }
 
 void VisionStepper::doDistanceInCm(float distance)

@@ -19,7 +19,9 @@
       void setDirectionForward();
       void setDirectionBackward();
       void setTargetDelay(unsigned long targetDelay);
+      void undo();
       boolean isOff();
+      boolean isPausing();
       boolean isAtTargetSpeed();
       void doSteps(unsigned long stepNumber);
       void doDistanceInCm(float distance);

@@ -102,6 +102,11 @@ void VisionBase::unpause()
   rightMotor.unpause();
 }
 
+boolean VisionBase::isPausing()
+{
+  return leftMotor.isPausing() || rightMotor.isPausing();
+}
+
 void VisionBase::stopNow()
 {
   leftMotor.stopNow();
@@ -142,6 +147,12 @@ void VisionBase::doLoop()
   leftMotor.doLoop();
   //rightEncoder.doLoop();
   rightMotor.doLoop();
+}
+
+void VisionBase::undo()
+{
+  leftMotor.undo();
+  rightMotor.undo();
 }
 
 void VisionBase::disable()

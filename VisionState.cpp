@@ -18,18 +18,24 @@ void VisionState::waitMicros(unsigned long timeInMicros, int nextState)
 
 void VisionState::waitFor(boolean (*functionToTestFor)(), int nextState)
 {
-  stateToSetAfterWait = processSpecialStates(nextState);
-  testFunction = functionToTestFor;
-  *this = STATE_WAIT_FOR;
-}
-
-void VisionState::waitFor(boolean (*functionTestA)(), int nextStateA, boolean (*functionTestB)(), int nextStateB)
-{
-  stateToSetAfterWait = processSpecialStates(nextStateA);
-  testFunction = functionTestA;
-  stateToSetAfterWaitB = processSpecialStates(nextStateB);
-  testFunctionB = functionTestB;
-  *this = STATE_WAIT_FOR_BRANCH_SS;
+  if (*this == STATE_WAIT_FOR)
+  {
+    stateToSetAfterWaitB = processSpecialStates(nextState);
+    testFunctionB = functionToTestFor;
+    *this = STATE_WAIT_FOR_BRANCH_SS;
+  }
+  else if (*this == STATE_WAIT)
+  {
+    stateToSetAfterWaitB = processSpecialStates(nextState);
+    testFunctionB = functionToTestFor;
+    *this = STATE_WAIT_FOR_BRANCH_TS;
+  }
+  else
+  {
+    stateToSetAfterWait = processSpecialStates(nextState);
+    testFunction = functionToTestFor;
+    *this = STATE_WAIT_FOR;
+  }
 }
 
 int VisionState::processSpecialStates(int nextState)
@@ -66,10 +72,10 @@ void VisionState::doLoop()
         *this = stateToSetAfterWaitB;
       break;
     case STATE_WAIT_FOR_BRANCH_TS:
-      if (timeMicros > timeToWaitInMicros)
+      if (time > timeToWait)
         *this = stateToSetAfterWait;
-      if (testFunction())
-        *this = stateToSetAfterWait;
+      if (testFunctionB())
+        *this = stateToSetAfterWaitB;
       break;
   }
 }

@@ -14,7 +14,7 @@
 #include "pins_big_robot.h"
 #include "big_robot_constants.h"
 
-#define NINETYSECONDS 88000L
+#define NINETYSECONDS 85000L
 
 #define RED 0
 #define YELLOW 1
@@ -26,13 +26,13 @@
 VisionBase base;
 VisionArm arm;
 boolean ignoreSensors = false;
-elapsedMillis enemyTimer;
+elapsedMillis enemyTimer, totalPauseTimer;
 int baseStartState;
 
 VisionState baseState, robotState;
 VisionSensor enableSensor;
 int colorRedStartState, colorYellowStartState, testStartState, onePointStartState, color;
-boolean robotRunning;
+boolean robotRunning, avoidToTheLeft;
 
 void setup()
 {
@@ -41,7 +41,8 @@ void setup()
   arm.init();
   enableSensor.initPin(enablePin);
   enableSensor.setAsPullup();
-  ignoreSensors = false;//true;
+  ignoreSensors = false;
+  avoidToTheLeft = true;
   robotState = 0;
   baseState = STATE_STOP;
 
@@ -401,6 +402,7 @@ void loop()
     case 62:
       base.moveForward(90,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
+      baseState.waitFor(waitedEnough, 80);
       break;
     case 63:
       base.turnLeft(90);
@@ -429,6 +431,35 @@ void loop()
     case 69:
       base.moveBackward(50,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+      
+    case 80:
+      base.undo();
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 81:
+      if (avoidToTheLeft)
+      {
+        base.turnLeft(90);
+        avoidToTheLeft = false;
+      }
+      else
+      {
+        base.turnRight(90);
+        avoidToTheLeft = true;
+      }
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 82:
+      base.moveForward(30,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 83:
+      if (avoidToTheLeft)
+        base.turnRight(90);
+      else
+        base.turnLeft(90);
+      baseState.waitFor(baseStop, 62);
       break;
 
     //RED
@@ -594,6 +625,7 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
       
+    
     case 160:
       arm.horizOut();
       base.moveBackward(80,mediumSpeedDelay);
@@ -607,6 +639,7 @@ void loop()
     case 162:
       base.moveForward(90,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
+      baseState.waitFor(waitedEnough, 180);
       break;
     case 163:
       base.turnRight(90);
@@ -637,6 +670,35 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
       
+    case 180:
+      base.undo();
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 181:
+      if (avoidToTheLeft)
+      {
+        base.turnRight(90);
+        avoidToTheLeft = false;
+      }
+      else
+      {
+        base.turnLeft(90);
+        avoidToTheLeft = true;
+      }
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 182:
+      base.moveForward(30,mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_NEXT);
+      break;
+    case 183:
+      if (avoidToTheLeft)
+        base.turnLeft(90);
+      else
+        base.turnRight(90);
+      baseState.waitFor(baseStop, 162);
+      break;
+      
     case 200:
       base.moveBackward(80, mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_STOP);
@@ -654,6 +716,8 @@ void loop()
     {
       if (base.obstructionDetected == true && ignoreSensors == false)
       {
+        if (!base.isPausing())
+          totalPauseTimer = 0;
         base.pause();
         enemyTimer = 0;
       }
@@ -664,6 +728,11 @@ void loop()
     base.doLoop();
     arm.doLoop();
   }
+}
+
+boolean waitedEnough()
+{
+  return base.isPausing() && (totalPauseTimer > 8000);
 }
 
 boolean baseStop()
