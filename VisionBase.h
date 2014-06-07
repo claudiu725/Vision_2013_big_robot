@@ -25,7 +25,9 @@ class VisionBase {
     boolean backDetected();
     void checkObstructions();
     void turnLeft(int angle);
+    void turnLeft(int angle, int turnDelay);
     void turnRight(int angle);
+    void turnRight(int angle, int turnDelay);
     void pause();
     void unpause();
     void stopNow();

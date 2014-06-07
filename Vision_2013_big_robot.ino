@@ -48,9 +48,9 @@ void setup()
 
   colorRedStartState = 100;
   colorYellowStartState = 0;
-  testStartState = 0;
+  testStartState = 300;
   onePointStartState = 100;
-  color = YELLOW_FAST; // RED RED_FAST YELLOW YELLOW_FAST TEST ONEPOINT
+  color = YELLOW; // RED RED_FAST YELLOW YELLOW_FAST TEST ONEPOINT
 }
 
 void serialEvent()
@@ -251,8 +251,7 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 5:
-      ignoreSensors = false;
-      arm.basketOpen();
+      arm.basketSemi();
       base.moveForward(103,1000);
       baseState.waitFor(baseHalf, STATE_NEXT);
       break;
@@ -261,487 +260,69 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 7:
-      base.turnLeft(90);
+      base.moveBackward(23,1000);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 8:
-      arm.horizOut();
-      base.moveBackward(40,mediumSpeedDelay);
+      ignoreSensors = false;
+      base.turnLeft(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 9:
-      arm.horizIn();
-      baseState.wait(1000, STATE_NEXT);
-      break;
-    case 10:
-      base.turnRight(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 11:
-      base.frontAll.disable();
-      base.moveForward(20,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 12:
-      base.frontAll.enable();
-      base.turnRight(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 13:
-      base.moveForward(35,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 14:
-      base.turnRight(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 15:
-      base.moveBackward(15,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 16:
-      base.moveForward(30,mediumSpeedDelay);
-      baseState.waitFor(baseStop, 20);
-      break;
-      
-    case 20:
-      base.turnRight(90);
-      if (color == YELLOW_FAST)
-        baseState.waitFor(baseStop, 60);
-      else
-        baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 21:
-      base.moveBackward(73, 3000);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 22:
-      arm.horizOut();
-      baseState.wait(500, STATE_NEXT);
-      break;
-    case 23:
-      base.moveBackward(10, 3000);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 24:
-      arm.horizIn();
-      base.moveForward(18, mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 25:
-      base.moveBackward(51, mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 26:
-      base.turnRight(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 27:
-      base.moveForward(25,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 28:
-      base.turnRight(87);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 29:
-      base.moveForward(20,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 30:
-      base.turnRight(45);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 31:
-      base.moveForward(40,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 32:
-      base.turnRight(45);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 33:
-      base.moveForward(50,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 34:
-      base.turnRight(45);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 35:
-      base.moveForward(50,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 36:
-      base.turnRight(45);
-      baseState.waitFor(baseStop, 40);
-      break;
-      
-    case 40:
-      base.moveForward(10,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 41:
-      base.moveBackward(10,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 42:
-      base.turnLeft(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 43:
-      base.moveForward(40,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 44:
-      arm.basketOpen();
-      baseState.wait(1000, STATE_NEXT);
-      break;
-    case 45:
-      base.moveBackward(50,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    
-    case 60:
-      arm.horizOut();
-      base.moveBackward(80,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 61:
-      arm.horizIn();
-      base.turnLeft(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 62:
-      base.moveForward(90,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      baseState.waitFor(waitedEnough, 80);
-      break;
-    case 63:
-      if (avoidToTheLeft)
-        base.turnLeft(90);
-      else
-        base.turnRight(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 64:
-      base.moveForward(40,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 65:
-      base.backLeft.disable();
-      base.moveBackward(20,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 66:
-      base.backLeft.enable();
-      if (avoidToTheLeft)
-        base.turnRight(90);
-      else
-        base.turnLeft(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 67:
-      base.moveForward(30,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 68:
-      arm.basketOpen();
-      baseState.wait(1000, STATE_NEXT);
-      break;
-    case 69:
-      base.moveBackward(50,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-      
-    case 80:
-      base.undo(mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 81:
-      if (avoidToTheLeft)
-      {
-        base.turnLeft(90);
-        avoidToTheLeft = false;
-      }
-      else
-      {
-        base.turnRight(90);
-        avoidToTheLeft = true;
-      }
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 82:
-      base.moveForward(50,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 83:
-      if (avoidToTheLeft)
-        base.turnLeft(90);
-      else
-        base.turnRight(90);
-      baseState.waitFor(baseStop, 62);
-      break;
-
-    //RED
-    case 100:
-      ignoreSensors = true;
-      base.moveBackward(3,slowSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 101:
-      base.moveForward(35,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 102:
-      base.turnRight(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 103:
-      base.moveBackward(4.5,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 104:
-      base.turnLeft(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 105:
-      ignoreSensors = false;
-      arm.basketOpen();
-      base.moveForward(103,1000);
-      baseState.waitFor(baseHalf, STATE_NEXT);
-      break;
-    case 106:
-      arm.basketClose();
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 107:
-      base.turnRight(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 108:
-      arm.horizOut();
       base.moveBackward(40,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 109:
-      arm.horizIn();
-      baseState.wait(1000, STATE_NEXT);
-      break;
-    case 110:
-      base.turnLeft(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 111:
-      base.frontAll.disable();
-      base.moveForward(20,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 112:
-      base.frontAll.disable();
-      base.turnLeft(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 113:
-      base.moveForward(35,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 114:
-      base.turnLeft(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 115:
-      base.moveBackward(15,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 116:
-      base.moveForward(30,mediumSpeedDelay);
-      baseState.waitFor(baseStop, 120);
-      break;
-      
-    case 120:
-      base.turnLeft(90);
-      if (color == RED_FAST)
-        baseState.waitFor(baseStop, 160);
-      else
-        baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 121:
-      base.moveBackward(73, 3000);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 122:
+    case 10:
       arm.horizOut();
-      baseState.wait(500, STATE_NEXT);
-      break;
-    case 123:
-      base.moveBackward(10, 3000);
+      base.turnLeft(90, 500);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 124:
+    case 11:
       arm.horizIn();
-      base.moveForward(18, mediumSpeedDelay);
+      base.turnRight(90 + 35);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 125:
-      base.moveBackward(51, mediumSpeedDelay);
+    case 12:
+      base.moveBackward(30,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 126:
-      base.turnLeft(90);
+    case 13:
+      base.turnLeft(35);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 127:
-      base.moveForward(25,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 128:
-      base.turnLeft(87);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 129:
-      base.moveForward(20,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 130:
-      base.turnLeft(45);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 131:
-      base.moveForward(40,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 132:
-      base.turnLeft(45);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 133:
-      base.moveForward(50,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 134:
-      base.turnLeft(45);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 135:
-      base.moveForward(50,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 136:
-      base.turnLeft(45);
-      baseState.waitFor(baseStop, 140);
-      break;
-      
-    case 140:
-      base.moveForward(10,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 141:
-      base.moveBackward(10,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 142:
-      base.turnRight(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 143:
-      base.moveForward(40,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 144:
-      arm.basketOpen();
-      baseState.wait(1000, STATE_NEXT);
-      break;
-    case 145:
-      base.moveBackward(50,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-      
-    
-    case 160:
-      arm.horizOut();
-      base.moveBackward(80,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 161:
-      arm.horizIn();
-      base.turnRight(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 162:
-      base.moveForward(90,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      baseState.waitFor(waitedEnough, 180);
-      break;
-    case 163:
-      if (avoidToTheLeft)
-        base.turnRight(90);
-      else
-        base.turnLeft(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 164:
-      base.moveForward(40,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 165:
-      base.backLeft.disable();
+    case 14:
       base.moveBackward(20,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
-    case 166:
-      base.backLeft.enable();
-      if (avoidToTheLeft)
-        base.turnLeft(90);
-      else
-        base.turnRight(90);
-      baseState.waitFor(baseStop, STATE_NEXT);
+    case 15:
+      arm.horizOut();
+      base.turnLeft(360, 500);
+      baseState.waitFor(baseHalf, STATE_NEXT);
       break;
-    case 167:
-      base.moveForward(30,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 168:
-      arm.basketOpen();
+    case 16:
+      arm.horizIn();
       baseState.wait(1000, STATE_NEXT);
       break;
-    case 169:
-      base.moveBackward(50,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-      
-    case 180:
-      base.undo(mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 181:
-      if (avoidToTheLeft)
-      {
-        base.turnRight(90);
-        avoidToTheLeft = false;
-      }
-      else
-      {
-        base.turnLeft(90);
-        avoidToTheLeft = true;
-      }
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 182:
-      base.moveForward(50,mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 183:
-      if (avoidToTheLeft)
-        base.turnRight(90);
-      else
-        base.turnLeft(90);
-      baseState.waitFor(baseStop, 62);
-      break;
+
+    //RED
+    
       
     case 200:
       base.moveBackward(80, mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_STOP);
+      break;
+      
+    case 300:
+      arm.horizOut();
+      baseState.wait(2500, STATE_NEXT);
+      break;
+    case 301:
+      base.turnLeft(270, 500);
+      baseState.wait(2500, STATE_NEXT);
+      break;
+    case 302:
+      base.turnRight(270, 500);
+      baseState.wait(2500, 301);
       break;
       
     default:

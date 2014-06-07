@@ -54,6 +54,11 @@ void VisionBase::moveBackward(float distance, int step_delay)
 
 void VisionBase::turnLeft(int angle)
 {
+  turnLeft(angle, turnSpeedDelay);
+}
+
+void VisionBase::turnLeft(int angle, int turnDelay)
+{
   directionMovement = LEFT;
   if(!oppositeSide)
   {
@@ -65,13 +70,18 @@ void VisionBase::turnLeft(int angle)
     leftMotor.setDirectionForward();
     rightMotor.setDirectionBackward();
   }
-  leftMotor.setTargetDelay(turnSpeedDelay);         
-  rightMotor.setTargetDelay(turnSpeedDelay);
+  leftMotor.setTargetDelay(turnDelay);         
+  rightMotor.setTargetDelay(turnDelay);
   leftMotor.doRotationInAngle(angle);
   rightMotor.doRotationInAngle(angle); 
 }
 
 void VisionBase::turnRight(int angle)
+{
+  turnRight(angle, turnSpeedDelay);
+}
+
+void VisionBase::turnRight(int angle, int turnDelay)
 {  
   directionMovement = RIGHT;
   if(!oppositeSide)
@@ -84,8 +94,8 @@ void VisionBase::turnRight(int angle)
     leftMotor.setDirectionBackward();
     rightMotor.setDirectionForward();
   }
-  leftMotor.setTargetDelay(turnSpeedDelay);         
-  rightMotor.setTargetDelay(turnSpeedDelay);
+  leftMotor.setTargetDelay(turnDelay);         
+  rightMotor.setTargetDelay(turnDelay);
   leftMotor.doRotationInAngle(angle);
   rightMotor.doRotationInAngle(angle);
 }
