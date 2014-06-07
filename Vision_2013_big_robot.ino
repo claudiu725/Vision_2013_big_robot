@@ -643,6 +643,7 @@ void loop()
       
     case 999:
       base.moveBackward(0.1, mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_STOP);
       break;
       
     default:
@@ -661,7 +662,7 @@ void loop()
         base.pause();
         enemyTimer = 0;
       }
-      else if (enemyTimer > 3000)
+      else if (enemyTimer > 100)
       {
         base.unpause();
         arm.basketClose();
