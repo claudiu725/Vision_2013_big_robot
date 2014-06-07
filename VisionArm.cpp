@@ -56,6 +56,11 @@ void VisionArm::basketClose()
   basket.write(basketClosedAngle);
 }
 
+void VisionArm::basketSemi()
+{
+  basket.write(basketSemiAngle);
+}
+
 void VisionArm::basketOpen()
 {
   basket.write(basketOpenAngle);

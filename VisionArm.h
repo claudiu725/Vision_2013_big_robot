@@ -24,6 +24,7 @@ class VisionArm {
     void clawGrab();
     void clawRelease();
     void basketClose();
+    void basketSemi();
     void basketOpen();
     void flipIn();
     void flipOut();

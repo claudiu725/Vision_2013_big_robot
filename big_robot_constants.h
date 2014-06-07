@@ -33,6 +33,7 @@ const int flipperInAngle = 120;
 const int flipperOutAngle = 45;
 
 const int basketOpenAngle = 5;
+const int basketSemiAngle = 60;
 const int basketClosedAngle = 175;
 
 const int sensorScannerLeft = 90;
