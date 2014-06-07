@@ -205,10 +205,10 @@ void loop()
           baseState.wait(4000,colorYellowStartState);
           break;
         case TEST:
-          baseState = testStartState;
+          baseState.wait(4000,testStartState);
           break;
         case ONEPOINT:
-          baseState = onePointStartState;
+          baseState.wait(15000,onePointStartState);
           break;
       }
       robotRunning = true;
@@ -444,7 +444,7 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 103:
-      base.moveBackward(2,mediumSpeedDelay);
+      base.moveBackward(5,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 104:
@@ -510,13 +510,9 @@ void loop()
         baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 121:
-      if (color != ONEPOINT)
-        arm.horizOut();
+      arm.horizOut();
       base.moveBackward(85, 3000);
-      if (color == ONEPOINT)
-        baseState.waitFor(baseStop, 200);
-      else
-        baseState.waitFor(baseStop, STATE_NEXT);
+      baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 122:
       arm.horizIn();
@@ -641,13 +637,8 @@ void loop()
       break;
       
     case 200:
-      base.moveForward(50, mediumSpeedDelay);
-      baseState.waitFor(baseStop, STATE_NEXT);
-      break;
-    case 201:
-      arm.horizOut();
-      base.moveBackward(50, mediumSpeedDelay);
-      baseState.waitFor(baseStop, 122);
+      base.moveBackward(80, mediumSpeedDelay);
+      baseState.waitFor(baseStop, STATE_STOP);
       break;
       
     default:
