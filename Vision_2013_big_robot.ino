@@ -235,7 +235,6 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 1:
-      ignoreSensors = false;
       base.moveForward(35,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
@@ -252,6 +251,7 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 5:
+      ignoreSensors = false;
       arm.basketOpen();
       base.moveForward(103,1000);
       baseState.waitFor(baseHalf, STATE_NEXT);
@@ -490,7 +490,6 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 101:
-      ignoreSensors = false;
       base.moveForward(35,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
@@ -507,6 +506,7 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 105:
+      ignoreSensors = false;
       arm.basketOpen();
       base.moveForward(103,1000);
       baseState.waitFor(baseHalf, STATE_NEXT);
@@ -533,10 +533,12 @@ void loop()
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 111:
+      base.frontAll.disable();
       base.moveForward(20,mediumSpeedDelay);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
     case 112:
+      base.frontAll.disable();
       base.turnLeft(90);
       baseState.waitFor(baseStop, STATE_NEXT);
       break;
