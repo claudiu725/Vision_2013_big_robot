@@ -11,7 +11,7 @@ const unsigned long delayBeforeTurnOff = 1000;
 const unsigned long slowSpeedDelay = 7000;
 const unsigned long fastSpeedDelay = 1000;
 const unsigned long veryFastSpeedDelay = 300;
-const unsigned long mediumSpeedDelay = 500;
+const unsigned long mediumSpeedDelay = 5000;
 const unsigned long ultraSlowSpeedDelay = 24000;
 
 const unsigned long turnSpeedDelay = 5000;
@@ -35,9 +35,9 @@ const int flipperOutAngle = 45;
 const int basketOpenAngle = 5;
 const int basketClosedAngle = 175;
 
-const int sensorScannerLeft = 115;
+const int sensorScannerLeft = 90;
 const int sensorScannerMiddle = 130;
-const int sensorScannerRight = 145;
-const unsigned long sensorScannerToggleInterval = 300;
+const int sensorScannerRight = 170;
+const unsigned long sensorScannerToggleInterval = 350;
 
 #endif
